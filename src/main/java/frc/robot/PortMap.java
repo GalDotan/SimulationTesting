@@ -45,4 +45,21 @@ public class PortMap {
         public final static String CAMERA_NAME = "limelight-camera";
     }
 
+    public class Intake {
+        public static final int ArmMotor = 18;
+        public static final int ArmCanCoder = 19;
+        public static final int RollerMotor = 20;
+        public static final int CoralSensor = 2;
+    }
+
+    public class Arm {
+        public static final int ArmMotor = 21;
+        public static final int ArmCanCoder = 22;
+    }
+
+    public class Gripper {
+        public static final int GripperMotor = 18;
+        public static final int CoralSensor = 3;
+    }
+
 }

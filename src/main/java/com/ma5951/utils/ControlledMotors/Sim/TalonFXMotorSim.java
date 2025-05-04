@@ -17,6 +17,7 @@ public class TalonFXMotorSim {
 
     private TalonFXSimState motorSimState;
     private DCMotorSim physicshSim;
+    private TalonFXConfiguration configuration;
     
 
     public TalonFXMotorSim(TalonFX motor , TalonFXConfiguration motorConfig ,DCMotor motorType , double Inertia , boolean isRevers) {
@@ -26,6 +27,7 @@ public class TalonFXMotorSim {
         if (isRevers) {
             motorSimState.Orientation = ChassisReference.Clockwise_Positive;
         }
+        configuration = motorConfig;
 
     }
 
@@ -34,8 +36,8 @@ public class TalonFXMotorSim {
         physicshSim.setInputVoltage(motorSimState.getMotorVoltage());
         physicshSim.update(0.02);
 
-        motorSimState.setRawRotorPosition(physicshSim.getAngularPositionRotations() );
-        motorSimState.setRotorVelocity(ConvUtil.RPMtoRPS(physicshSim.getAngularVelocityRPM()));
+        motorSimState.setRawRotorPosition(physicshSim.getAngularPositionRotations() * configuration.Feedback.SensorToMechanismRatio);
+        motorSimState.setRotorVelocity(ConvUtil.RPMtoRPS(physicshSim.getAngularVelocityRPM() * configuration.Feedback.SensorToMechanismRatio));
     }
 
 

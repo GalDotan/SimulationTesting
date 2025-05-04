@@ -1,18 +1,18 @@
 
-package frc.robot.commands.Arm;
+package frc.robot.commands.Intake;
 
 import com.ma5951.utils.RobotControl.Commands.RobotFunctionStatesCommand;
 
 import frc.robot.RobotContainer;
-import frc.robot.Subsystem.Arm.Arm;
+import frc.robot.Subsystem.Intake.IntakeRoller.IntakeRoller;
 
-public class ArmDeafultCommand extends RobotFunctionStatesCommand {
-    private static Arm arm = RobotContainer.arm;
+public class IntakeRollerDeafultCommand extends RobotFunctionStatesCommand {
+    private static IntakeRoller intakeRoller = RobotContainer.intakeRoller;
 
-    public ArmDeafultCommand() {
-        super(arm);
+    public IntakeRollerDeafultCommand() {
+        super(intakeRoller);
 
-        addRequirements(arm);
+        addRequirements(intakeRoller);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
 
     @Override
     public void end(boolean interrupted) {
-         arm.setVoltage(0);
+        intakeRoller.setVoltage(0);
     }
 
     @Override
@@ -38,33 +38,18 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void AutomaticLoop() {
         super.AutomaticLoop();
-        switch (arm.getTargetState().getName()) {
+        switch (intakeRoller.getTargetState().getName()) {
             case "IDLE":
-                arm.setAngle(0);
+                intakeRoller.setVoltage(0);
                 break;
-            case "HOLD":
-                arm.setAngle(0);
+            case "HANDOFF":
+                intakeRoller.setVoltage(-4);
                 break;
-            case "INTAKE":
-                arm.setAngle(0);
+            case "CORAL_INTAKE":
+                intakeRoller.setVoltage(6);
                 break;
-            case "SCORING":
-                arm.setAngle(100);
-                break;
-            case "BALLREMOVING":
-
-                break;
-            case "SKYHOOK":
-
-                break;
-            case "HOME":
-
-                break;
-            case "UPPER_IDLE":
-
-                break;
-            case "PROCESSOR":
-
+            case "L1_SCORING":
+                intakeRoller.setVoltage(-3);
                 break;
         }
     }
@@ -77,7 +62,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void CANT_MOVE() {
         super.CANT_MOVE();
-
+        intakeRoller.setVoltage(0);
     }
 
     @Override

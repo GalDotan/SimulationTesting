@@ -68,7 +68,7 @@ public class DeafultRobotContainer {
         //UPDATE LOG
     }
 
-    public void setCurrentState(State state) {
+    public static void setCurrentState(State state) {
         lastRobotState = currentRobotState;
         currentRobotState = state;
     }

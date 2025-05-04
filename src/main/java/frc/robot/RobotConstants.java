@@ -19,6 +19,11 @@ public class RobotConstants {
 
     //States
     public static final State IDLE = new State("IDLE");
+    public static final State INTAKE = new State("INTAKE");
+    public static final State HANDOFF = new State("HANDOFF");
+    public static final State HOLD = new State("HOLD");
+    public static final State PRE_SCORING = new State("PRE_SCORING");
+    public static final State SCORING = new State("SCORING");
 
     //FieldConstants
     public static final Translation2d FieldZeroCorner = new Translation2d(0 , 0);

@@ -2,7 +2,6 @@ package frc.robot.Subsystem.Arm;
 
 import com.ma5951.utils.RobotControl.StatesTypes.State;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
-import com.ma5951.utils.Utils.ConvUtil;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -60,17 +59,18 @@ public class ArmConstants {
     public static final State IDLE = StatesConstants.IDLE;
     public static final State HOLD = new State("HOLD");
     public static final State INTAKE = new State("INTAKE");
+    public static final State HANDOFF = new State("HANDOFF");
+    public static final State PRE_SCORING = new State("PRE_SCORING");
     public static final State SCORING = new State("SCORING");
-    public static final State BALLREMOVING = new State("BALLREMOVING");
-    public static final State SKYHOOK = new State("SKYHOOK");
-    public static final State UPPER_IDLE = new State("UPPER_IDLE");
-    public static final State HOME = new State("HOME");
-    public static final State PROCESSOR = new State("PROCESSOR");
+    public static final State ALGE_GROUND = new State("ALGE_GROUND");
+    public static final State ALGE_REEF = new State("ALGE_REEF");
+    public static final State ALGE_NET = new State("ALGE_REEF");
+    public static final State ALGE_PROCESSOR = new State("ALGE_PROCESSOR");
+    
 
-    public static final Pose3d SIM_ARM_OFFSET = new Pose3d(new Translation3d(0.25,0,0.175), new Rotation3d(0,0,0));
+    public static final Pose3d SIM_ARM_OFFSET = new Pose3d(new Translation3d(0,0,0), new Rotation3d(0,0,0));
 
-    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE, HOLD, INTAKE, SCORING, BALLREMOVING , SKYHOOK , UPPER_IDLE , PROCESSOR
-    , HOME};
+    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE, HOLD, INTAKE, HANDOFF, PRE_SCORING , SCORING , ALGE_GROUND , ALGE_REEF, ALGE_NET, ALGE_PROCESSOR};
 
     public static ArmIO getArmIO() {
         if (Robot.isReal()) {

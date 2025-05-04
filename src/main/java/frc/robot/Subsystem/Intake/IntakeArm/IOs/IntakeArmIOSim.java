@@ -1,7 +1,5 @@
-package frc.robot.Subsystem.Arm.IOs;
+package frc.robot.Subsystem.Intake.IntakeArm.IOs;
 
-
-import org.ironmaple.simulation.IntakeSimulation;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.ma5951.utils.Utils.ConvUtil;
 
@@ -9,14 +7,13 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import frc.robot.Subsystem.Arm.ArmConstants;
 
-public class ArmIOSim extends ArmIOReal {
+public class IntakeArmIOSim extends IntakeArmIOReal {
 
     private TalonFXSimState motorSimState;
-    public static IntakeSimulation intakeSim;
 
     private SingleJointedArmSim armSim;
 
-    public ArmIOSim() {
+    public IntakeArmIOSim() {
         super();
 
         motorSimState = armMotor.getSimState();
@@ -24,7 +21,7 @@ public class ArmIOSim extends ArmIOReal {
         armSim = new SingleJointedArmSim(
                 DCMotor.getKrakenX60(1),
                 armConfig.Feedback.SensorToMechanismRatio,
-                0.11,
+                0.09,
                 0.5,
                 ConvUtil.DegreesToRadians(ArmConstants.MIN_ANGLE),
                 ConvUtil.DegreesToRadians(ArmConstants.MAX_ANGLE),
@@ -32,6 +29,7 @@ public class ArmIOSim extends ArmIOReal {
                 ConvUtil.DegreesToRadians(ArmConstants.MAX_ANGLE));
 
     }
+
 
     @Override
     public void updatePeriodic() {
@@ -45,6 +43,8 @@ public class ArmIOSim extends ArmIOReal {
                 ConvUtil.RadiansToRotations(armSim.getAngleRads()) * armConfig.Feedback.SensorToMechanismRatio);
         motorSimState.setRotorVelocity(
                 (armSim.getVelocityRadPerSec() * 0.1591549430919) * armConfig.Feedback.SensorToMechanismRatio);
+
+        
 
     }
 }

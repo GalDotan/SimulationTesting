@@ -18,7 +18,6 @@ public class TeleopSwerveController extends Command {
 
   public static FieldCentricDriveController driveController;
   public static AngleAdjustController angleAdjustController;
-  public static RelativAngleAdjustController relativAngleAdjustController;
   private ChassisSpeeds driveControllerSpeeds;
   private ChassisSpeeds angleAdjustControllerSpeeds;
   private ChassisSpeeds relativAngleAdjustControllerSpeeds;
@@ -34,7 +33,6 @@ public class TeleopSwerveController extends Command {
     driveController = new FieldCentricDriveController(controller, () -> controller.getRightTriggerAxis() > 0.4 ,
         0.4, () -> SwerveSubsystem.getInstance().getFusedHeading());
     angleAdjustController = new AngleAdjustController(() -> SwerveSubsystem.getInstance().getFusedHeading(), 0);
-    relativAngleAdjustController = new RelativAngleAdjustController(0, () -> Vision.getInstance().getTx());
 
     // xyControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/XY Controller");
     // theathControllerLog = new LoggedString("/Subsystems/Swerve/Controllers/Theath Controller");

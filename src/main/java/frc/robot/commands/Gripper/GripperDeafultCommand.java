@@ -1,18 +1,18 @@
 
-package frc.robot.commands.Arm;
+package frc.robot.commands.Gripper;
 
 import com.ma5951.utils.RobotControl.Commands.RobotFunctionStatesCommand;
 
 import frc.robot.RobotContainer;
-import frc.robot.Subsystem.Arm.Arm;
+import frc.robot.Subsystem.Gripper.Gripper;
 
-public class ArmDeafultCommand extends RobotFunctionStatesCommand {
-    private static Arm arm = RobotContainer.arm;
+public class GripperDeafultCommand extends RobotFunctionStatesCommand {
+    private static Gripper gripper = RobotContainer.gripper;
 
-    public ArmDeafultCommand() {
-        super(arm);
+    public GripperDeafultCommand() {
+        super(gripper);
 
-        addRequirements(arm);
+        addRequirements(gripper);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
 
     @Override
     public void end(boolean interrupted) {
-         arm.setVoltage(0);
+        gripper.setVoltage(0);
     }
 
     @Override
@@ -38,33 +38,21 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void AutomaticLoop() {
         super.AutomaticLoop();
-        switch (arm.getTargetState().getName()) {
+        switch (gripper.getTargetState().getName()) {
             case "IDLE":
-                arm.setAngle(0);
+                gripper.setVoltage(0);
+                break;
+            case "HANDOFF":
+                gripper.setVoltage(4);
+                break;
+            case "CORAL_INTAKE":
+                gripper.setVoltage(0);
+                break;
+            case "L1_SCORING":
+                gripper.setVoltage(0);
                 break;
             case "HOLD":
-                arm.setAngle(0);
-                break;
-            case "INTAKE":
-                arm.setAngle(0);
-                break;
-            case "SCORING":
-                arm.setAngle(100);
-                break;
-            case "BALLREMOVING":
-
-                break;
-            case "SKYHOOK":
-
-                break;
-            case "HOME":
-
-                break;
-            case "UPPER_IDLE":
-
-                break;
-            case "PROCESSOR":
-
+                gripper.setVoltage(0.5);
                 break;
         }
     }
@@ -77,7 +65,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void CANT_MOVE() {
         super.CANT_MOVE();
-
+        gripper.setVoltage(0);
     }
 
     @Override

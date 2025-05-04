@@ -1,0 +1,32 @@
+Pose3d coralPose = new Pose3d();
+        coralPose = coralPose.transformBy(
+                new Transform3d(new Translation3d(0.2175 + 0.4135, 0, Inches.of(4.5).in(Meters) / 2),
+                        new Rotation3d(0, 0, ConvUtil.DegreesToRadians(90))));
+
+        coralPose = coralPose.rotateAround(
+                ArmConstants.SIM_ARM_OFFSET.getTranslation(),
+                new Rotation3d(
+                        0,
+                        (ConvUtil.DegreesToRadians(-getPosition())),
+                        0));
+
+        coralPose = coralPose.rotateBy(new Rotation3d(
+                Degree.of(0),
+                Degree.of(0),
+                SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getRotation().getMeasure()));
+
+        coralPose = new Pose3d(
+                coralPose.getMeasureX()
+                        .plus(SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getMeasureX()),
+                coralPose.getMeasureY()
+                        .plus(SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getMeasureY()),
+                coralPose.getMeasureZ(),
+                coralPose.getRotation());
+
+        MALog.log("/Subsystems/Arm/Coral Position", new Pose3d[] { coralPose });
+
+        if (ArmIOSim.intakeSim.getGamePiecesAmount() > 0) {
+            MALog.log("/Subsystems/Arm/Coral Position", new Pose3d[] { coralPose });
+        } else {
+            MALog.log("/Subsystems/Arm/Coral Position", new Pose3d[0]);
+        }

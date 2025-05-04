@@ -16,7 +16,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.PortMap;
-import frc.robot.RobotConstants;
 import frc.robot.Subsystem.Arm.ArmConstants;
 
 public class ArmIOReal implements ArmIO {
@@ -36,9 +35,9 @@ public class ArmIOReal implements ArmIO {
 
 
     public ArmIOReal() {
-        armMotor = new TalonFX(18, PortMap.CanBus.RioBus);
+        armMotor = new TalonFX(PortMap.Arm.ArmMotor, PortMap.CanBus.RioBus);
         armConfig = new TalonFXConfiguration();
-        absEncoder = new CANcoder(19, PortMap.CanBus.RioBus);
+        absEncoder = new CANcoder(PortMap.Arm.ArmCanCoder, PortMap.CanBus.RioBus);
         positionControl = new PositionVoltage(0); 
 
 
