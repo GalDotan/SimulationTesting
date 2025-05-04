@@ -8,6 +8,7 @@ package frc.robot.commands.Swerve;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.PS5Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystem.Swerve.SwerveSubsystem;
 import frc.robot.Subsystem.Vision.Vision;
@@ -27,10 +28,10 @@ public class TeleopSwerveController extends Command {
   // private LoggedString xyControllerLog;
   // private LoggedString theathControllerLog;
 
-  public TeleopSwerveController(PS5Controller controller) {
+  public TeleopSwerveController(XboxController controller) {
     swerve = SwerveSubsystem.getInstance();
 
-    driveController = new FieldCentricDriveController(controller, () -> controller.getR2Button(),
+    driveController = new FieldCentricDriveController(controller, () -> controller.getRightTriggerAxis() > 0.4 ,
         0.4, () -> SwerveSubsystem.getInstance().getFusedHeading());
     angleAdjustController = new AngleAdjustController(() -> SwerveSubsystem.getInstance().getFusedHeading(), 0);
     relativAngleAdjustController = new RelativAngleAdjustController(0, () -> Vision.getInstance().getTx());

@@ -2,6 +2,7 @@
 package frc.robot;
 
 import org.ironmaple.simulation.SimulatedArena;
+import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnField;
 
 import com.ma5951.utils.Controllers.MAPS5Controller;
 import com.ma5951.utils.DashBoard.DashboardPID;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PS5Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Subsystem.Arm.Arm;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
 
@@ -28,6 +30,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
+    MALog.resetID();
 
     controller = new MAPS5Controller(0);
 
@@ -89,12 +92,66 @@ public class Robot extends TimedRobot {
   @Override
   public void simulationInit() {
     SimulatedArena.getInstance().addDriveTrainSimulation(SwerveConstants.SWERVE_DRIVE_SIMULATION);
+    SimulatedArena.getInstance().clearGamePieces();
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(2, 2, Rotation2d.fromDegrees(90))));
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(1, 1, Rotation2d.fromDegrees(90))));
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(3, 2, Rotation2d.fromDegrees(90))));
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(5, 3, Rotation2d.fromDegrees(90))));
+
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(2, 2, Rotation2d.fromDegrees(90))));
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(1, 1, Rotation2d.fromDegrees(90))));
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(3, 2, Rotation2d.fromDegrees(90))));
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(5, 3, Rotation2d.fromDegrees(90))));
+
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(2, 2, Rotation2d.fromDegrees(90))));
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(1, 1, Rotation2d.fromDegrees(90))));
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(3, 2, Rotation2d.fromDegrees(90))));
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(5, 3, Rotation2d.fromDegrees(90))));
+
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(2, 2, Rotation2d.fromDegrees(90))));
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(1, 1, Rotation2d.fromDegrees(90))));
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(3, 2, Rotation2d.fromDegrees(90))));
+    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // We must specify a heading since the coral is a tube
+    new Pose2d(5, 3, Rotation2d.fromDegrees(90))));
   }
 
   @Override
   public void simulationPeriodic() {
     SimulatedArena.getInstance().simulationPeriodic();
-    // LOG SWERVE POSE
+    MALog.log("Simulation Pose", SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose());
+    MALog.log("FieldSimulation/Coral", 
+    SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
   }
 
 }

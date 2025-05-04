@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.ma5951.utils.DashBoard.MAShuffleboard;
-
+import com.ma5951.utils.Logger.MALog;
 import com.ma5951.utils.RobotControl.StatesTypes.State;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 
@@ -90,11 +90,11 @@ public abstract class StateControlledSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // currentStateLog.update(getCurrenState().getName());
-        // systemFunctionStateLog.update(getSystemFunctionState().getName());
-        // targetStateLog.update(getTargetState().getName());
-        // systemCanMoveLog.update(canMove());
-        //UPDATE LOG
+        MALog.log("/RobotControl/" + systemName + "/Current State", getCurrenState().getName());
+        MALog.log("/RobotControl/" + systemName + "/System Function State", getSystemFunctionState().getName());
+        MALog.log("/RobotControl/" + systemName + "/Target State", getTargetState().getName());
+        MALog.log("/RobotControl/" + systemName + "/Can Move", canMove());
+
 
         if (board.getBoolean(systemName + " Manuel")) {
             setSystemFunctionState(StatesConstants.MANUEL);

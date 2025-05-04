@@ -2,6 +2,8 @@
 package frc.robot.Subsystem.PoseEstimation;
 
 
+import com.ma5951.utils.Logger.MALog;
+
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -59,8 +61,7 @@ public class PoseEstimator {
     }
 
     public void update() {
-        //estimatedRobotPose.update(getEstimatedRobotPose());      
-        //UPDATE LOG
+        MALog.log("EstimatedPose", getEstimatedRobotPose());
   
     }
 

@@ -32,16 +32,16 @@ public class SwerveConstants {
 
         // swerve constants
         public final static double WIDTH = 0.58;
-        public final static double LENGTH = 0.59;
+        public final static double LENGTH = 0.58;
         public final static double RADIUS = Math.sqrt(
                         Math.pow(WIDTH, 2) + Math.pow(LENGTH, 2)) / 2.0;
-        public final static double BUMPER_WIDTH = WIDTH + 0.16;
-        public final static double BUMPER_LENGTH = LENGTH + 0.16;
+        public final static double BUMPER_WIDTH = 0.7 + 0.127;
+        public final static double BUMPER_LENGTH = 0.7 + 0.127;
         public final static double ROBOT_MASS = 62;
 
         // Modules constants
         public final static double TURNING_GEAR_RATIO = 150d / 7;
-        public final static double DRIVE_GEAR_RATIO = 6.12;
+        public final static double DRIVE_GEAR_RATIO = 6.75;
         public final static double WHEEL_RADIUS = 0.0508;
         public final static double WHEEL_CIRCUMFERENCE = 2 * WHEEL_RADIUS * Math.PI;
 
@@ -249,7 +249,7 @@ public class SwerveConstants {
                         DRIVE_TRAIN_SIMULATION_CONFIG, new Pose2d(2, 2, new Rotation2d()));
 
         // Module Limits
-        public final static ModuleLimits DEFUALT = new ModuleLimits(5.2, Units.feetToMeters(65),
+        public final static ModuleLimits DEFUALT = new ModuleLimits(4, Units.feetToMeters(65),
                         Units.degreesToRadians(700));
 
         // Odometry

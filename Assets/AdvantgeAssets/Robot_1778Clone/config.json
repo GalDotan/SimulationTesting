@@ -1,20 +1,21 @@
+{
   "name": "1778Clone",
   "sourceUrl": "https://www.youtube.com/",
   "rotations": [
     {
       "axis": "x",
-      "degrees": 0
+      "degrees": 180
     },
     {
       "axis": "z",
-      "degrees": 0
+      "degrees": 180
     },
     {
       "axis": "y",
       "degrees": 0
     }
   ],
-  "position": [0.0775,-1.112, 0],
+  "position": [-0.025,-0.35, 0.04525],
   "cameras": [{
       "name": "Limelight G3",
       "rotations": [
@@ -52,13 +53,13 @@
         },
         {
           "axis": "y",
-          "degrees": 0
+          "degrees": 180
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0
+       -0.25,
+        -0.35,
+        -0.127
       ]
     }]
 }

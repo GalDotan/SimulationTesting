@@ -28,6 +28,7 @@ public class MALog {
     private static final Map<String, StructPublisher<Pose3d>> pose3dPublishers = new HashMap<>();
     private static final Map<String, StructPublisher<Translation2d>> translation2dPublishers = new HashMap<>();
     private static final Map<String, StructArrayPublisher<SwerveModuleState>> swerveModuleStatePublishers = new HashMap<>();
+    private static final Map<String, StructArrayPublisher<Pose3d>> pose3dPublishersArry = new HashMap<>();
     private static final String ID_FILE_PATH = "/home/lvuser/malog/lastLogID.txt";
     private static String sessionID = "0000";
     private static boolean started = false;
@@ -108,13 +109,35 @@ public class MALog {
         publisher.set(states);
     }
 
+    public static void log(String key, Pose3d[] poses) {
+        if (poses == null) return;
+    
+        StructArrayPublisher<Pose3d> publisher = pose3dPublishersArry.computeIfAbsent(
+                key,
+                k -> nt.getStructArrayTopic("MALog/" + k, Pose3d.struct).publish()
+        );
+    
+        publisher.set(poses);
+    }
+
     public static void log(String key, Pose2d pose) {
-        if (!started || pose == null)
+        if (pose == null)
             return;
 
         StructPublisher<Pose2d> publisher = pose2dPublishers.computeIfAbsent(
                 key,
                 k -> nt.getStructTopic("MALog/" + k, Pose2d.struct).publish());
+
+        publisher.set(pose);
+    }
+
+    public static void log(String key, Pose3d pose) {
+        if (pose == null)
+            return;
+
+        StructPublisher<Pose3d> publisher = pose3dPublishers.computeIfAbsent(
+                key,
+                k -> nt.getStructTopic("MALog/" + k, Pose3d.struct).publish());
 
         publisher.set(pose);
     }
