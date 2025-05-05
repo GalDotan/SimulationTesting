@@ -59,7 +59,7 @@ public class Gripper extends StateControlledSubsystem{
     @Override
     public void periodic() {
         super.periodic();
-        //gripperIO.updatePeriodic();
+        gripperIO.updatePeriodic();
 
         
     }

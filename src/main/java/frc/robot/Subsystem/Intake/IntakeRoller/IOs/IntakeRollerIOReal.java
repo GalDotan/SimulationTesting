@@ -17,7 +17,6 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.PortMap;
-import frc.robot.Subsystem.Intake.IntakeArm.IntakeArmConstants;
 import frc.robot.Subsystem.Intake.IntakeRoller.IntakeRollerConstants;
 
 public class IntakeRollerIOReal implements IntakeRollerIO {
@@ -28,7 +27,8 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
 
     private DigitalInput coralSensor;
 
-    private VoltageOut voltageRequest;
+    private VoltageOut voltageOut;
+
 
     private StatusSignal<AngularVelocity> rollerMotorVelocity;
     private StatusSignal<Current> rollerMotorCurrent;
@@ -40,8 +40,7 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
         rollerMotor = new TalonFX(PortMap.Intake.RollerMotor, PortMap.CanBus.RioBus);
         rollerConfig = new TalonFXConfiguration();
 
-        voltageRequest = new VoltageOut(0);
-
+        voltageOut = new VoltageOut(0);
         coralSensor = new DigitalInput(PortMap.Intake.CoralSensor);
 
         rollerMotorVelocity = rollerMotor.getVelocity();
@@ -54,14 +53,14 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
     }
 
     private void configRollerMotor() {
-        rollerConfig.Feedback.SensorToMechanismRatio = IntakeArmConstants.ROLLER_GEAR_RATIO;
+        rollerConfig.Feedback.SensorToMechanismRatio = IntakeRollerConstants.GEAR_RATIO;
 
         rollerConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         rollerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
 
-        rollerConfig.CurrentLimits.StatorCurrentLimit = IntakeArmConstants.ROLLER_STATOR_CURRENT_LIMIT;
-        rollerConfig.CurrentLimits.StatorCurrentLimitEnable = IntakeArmConstants.ROLLER_ENABLE_CURRENT_LIMIT;
+        rollerConfig.CurrentLimits.StatorCurrentLimit = IntakeRollerConstants.STATOR_CURRENT_LIMIT;
+        rollerConfig.CurrentLimits.StatorCurrentLimitEnable = IntakeRollerConstants.ENABLE_CURRENT_LIMIT;
 
 
         rollerMotor.getConfigurator().apply(rollerConfig);
@@ -91,7 +90,10 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
     }
 
     public void setVoltage(double volt) {
-        rollerMotor.setVoltage(volt);
+        rollerMotor.setControl(voltageOut.withOutput(volt)
+        .withLimitForwardMotion(getCurrent() > IntakeRollerConstants.k_CAN_MOVE_CURRENT_LIMIT)
+        .withLimitReverseMotion(getCurrent() < IntakeRollerConstants.k_CAN_MOVE_CURRENT_LIMIT));
+        
     }
 
     public void updatePeriodic() {
@@ -101,9 +103,10 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
                 rollerMotorVoltage);
 
 
-        MALog.log("/Subsystems/Intake/Intake Roller/IO/Roller Velocity", getVelocity());
+        MALog.log("Subsystems/Intake/Intake Roller/IO/Roller Velocity", getVelocity());
         MALog.log("Subsystems/Intake/Intake Roller/IO/Roller Voltage", getAppliedVolts());
         MALog.log("Subsystems/Intake/Intake Roller/IO/Roller Current", getCurrent());
+        MALog.log("Subsystems/Intake/Intake Roller/IO/Has Coral", hasCoral());
 
     }
 }

@@ -11,11 +11,11 @@ import frc.robot.Subsystem.Intake.IntakeRoller.IOs.IntakeRollerIOSim;
 
 public class IntakeRollerConstants {
 
-    public static final double GEAR_RATIO = 5;
+    public static final double GEAR_RATIO = 3;
 
 
     public static final double STATOR_CURRENT_LIMIT = 40;
-    public static final boolean ENABLE_CURRENT_LIMIT = false;
+    public static final boolean ENABLE_CURRENT_LIMIT = true;
 
     public static final double k_CAN_MOVE_CURRENT_LIMIT = 60;
 

@@ -21,13 +21,12 @@ public class IntakeArmConstants {
     public static final double L1_SCORE_ANGLE = 26;
     public static final double HANDOFF_ANGLE = 26;
 
-    public static final double kP = 30;
+    public static final double kP = 80;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0;
     public static final double FEED_FORWARD_VOLTAGE = 0.085;
     public static final double ARM_GEAR_RATIO = 60;
-    public static final double ROLLER_GEAR_RATIO = 5;
 
     public static final int CONTROL_SLOT = 0;
     public static final double TOLERANCE = 2;
@@ -35,8 +34,6 @@ public class IntakeArmConstants {
     public static final double ARM_STATOR_CURRENT_LIMIT = 25;
     public static final boolean ARM_ENABLE_CURRENT_LIMIT = true;
 
-    public static final double ROLLER_STATOR_CURRENT_LIMIT = 40;
-    public static final boolean ROLLER_ENABLE_CURRENT_LIMIT = true;
 
     public static final double k_CAN_MOVE_CURRENT_LIMIT = 60;
 
@@ -45,7 +42,7 @@ public class IntakeArmConstants {
     public static final State IDLE = StatesConstants.IDLE;
     public static final State HANDOFF = new State("HANDOFF");
     public static final State CORAL_INTAKE = new State("CORAL_INTAKE");
-    public static final State ALGE_INTAKE = new State("CORAL_INTAKE");
+    public static final State ALGE_INTAKE = new State("ALGE_INTAKE");
     public static final State L1_SCORING = new State("L1_SCORING");
 
     public static final State[] SUBSYSTEM_STATES = new State[] {IDLE, HANDOFF, CORAL_INTAKE, ALGE_INTAKE, L1_SCORING};

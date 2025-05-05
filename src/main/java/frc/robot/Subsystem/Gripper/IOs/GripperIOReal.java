@@ -17,7 +17,7 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.PortMap;
-import frc.robot.Subsystem.Intake.IntakeArm.IntakeArmConstants;
+import frc.robot.Subsystem.Gripper.GripperConstants;
 import frc.robot.Subsystem.Intake.IntakeRoller.IntakeRollerConstants;
 
 public class GripperIOReal implements GripperIO {
@@ -37,7 +37,7 @@ public class GripperIOReal implements GripperIO {
 
     public GripperIOReal() {
 
-        rollerMotor = new TalonFX(PortMap.Intake.RollerMotor, PortMap.CanBus.RioBus);
+        rollerMotor = new TalonFX(PortMap.Gripper.GripperMotor, PortMap.CanBus.RioBus);
         rollerConfig = new TalonFXConfiguration();
 
         voltageRequest = new VoltageOut(0);
@@ -54,14 +54,14 @@ public class GripperIOReal implements GripperIO {
     }
 
     private void configRollerMotor() {
-        rollerConfig.Feedback.SensorToMechanismRatio = IntakeArmConstants.ROLLER_GEAR_RATIO;
+        rollerConfig.Feedback.SensorToMechanismRatio = GripperConstants.GEAR_RATIO;
 
         rollerConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         rollerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
 
-        rollerConfig.CurrentLimits.StatorCurrentLimit = IntakeArmConstants.ROLLER_STATOR_CURRENT_LIMIT;
-        rollerConfig.CurrentLimits.StatorCurrentLimitEnable = IntakeArmConstants.ROLLER_ENABLE_CURRENT_LIMIT;
+        rollerConfig.CurrentLimits.StatorCurrentLimit = GripperConstants.STATOR_CURRENT_LIMIT;
+        rollerConfig.CurrentLimits.StatorCurrentLimitEnable = GripperConstants.ENABLE_CURRENT_LIMIT;
 
 
         rollerMotor.getConfigurator().apply(rollerConfig);
@@ -103,9 +103,10 @@ public class GripperIOReal implements GripperIO {
                 rollerMotorVoltage);
 
 
-        MALog.log("/Subsystems/Gripper/IO/Roller Velocity", getVelocity());
-        MALog.log("Subsystems/Gripper/IO/Roller Voltage", getAppliedVolts());
-        MALog.log("Subsystems/Gripper/IO/Roller Current", getCurrent());
+        MALog.log("Subsystems/Gripper/IO/Gripper Velocity", getVelocity());
+        MALog.log("Subsystems/Gripper/IO/Gripper Voltage", getAppliedVolts());
+        MALog.log("Subsystems/Gripper/IO/Gripper Current", getCurrent());
+        MALog.log("Subsystems/Gripper/IO/Has Coral", hasCoral());
 
     }
 }

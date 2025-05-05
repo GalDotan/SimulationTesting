@@ -123,7 +123,6 @@ public class ArmIOReal implements ArmIO {
 
     public void setVoltage(double volt) {
         armMotor.setVoltage(volt);
-        System.out.println(armMotor.get());
     }
 
     public void setAngle(double angle , double FEED_FORWARD) {

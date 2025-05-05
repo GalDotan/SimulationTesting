@@ -46,7 +46,7 @@ public class IntakeRollerDeafultCommand extends RobotFunctionStatesCommand {
                 intakeRoller.setVoltage(-4);
                 break;
             case "CORAL_INTAKE":
-                intakeRoller.setVoltage(6);
+                intakeRoller.setVoltage(8);
                 break;
             case "L1_SCORING":
                 intakeRoller.setVoltage(-3);

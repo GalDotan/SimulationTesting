@@ -36,8 +36,8 @@ public class TalonFXMotorSim {
         physicshSim.update(0.02);
 
 
-        motorSimState.setRawRotorPosition(physicshSim.getAngularPositionRotations());
-        motorSimState.setRotorVelocity(ConvUtil.RPMtoRPS(physicshSim.getAngularVelocityRPM()));
+        motorSimState.setRawRotorPosition(physicshSim.getAngularPositionRotations() * configuration.Feedback.SensorToMechanismRatio);
+        motorSimState.setRotorVelocity(ConvUtil.RPMtoRPS(physicshSim.getAngularVelocityRPM()) * configuration.Feedback.SensorToMechanismRatio);
     }
 
 
