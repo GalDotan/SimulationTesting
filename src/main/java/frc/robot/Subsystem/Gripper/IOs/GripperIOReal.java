@@ -42,7 +42,7 @@ public class GripperIOReal implements GripperIO {
 
         voltageRequest = new VoltageOut(0);
 
-        coralSensor = new DigitalInput(PortMap.Intake.CoralSensor);
+        coralSensor = new DigitalInput(PortMap.Gripper.CoralSensor);
 
         rollerMotorVelocity = rollerMotor.getVelocity();
         rollerMotorCurrent = rollerMotor.getStatorCurrent();

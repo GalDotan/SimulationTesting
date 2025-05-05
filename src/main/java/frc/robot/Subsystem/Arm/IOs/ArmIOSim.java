@@ -29,7 +29,7 @@ public class ArmIOSim extends ArmIOReal {
                 ConvUtil.DegreesToRadians(ArmConstants.MIN_ANGLE),
                 ConvUtil.DegreesToRadians(ArmConstants.MAX_ANGLE),
                 false,
-                ConvUtil.DegreesToRadians(ArmConstants.MAX_ANGLE));
+                ConvUtil.DegreesToRadians(0));
 
     }
 

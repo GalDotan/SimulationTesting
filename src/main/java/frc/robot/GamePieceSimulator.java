@@ -5,6 +5,8 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
+import org.ironmaple.simulation.IntakeSimulation;
+import org.ironmaple.simulation.IntakeSimulation.IntakeSide;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnFly;
 
@@ -21,25 +23,36 @@ public class GamePieceSimulator {
         INTAKE
     }
 
-    public static CoralPose coralPose = CoralPose.NONE;
+    private static CoralPose coralPose = CoralPose.NONE;
+
+    private static IntakeSimulation intakeSim = IntakeSimulation.OverTheBumperIntake(
+        "Coral",
+        SwerveConstants.SWERVE_DRIVE_SIMULATION,
+        Meters.of(0.44),
+        Meters.of(0.2625),
+        IntakeSide.FRONT,
+        1);
 
     public static void updateSim() {
 
         if (RobotContainer.currentRobotState == RobotConstants.INTAKE
                 && RobotContainer.intakeRoller.getVelocity() > 100) {
-            IntakeRollerIOSim.intakeSim.startIntake();
+            intakeSim.startIntake();
         } else {
-            IntakeRollerIOSim.intakeSim.stopIntake();
+            intakeSim.stopIntake();
         }
 
-        if (RobotContainer.intakeRoller.hasCoral()) {
+        if (intakeSim.getGamePiecesAmount() > 0) {
+            IntakeRollerIOSim.setHasCoral(true);
             coralPose = CoralPose.INTAKE;
+        } else {
+            IntakeRollerIOSim.setHasCoral(false);
         }
 
         if (RobotContainer.currentRobotState == RobotConstants.HANDOFF
                 && RobotContainer.intakeRoller.getVelocity() > 100 && RobotContainer.gripper.getVelocity() > 100
                 && RobotContainer.intakeRoller.hasCoral()) {
-            IntakeRollerIOSim.intakeSim.obtainGamePieceFromIntake();
+            intakeSim.obtainGamePieceFromIntake();
             GripperIOSim.setHasCoral(true);
             coralPose = CoralPose.GRIPPER;
         } else {
@@ -47,8 +60,16 @@ public class GamePieceSimulator {
         }
 
         if (RobotContainer.currentRobotState == RobotConstants.SCORING && RobotContainer.gripper.getVelocity() < -50
-                && RobotContainer.gripper.hasCoral()) {
-            SimulatedArena.getInstance()
+            && RobotContainer.gripper.hasCoral()) {
+            scoreBracnh();
+            GripperIOSim.setHasCoral(false);
+            coralPose = CoralPose.NONE;
+        }
+
+    }
+
+    public static void scoreBracnh() {
+        SimulatedArena.getInstance()
                     .addGamePieceProjectile(new ReefscapeCoralOnFly(
                             // Obtain robot position from drive simulation
                             SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getTranslation(),
@@ -64,11 +85,6 @@ public class GamePieceSimulator {
                             MetersPerSecond.of(2),
                             // The coral is ejected at a 35-degree slope
                             Degrees.of(-35)));
-            GripperIOSim.setHasCoral(false);
-            coralPose = CoralPose.NONE;
-
-        }
-
     }
 
 }

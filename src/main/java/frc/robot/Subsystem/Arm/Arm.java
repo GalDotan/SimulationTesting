@@ -7,7 +7,7 @@ import com.ma5951.utils.Utils.ConvUtil;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Translation3d;
+import frc.robot.Robot;
 import frc.robot.Subsystem.Arm.IOs.ArmIO;
 
 public class Arm extends StateControlledSubsystem {
@@ -90,7 +90,11 @@ public class Arm extends StateControlledSubsystem {
         super.periodic();
         armIO.updatePeriodic();
 
-        MALog.log("/Subsystems/Arm/Arm Position", new Pose3d(new Translation3d() , new Rotation3d(ConvUtil.DegreesToRadians(0),0,0)));
+
+        if (!Robot.isReal()) {
+            MALog.log("/Subsystems/Arm/Arm Position", new Pose3d(ArmConstants.SIM_ARM_OFFSET.getTranslation(),
+                new Rotation3d(ConvUtil.DegreesToRadians(getPosition()), 0, 0)));
+        }
 
         
     }

@@ -13,7 +13,7 @@ import frc.robot.Subsystem.Arm.IOs.ArmIOSim;
 
 public class ArmConstants {
 
-    public static final double MAX_ANGLE = 140; 
+    public static final double MAX_ANGLE = 360; 
     public static final double MIN_ANGLE = 0;  
     public static final double PARALLEL_ANGLE = 90;
     public static final double MAX_ANGLE_BALL = 120; 
@@ -68,7 +68,7 @@ public class ArmConstants {
     public static final State ALGE_PROCESSOR = new State("ALGE_PROCESSOR");
     
 
-    public static final Pose3d SIM_ARM_OFFSET = new Pose3d(new Translation3d(0,0,0), new Rotation3d(0,0,0));
+    public static final Pose3d SIM_ARM_OFFSET = new Pose3d(new Translation3d(-0.124,0,1.262), new Rotation3d(0,0,0));
 
     public static final State[] SUBSYSTEM_STATES = new State[] {IDLE, HOLD, INTAKE, HANDOFF, PRE_SCORING , SCORING , ALGE_GROUND , ALGE_REEF, ALGE_NET, ALGE_PROCESSOR};
 

@@ -6,6 +6,7 @@ import com.ma5951.utils.Utils.ConvUtil;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import frc.robot.Subsystem.Arm.ArmConstants;
+import frc.robot.Subsystem.Intake.IntakeArm.IntakeArmConstants;
 
 public class IntakeArmIOSim extends IntakeArmIOReal {
 
@@ -23,10 +24,10 @@ public class IntakeArmIOSim extends IntakeArmIOReal {
                 armConfig.Feedback.SensorToMechanismRatio,
                 0.09,
                 0.5,
-                ConvUtil.DegreesToRadians(ArmConstants.MIN_ANGLE),
-                ConvUtil.DegreesToRadians(ArmConstants.MAX_ANGLE),
+                ConvUtil.DegreesToRadians(IntakeArmConstants.MIN_ANGLE),
+                ConvUtil.DegreesToRadians(IntakeArmConstants.MAX_ANGLE),
                 false,
-                ConvUtil.DegreesToRadians(ArmConstants.MAX_ANGLE));
+                ConvUtil.DegreesToRadians(IntakeArmConstants.MAX_ANGLE));
 
     }
 
