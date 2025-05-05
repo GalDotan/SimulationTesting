@@ -9,14 +9,13 @@ public class IntakeRollerIOSim extends IntakeRollerIOReal {
     private TalonFXMotorSim motorSim;
     private static boolean hasCoral;
 
-
     public IntakeRollerIOSim() {
         super();
 
-        motorSim = new TalonFXMotorSim(rollerMotor, rollerConfig, DCMotor.getKrakenX60(1), 0.008, false);
+        motorSim = new TalonFXMotorSim(rollerMotor, rollerConfig, DCMotor.getKrakenX60(1), 0.1, false);
 
+        hasCoral = false;
 
-        
     }
 
     @Override
@@ -30,10 +29,10 @@ public class IntakeRollerIOSim extends IntakeRollerIOReal {
 
     @Override
     public void updatePeriodic() {
-        super.updatePeriodic();
 
         motorSim.updateSim();
-        
+
+        super.updatePeriodic();
 
     }
 }

@@ -12,11 +12,13 @@ import frc.robot.Subsystem.Swerve.SwerveSubsystem;
 
 public class SuperStructure extends GenericSuperStracture{
 
-    public static IntakeRoller intakeRoller = RobotContainer.intakeRoller;
-    public static Gripper gripper = RobotContainer.gripper;
+    public static IntakeRoller intakeRoller;
+    public static Gripper gripper;
 
     public SuperStructure() {
         super(() -> PoseEstimator.getInstance().getEstimatedRobotPose(), () -> SwerveSubsystem.getInstance().getVelocityVector());
+        intakeRoller = RobotContainer.intakeRoller;
+        gripper = RobotContainer.gripper;
     }
 
     public static boolean hasGamePiece() {

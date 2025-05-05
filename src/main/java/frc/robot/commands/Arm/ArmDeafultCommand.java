@@ -40,10 +40,10 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
         super.AutomaticLoop();
         switch (arm.getTargetState().getName()) {
             case "IDLE":
-                arm.setAngle(180);
+                arm.setAngle(00);
                 break;
             case "HOLD":
-                arm.setAngle(0);
+                arm.setAngle(90);
                 break;
             case "INTAKE":
                 arm.setAngle(0);

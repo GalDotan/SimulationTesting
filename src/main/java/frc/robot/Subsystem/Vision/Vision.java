@@ -86,30 +86,30 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    visionIO.update();
+    // visionIO.update();
 
-    if (DriverStation.isAutonomous()) {
-      visionFilters.updateFilterConfig(VisionConstants.AUTO_FILTERS_CONFIG);
-    } else{
-      visionFilters.updateFilterConfig(VisionConstants.TELEOP_FILTERS_CONFIG);
-    }
+    // if (DriverStation.isAutonomous()) {
+    //   visionFilters.updateFilterConfig(VisionConstants.AUTO_FILTERS_CONFIG);
+    // } else{
+    //   visionFilters.updateFilterConfig(VisionConstants.TELEOP_FILTERS_CONFIG);
+    // }
 
-    visionPoseEstimate = visionIO.getEstimatedPose();
-    isUpdateForOdometry = visionFilters.isValidForUpdate(visionPoseEstimate.pose);
-    isUpdateGyro = visionFilters.isValidForGyroReset();
+    // visionPoseEstimate = visionIO.getEstimatedPose();
+    // isUpdateForOdometry = visionFilters.isValidForUpdate(visionPoseEstimate.pose);
+    // isUpdateGyro = visionFilters.isValidForGyroReset();
     
-    //TODO LOG
+    // //TODO LOG
 
-    if (isUpdateForOdometry) {
-      updateOdometry();
-    }
+    // if (isUpdateForOdometry) {
+    //   updateOdometry();
+    // }
 
-    if (!didUpdatedGyro) {
-      if (isUpdateGyro) {
-        didUpdatedGyro = true;
-        SwerveSubsystem.getInstance().getGyro().updateOffset();
-      }
-    }
+    // if (!didUpdatedGyro) {
+    //   if (isUpdateGyro) {
+    //     didUpdatedGyro = true;
+    //     SwerveSubsystem.getInstance().getGyro().updateOffset();
+    //   }
+    // }
     
   }
 }

@@ -1,6 +1,5 @@
 package frc.robot.Subsystem.Arm.IOs;
 
-
 import org.ironmaple.simulation.IntakeSimulation;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.ma5951.utils.Utils.ConvUtil;
@@ -35,7 +34,6 @@ public class ArmIOSim extends ArmIOReal {
 
     @Override
     public void updatePeriodic() {
-        super.updatePeriodic();
 
         motorSimState.setSupplyVoltage(12);
         armSim.setInputVoltage(motorSimState.getMotorVoltage());
@@ -45,6 +43,8 @@ public class ArmIOSim extends ArmIOReal {
                 ConvUtil.RadiansToRotations(armSim.getAngleRads()) * armConfig.Feedback.SensorToMechanismRatio);
         motorSimState.setRotorVelocity(
                 (armSim.getVelocityRadPerSec() * 0.1591549430919) * armConfig.Feedback.SensorToMechanismRatio);
+
+        super.updatePeriodic();
 
     }
 }

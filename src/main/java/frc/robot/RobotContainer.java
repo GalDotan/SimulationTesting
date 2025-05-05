@@ -43,10 +43,13 @@ public class RobotContainer extends DeafultRobotContainer {
     Vision.getInstance();
     PoseEstimator.getInstance();
     SwerveAutoFollower.getInstance();
+    
     arm = Arm.getInstance();
     intakeArm = IntakeArm.getInstance();
     intakeRoller = IntakeRoller.getInstance();
     gripper = Gripper.getInstance();
+    new SuperStructure();
+    new GamePieceSimulator();
 
     configureBindings();
 
@@ -92,7 +95,7 @@ public class RobotContainer extends DeafultRobotContainer {
 
   private void configureBindings() {
 
-    new Trigger(() -> (driverController.getRightBumperButton() || driverController.getLeftBumperButton())
+    new Trigger(() -> (driverController.getR1Button() || driverController.getL1Button())
         && !SuperStructure.hasGamePiece()).onTrue(new InstantCommand(() -> setINTAKE()));
 
     new Trigger(() -> currentRobotState == RobotConstants.INTAKE
@@ -100,6 +103,9 @@ public class RobotContainer extends DeafultRobotContainer {
 
     new Trigger(() -> currentRobotState == RobotConstants.HANDOFF
         && gripper.hasCoral() && !intakeRoller.hasCoral()).onTrue(new InstantCommand(() -> setHOLD()));
+
+    new Trigger(() -> driverController.getTouchpadButton()).onTrue(
+      new InstantCommand(() -> setIDLE()));
 
   }
 

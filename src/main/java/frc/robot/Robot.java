@@ -123,30 +123,31 @@ public class Robot extends TimedRobot {
     MALog.log("Simulation Pose", SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose());
     MALog.log("FieldSimulation/Coral", 
     SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
+    GamePieceSimulator.updateSim();
 
-    numOfCorals = 0;
-    for (GamePieceOnFieldSimulation gamePiece : SimulatedArena.getInstance().gamePiecesOnField()) numOfCorals++ ;
+    // numOfCorals = 0;
+    // for (GamePieceOnFieldSimulation gamePiece : SimulatedArena.getInstance().gamePiecesOnField()) numOfCorals++ ;
 
-    if (numOfCorals < 4 && timeSinceLastCoral.get() > 3) {
-      timeSinceLastCoral.reset();
-      timeSinceLastCoral.start();
-      SimulatedArena.getInstance()
-                    .addGamePieceProjectile(new ReefscapeCoralOnFly(
-                            // Obtain robot position from drive simulation
-                            new Translation2d(0.9, 0.9),
-                            // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
-                            new Translation2d(0, 0),
-                            // Obtain robot speed from drive simulation
-                            new ChassisSpeeds(0, 0, 0),
-                            // Obtain robot facing from drive simulation
-                            Rotation2d.fromDegrees(random.nextInt(10 , 80)),
-                            // The height at which the coral is ejected
-                            Meters.of(1),
-                            // The initial speed of the coral
-                            MetersPerSecond.of(1.5),
-                            // The coral is ejected at a 35-degree slope
-                            Degrees.of(-35)));
-    }
+    // if (numOfCorals < 4 && timeSinceLastCoral.get() > 3) {
+    //   timeSinceLastCoral.reset();
+    //   timeSinceLastCoral.start();
+    //   SimulatedArena.getInstance()
+    //                 .addGamePieceProjectile(new ReefscapeCoralOnFly(
+    //                         // Obtain robot position from drive simulation
+    //                         new Translation2d(0.9, 0.9),
+    //                         // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
+    //                         new Translation2d(0, 0),
+    //                         // Obtain robot speed from drive simulation
+    //                         new ChassisSpeeds(0, 0, 0),
+    //                         // Obtain robot facing from drive simulation
+    //                         Rotation2d.fromDegrees(random.nextInt(10 , 80)),
+    //                         // The height at which the coral is ejected
+    //                         Meters.of(1),
+    //                         // The initial speed of the coral
+    //                         MetersPerSecond.of(1.5),
+    //                         // The coral is ejected at a 35-degree slope
+    //                         Degrees.of(-35)));
+    // }
 
   }
 

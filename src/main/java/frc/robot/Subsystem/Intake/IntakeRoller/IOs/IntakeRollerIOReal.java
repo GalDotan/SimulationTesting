@@ -91,9 +91,7 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
     }
 
     public void setVoltage(double volt) {
-        rollerMotor.setControl(voltageRequest.withOutput(volt)
-        .withLimitForwardMotion(getCurrent() > IntakeRollerConstants.k_CAN_MOVE_CURRENT_LIMIT)
-        .withLimitReverseMotion(getCurrent() < IntakeRollerConstants.k_CAN_MOVE_CURRENT_LIMIT));
+        rollerMotor.setVoltage(volt);
     }
 
     public void updatePeriodic() {

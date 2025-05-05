@@ -65,7 +65,6 @@ public class IntakeRoller extends StateControlledSubsystem{
     public void periodic() {
         super.periodic();
         intakeIO.updatePeriodic();
-
         
     }
 

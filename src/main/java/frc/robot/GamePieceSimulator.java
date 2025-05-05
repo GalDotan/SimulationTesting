@@ -23,15 +23,21 @@ public class GamePieceSimulator {
         INTAKE
     }
 
-    private static CoralPose coralPose = CoralPose.NONE;
+    private static CoralPose coralPose;
 
-    private static IntakeSimulation intakeSim = IntakeSimulation.OverTheBumperIntake(
-        "Coral",
-        SwerveConstants.SWERVE_DRIVE_SIMULATION,
-        Meters.of(0.44),
-        Meters.of(0.2625),
-        IntakeSide.FRONT,
-        1);
+    private static IntakeSimulation intakeSim;
+
+    public GamePieceSimulator() {
+        intakeSim = IntakeSimulation.OverTheBumperIntake(
+            "Coral",
+            SwerveConstants.SWERVE_DRIVE_SIMULATION,
+            Meters.of(0.44),
+            Meters.of(0.2625),
+            IntakeSide.FRONT,
+            1);
+
+        coralPose = CoralPose.NONE;
+    }
 
     public static void updateSim() {
 
@@ -64,6 +70,12 @@ public class GamePieceSimulator {
             scoreBracnh();
             GripperIOSim.setHasCoral(false);
             coralPose = CoralPose.NONE;
+        }
+
+        if (coralPose == CoralPose.INTAKE) {
+
+        } else if (coralPose == CoralPose.GRIPPER) {
+
         }
 
     }

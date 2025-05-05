@@ -31,10 +31,8 @@ public class IntakeArmIOSim extends IntakeArmIOReal {
 
     }
 
-
     @Override
     public void updatePeriodic() {
-        super.updatePeriodic();
 
         motorSimState.setSupplyVoltage(12);
         armSim.setInputVoltage(motorSimState.getMotorVoltage());
@@ -45,7 +43,7 @@ public class IntakeArmIOSim extends IntakeArmIOReal {
         motorSimState.setRotorVelocity(
                 (armSim.getVelocityRadPerSec() * 0.1591549430919) * armConfig.Feedback.SensorToMechanismRatio);
 
-        
+        super.updatePeriodic();
 
     }
 }

@@ -246,7 +246,7 @@ public class SwerveConstants {
                                         edu.wpi.first.units.Units.Meter.of(BUMPER_LENGTH));
 
         public final static SwerveDriveSimulation SWERVE_DRIVE_SIMULATION = new SwerveDriveSimulation(
-                        DRIVE_TRAIN_SIMULATION_CONFIG, new Pose2d(0, 0, new Rotation2d()));
+                        DRIVE_TRAIN_SIMULATION_CONFIG, new Pose2d(2, 2, new Rotation2d()));
 
         // Module Limits
         public final static ModuleLimits DEFUALT = new ModuleLimits(4, Units.feetToMeters(65),

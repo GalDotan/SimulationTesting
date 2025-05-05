@@ -15,7 +15,7 @@ public class IntakeRollerConstants {
 
 
     public static final double STATOR_CURRENT_LIMIT = 40;
-    public static final boolean ENABLE_CURRENT_LIMIT = true;
+    public static final boolean ENABLE_CURRENT_LIMIT = false;
 
     public static final double k_CAN_MOVE_CURRENT_LIMIT = 60;
 
@@ -23,7 +23,7 @@ public class IntakeRollerConstants {
     public static final State IDLE = StatesConstants.IDLE;
     public static final State HANDOFF = new State("HANDOFF");
     public static final State CORAL_INTAKE = new State("CORAL_INTAKE");
-    public static final State ALGE_INTAKE = new State("CORAL_INTAKE");
+    public static final State ALGE_INTAKE = new State("ALGE_INTAKE");
     public static final State L1_SCORING = new State("L1_SCORING");
 
     public static final State[] SUBSYSTEM_STATES = new State[] {IDLE, HANDOFF, CORAL_INTAKE, ALGE_INTAKE, L1_SCORING};

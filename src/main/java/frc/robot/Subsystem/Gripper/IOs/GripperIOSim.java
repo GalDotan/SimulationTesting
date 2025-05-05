@@ -18,7 +18,7 @@ public class GripperIOSim extends GripperIOReal {
 
         motorSim = new TalonFXMotorSim(rollerMotor, rollerConfig, DCMotor.getKrakenX60(1), 0.008, false);
 
-
+        hasCoral = false;
         
     }
 
@@ -33,9 +33,10 @@ public class GripperIOSim extends GripperIOReal {
 
     @Override
     public void updatePeriodic() {
-        super.updatePeriodic();
-
+        
         motorSim.updateSim();
+
+        super.updatePeriodic();
         
 
     }
