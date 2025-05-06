@@ -29,11 +29,14 @@ public class IntakeArmIOSim extends IntakeArmIOReal {
                 false,
                 ConvUtil.DegreesToRadians(IntakeArmConstants.MAX_ANGLE));
 
+
+
     }
 
     @Override
     public void updatePeriodic() {
 
+        super.updatePeriodic();
         motorSimState.setSupplyVoltage(12);
         armSim.setInputVoltage(motorSimState.getMotorVoltage());
         armSim.update(0.02);
@@ -42,8 +45,6 @@ public class IntakeArmIOSim extends IntakeArmIOReal {
                 ConvUtil.RadiansToRotations(armSim.getAngleRads()) * armConfig.Feedback.SensorToMechanismRatio);
         motorSimState.setRotorVelocity(
                 (armSim.getVelocityRadPerSec() * 0.1591549430919) * armConfig.Feedback.SensorToMechanismRatio);
-
-        super.updatePeriodic();
 
     }
 }

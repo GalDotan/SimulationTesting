@@ -122,7 +122,6 @@ public class IntakeArmIOReal implements IntakeArmIO {
     public void setAngle(double angle , double FEED_FORWARD) {
         armMotor.setControl(
                 positionControl.withPosition(ConvUtil.DegreesToRotations(angle)).withSlot(IntakeArmConstants.CONTROL_SLOT)
-                .withFeedForward(IntakeArmConstants.FEED_FORWARD_VOLTAGE)
                 .withLimitForwardMotion(getPosition() > IntakeArmConstants.MAX_ANGLE || Math.abs(getCurrent()) > IntakeArmConstants.k_CAN_MOVE_CURRENT_LIMIT)
                 .withLimitReverseMotion(getPosition() < IntakeArmConstants.MIN_ANGLE || Math.abs(getCurrent()) > IntakeArmConstants.k_CAN_MOVE_CURRENT_LIMIT));
     }
@@ -140,6 +139,8 @@ public class IntakeArmIOReal implements IntakeArmIO {
         MALog.log("Subsystems/Intake/Intake Arm/IO/Arm Current", getCurrent());
         MALog.log("Subsystems/Intake/Intake Arm/IO/Arm Set Point", getSetPoint());
         MALog.log("Subsystems/Intake/Intake Arm/IO/Arm Error", getError());
+
+        
 
     }
 }

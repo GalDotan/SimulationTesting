@@ -27,10 +27,10 @@ public class TeleopSwerveController extends Command {
   // private LoggedString xyControllerLog;
   // private LoggedString theathControllerLog;
 
-  public TeleopSwerveController(PS5Controller controller) {
+  public TeleopSwerveController(XboxController controller) {
     swerve = SwerveSubsystem.getInstance();
 
-    driveController = new FieldCentricDriveController(controller, () -> controller.getR2Button() ,
+    driveController = new FieldCentricDriveController(controller, () -> controller.getRightTriggerAxis() > 0.4 ,
         0.4, () -> SwerveSubsystem.getInstance().getFusedHeading());
     angleAdjustController = new AngleAdjustController(() -> SwerveSubsystem.getInstance().getFusedHeading(), 0);
 

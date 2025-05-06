@@ -40,7 +40,7 @@ public class IntakeArmDeafultCommand extends RobotFunctionStatesCommand {
         super.AutomaticLoop();
         switch (intakeArm.getTargetState().getName()) {
             case "IDLE":
-                intakeArm.setArmAngle(10);
+                intakeArm.setArmAngle(135);
                 break;
             case "HANDOFF":
                 intakeArm.setArmAngle(120);

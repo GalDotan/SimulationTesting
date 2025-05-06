@@ -27,7 +27,7 @@ public class DeafultRobotContainer {
 
     private double IsAtStartingPoseDistance = 0.15;
 
-    public static PS5Controller driverController;
+    public static XboxController driverController;
     public static PS5Controller operatorController;
     public static XboxController driverControllerRumble;
     public static XboxController operatorControllerRumble;
@@ -42,7 +42,7 @@ public class DeafultRobotContainer {
 
     public DeafultRobotContainer(int DriverControllerID, int OperatorControllerID, int DriverControllerRumbleID,
             int OperatorControllerRumbleID) {
-        driverController = new PS5Controller(DriverControllerID);
+        driverController = new XboxController(DriverControllerID);
         operatorController = new PS5Controller(OperatorControllerID);
         driverControllerRumble = new XboxController(DriverControllerRumbleID);
         operatorControllerRumble = new XboxController(OperatorControllerRumbleID);

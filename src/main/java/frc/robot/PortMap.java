@@ -58,7 +58,7 @@ public class PortMap {
     }
 
     public class Gripper {
-        public static final int GripperMotor = 18;
+        public static final int GripperMotor = 23;
         public static final int CoralSensor = 3;
     }
 
