@@ -43,7 +43,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
                 arm.setAngle(0);
                 break;
             case "HOLD":
-                arm.setAngle(90);
+                arm.setAngle(60);
                 break;
             case "INTAKE":
                 arm.setAngle(0);

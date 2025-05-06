@@ -53,12 +53,17 @@ public class PortMap {
     }
 
     public class Arm {
-        public static final int ArmMotor = 21;
-        public static final int ArmCanCoder = 22;
+        public static final int ArmMotor = 26;
+        public static final int ArmCanCoder = 27;
     }
 
     public class Gripper {
-        public static final int GripperMotor = 23;
+        public static final int GripperMotor = 28;
+        public static final int CoralSensor = 3;
+    }
+
+    public class Elevator {
+        public static final int ElevatorMotor = 29;
         public static final int CoralSensor = 3;
     }
 

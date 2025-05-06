@@ -11,7 +11,6 @@ import frc.robot.Subsystem.Arm.ArmConstants;
 public class ArmIOSim extends ArmIOReal {
 
     private TalonFXSimState motorSimState;
-    public static IntakeSimulation intakeSim;
 
     private SingleJointedArmSim armSim;
 

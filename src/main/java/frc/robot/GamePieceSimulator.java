@@ -2,6 +2,7 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
@@ -10,8 +11,17 @@ import org.ironmaple.simulation.IntakeSimulation.IntakeSide;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnFly;
 
+import com.ma5951.utils.Logger.MALog;
+import com.ma5951.utils.Utils.ConvUtil;
+
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import frc.robot.Subsystem.Arm.ArmConstants;
 import frc.robot.Subsystem.Gripper.IOs.GripperIOSim;
+import frc.robot.Subsystem.Intake.IntakeArm.IntakeArmConstants;
 import frc.robot.Subsystem.Intake.IntakeRoller.IOs.IntakeRollerIOSim;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
 
@@ -24,19 +34,21 @@ public class GamePieceSimulator {
     }
 
     private static CoralPose coralPose;
+    private static Pose3d coralPose3d;
 
     private static IntakeSimulation intakeSim;
 
     public GamePieceSimulator() {
         intakeSim = IntakeSimulation.OverTheBumperIntake(
-            "Coral",
-            SwerveConstants.SWERVE_DRIVE_SIMULATION,
-            Meters.of(0.44),
-            Meters.of(0.2625),
-            IntakeSide.FRONT,
-            1);
+                "Coral",
+                SwerveConstants.SWERVE_DRIVE_SIMULATION,
+                Meters.of(0.44),
+                Meters.of(0.20),
+                IntakeSide.FRONT,
+                1);
 
         coralPose = CoralPose.NONE;
+
     }
 
     public static void updateSim() {
@@ -66,37 +78,100 @@ public class GamePieceSimulator {
         }
 
         if (RobotContainer.currentRobotState == RobotConstants.SCORING && RobotContainer.gripper.getVelocity() < -50
-            && RobotContainer.gripper.hasCoral()) {
+                && RobotContainer.gripper.hasCoral()) {
             scoreBracnh();
             GripperIOSim.setHasCoral(false);
             coralPose = CoralPose.NONE;
         }
 
+        MALog.log("Simulation/Coral Pose", coralPose.name());
+        coralPose3d = new Pose3d();
+
         if (coralPose == CoralPose.INTAKE) {
-
+            displayCoralInIntake();
         } else if (coralPose == CoralPose.GRIPPER) {
-
+            displayCoralInGripper();
+        } else {
+            clearCoralDisplay();
         }
 
     }
 
     public static void scoreBracnh() {
         SimulatedArena.getInstance()
-                    .addGamePieceProjectile(new ReefscapeCoralOnFly(
-                            // Obtain robot position from drive simulation
-                            SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getTranslation(),
-                            // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
-                            new Translation2d(0.35, 0),
-                            // Obtain robot speed from drive simulation
-                            SwerveConstants.SWERVE_DRIVE_SIMULATION.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
-                            // Obtain robot facing from drive simulation
-                            SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getRotation(),
-                            // The height at which the coral is ejected
-                            Meters.of(1.28),
-                            // The initial speed of the coral
-                            MetersPerSecond.of(2),
-                            // The coral is ejected at a 35-degree slope
-                            Degrees.of(-35)));
+                .addGamePieceProjectile(new ReefscapeCoralOnFly(
+                        // Obtain robot position from drive simulation
+                        SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getTranslation(),
+                        // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
+                        new Translation2d(0.35, 0),
+                        // Obtain robot speed from drive simulation
+                        SwerveConstants.SWERVE_DRIVE_SIMULATION.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
+                        // Obtain robot facing from drive simulation
+                        SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getRotation(),
+                        // The height at which the coral is ejected
+                        Meters.of(1.28),
+                        // The initial speed of the coral
+                        MetersPerSecond.of(2),
+                        // The coral is ejected at a 35-degree slope
+                        Degrees.of(-35)));
     }
 
+    public static void displayCoralInIntake() {
+        coralPose3d = coralPose3d.transformBy(
+                new Transform3d(new Translation3d(0.1875 + 0.4135, 0, (Inches.of(4.5).in(Meters) / 2) + 0.035),
+                        new Rotation3d(0, 0, ConvUtil.DegreesToRadians(90))));
+
+        coralPose3d = coralPose3d.rotateAround(
+                IntakeArmConstants.SIM_INTAKE_OFFSET.getTranslation(),
+                new Rotation3d(
+                        0,
+                        (ConvUtil.DegreesToRadians(-RobotContainer.intakeArm.getPosition())),
+                        0));
+
+        coralPose3d = coralPose3d.rotateBy(new Rotation3d(
+                Degrees.of(0),
+                Degrees.of(0),
+                SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getRotation().getMeasure()));
+
+        coralPose3d = new Pose3d(
+                coralPose3d.getMeasureX()
+                        .plus(SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getMeasureX()),
+                coralPose3d.getMeasureY()
+                        .plus(SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getMeasureY()),
+                coralPose3d.getMeasureZ(),
+                coralPose3d.getRotation());
+
+        MALog.log("Simulation/Coral Pose", new Pose3d[] { coralPose3d });
+    }
+
+    public static void displayCoralInGripper() {
+        coralPose3d = new Pose3d(new Translation3d(0.125, 0, 0.62),
+                new Rotation3d(0, 0, ConvUtil.DegreesToRadians(90)));
+
+        coralPose3d = coralPose3d.rotateAround(
+                ArmConstants.SIM_ARM_OFFSET.getTranslation(),
+                new Rotation3d(
+                        (ConvUtil.DegreesToRadians(RobotContainer.arm.getPosition())),
+                        0,
+                        0));
+
+        coralPose3d = coralPose3d.rotateBy(new Rotation3d(
+                Degrees.of(0),
+                Degrees.of(0),
+                SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getRotation().getMeasure()));
+
+        coralPose3d = new Pose3d(
+                coralPose3d.getMeasureX()
+                        .plus(SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getMeasureX()),
+                coralPose3d.getMeasureY()
+                        .plus(SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getMeasureY()),
+                coralPose3d.getMeasureZ(),
+                coralPose3d.getRotation());
+
+        MALog.log("Simulation/Coral Pose", new Pose3d[] { coralPose3d });
+    }
+
+    public static void clearCoralDisplay() {
+        MALog.log("Simulation/Coral Pose", new Pose3d[] {});
+    }
 }

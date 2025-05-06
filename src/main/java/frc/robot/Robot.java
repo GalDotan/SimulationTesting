@@ -120,8 +120,8 @@ public class Robot extends TimedRobot {
   @Override
   public void simulationPeriodic() {
     SimulatedArena.getInstance().simulationPeriodic();
-    MALog.log("Simulation Pose", SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose());
-    MALog.log("FieldSimulation/Coral", 
+    MALog.log("Simulation/Simulation Pose", SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose());
+    MALog.log("Simulation/Coral", 
     SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
     GamePieceSimulator.updateSim();
 

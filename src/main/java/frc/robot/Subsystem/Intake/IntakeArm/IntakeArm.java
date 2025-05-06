@@ -51,8 +51,12 @@ public class IntakeArm extends StateControlledSubsystem{
         intakeIO.setVoltage(voltage);
     }
 
+    public double getFeedForwardVoltage() {
+        return IntakeArmConstants.FEED_FORWARD_VOLTAGE * Math.cos(getPosition());
+    }
+
     public void setArmAngle(double angle) {
-        intakeIO.setAngle(angle, IntakeArmConstants.FEED_FORWARD_VOLTAGE);
+        intakeIO.setAngle(angle, 0);
     }
 
     @Override

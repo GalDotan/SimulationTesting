@@ -5,7 +5,6 @@ import com.ma5951.utils.Utils.ConvUtil;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
-import frc.robot.Subsystem.Arm.ArmConstants;
 import frc.robot.Subsystem.Intake.IntakeArm.IntakeArmConstants;
 
 public class IntakeArmIOSim extends IntakeArmIOReal {
@@ -22,8 +21,8 @@ public class IntakeArmIOSim extends IntakeArmIOReal {
         armSim = new SingleJointedArmSim(
                 DCMotor.getKrakenX60(1),
                 armConfig.Feedback.SensorToMechanismRatio,
-                0.09,
-                0.5,
+                0.01,
+                0.3,
                 ConvUtil.DegreesToRadians(IntakeArmConstants.MIN_ANGLE),
                 ConvUtil.DegreesToRadians(IntakeArmConstants.MAX_ANGLE),
                 false,
