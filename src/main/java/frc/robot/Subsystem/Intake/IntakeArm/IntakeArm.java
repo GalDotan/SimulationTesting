@@ -76,6 +76,8 @@ public class IntakeArm extends StateControlledSubsystem{
         super.periodic();
         intakeIO.updatePeriodic();
 
+        MALog.log("/Subsystems/Intake/Intake Arm/At Point", AtPoint());
+
         
         if (!Robot.isReal()) {
             MALog.log("/Subsystems/Intake/Intake Arm/Intake Position", new Pose3d(IntakeArmConstants.SIM_INTAKE_OFFSET.getTranslation(),

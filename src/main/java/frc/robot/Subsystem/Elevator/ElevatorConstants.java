@@ -4,6 +4,9 @@ package frc.robot.Subsystem.Elevator;
 import com.ma5951.utils.RobotControl.StatesTypes.State;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.Robot;
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIO;
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIOReal;
@@ -13,10 +16,20 @@ public class ElevatorConstants {
 
     public static final double MAX_HIGHT = 1.50;
     public static final double MIN_HIGHT = -0.005;
-    public static final double HIGHT_L2 = 0.42 - 0.09;//0.49
-    public static final double HIGHT_L3 = 0.82;
-    public static final double HIGHT_L1 = 0.13;
-    public static final double HIGHT_L4 = 1.48;
+    
+    
+    public static final double PRE_HIGHT_L2 = 0.48;
+    public static final double PRE_HIGHT_L3 = 0.88;
+    public static final double PRE_HIGHT_L4 = 1.5;
+
+
+    public static final double SCORING_HIGHT_L2 = PRE_HIGHT_L2 - 0.08;
+    public static final double SCORING_HIGHT_L3 = PRE_HIGHT_L3 - 0.15;
+    public static final double SCORING_HIGHT_L4 = PRE_HIGHT_L4 - 0.2;
+
+
+
+
     public static final double HIGHT_INTAKE_CORAL = 0.565 - 0.04;//0.53
     public static final double HIGHT_EJECT_BALL_LOW =  0.23 - 0.01; //
     public static final double HIGHT_EJECT_BALL_HIGH = 0.6 - 0.02; // 0.7
@@ -31,24 +44,11 @@ public class ElevatorConstants {
     public static final double SPROKET_CIRCUMFERENCE = SPROKET_PITCH_DIAMETER * Math.PI;
 
     public static final int CONTROL_SLOT = 0;
-    public static final double kP = 1.2;
+    public static final double kP = 0.7;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0;
     public static final double TOLORANCE = 0.01;
-    public static final double FEED_FORWARD = 0.43;
-    
-    public static final double HOME_VOLTAGE = -0.5;
-    public static final double HOME_CURRENT = 25;
-    public static final double HOME_TIME = 0.1;
-    public static final double CAN_MOVE_CURRENT_LIMIT = 100;
-    public static final double MANUEL_VOLTAGE_LIMIT = 6;
-    
-    public static final double ACCELERATION = (30 / SPROKET_CIRCUMFERENCE) * 2.3;
-    public static final double CRUSIE_VELOCITY = (14 / SPROKET_CIRCUMFERENCE )*1.7;
-    public static final double JERK = 0;
-
-    public static final double WEIGHT_OF_MOVING_PARTS = 9;
 
     public static final double CURRENT_LIMIT = 80;
     public static final double CONTINUOUS_LOWER_LIMIT = 80; 
@@ -57,19 +57,20 @@ public class ElevatorConstants {
 
     public static final State IDLE = StatesConstants.IDLE;
     public static final State HOLD = new State("HOLD");
-    public static final State HOME = new State("HOME");
     public static final State INTAKE = new State("INTAKE");
+    public static final State HANDOFF = new State("HANDOFF");
+    public static final State PRE_SCORING = new State("PRE_SCORING");
     public static final State SCORING = new State("SCORING");
-    public static final State CLIMB = new State("SORTING");
-    public static final State BALLREMOVING  = new State("BALLREMOVING");
-    public static final State SKYHOOK = new State("SKYHOOK");
-    public static final State BALL_HOLD = new State("BALL_HOLD");
-    public static final State PROCESSOR = new State("PROCESSOR");
-    public static final State OPEN_HIGH = new State("OPEN_HIGH");
+    public static final State ALGE_GROUND = new State("ALGE_GROUND");
+    public static final State ALGE_REEF = new State("ALGE_REEF");
+    public static final State ALGE_NET = new State("ALGE_REEF");
+    public static final State ALGE_PROCESSOR = new State("ALGE_PROCESSOR");
     
 
-    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE , HOLD , INTAKE , SCORING , CLIMB , BALLREMOVING , HOME , SKYHOOK , BALL_HOLD , PROCESSOR
-    , OPEN_HIGH};
+    public static final Pose3d SIM_ELEVATOR_OFFSET = new Pose3d(new Translation3d(0,0,0.15), new Rotation3d(0,0,0));
+
+    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE, HOLD, INTAKE, HANDOFF, PRE_SCORING , SCORING , ALGE_GROUND , ALGE_REEF, ALGE_NET, ALGE_PROCESSOR};
+
 
     public static final ElevatorIO getElevatorIO() {
         if (Robot.isReal()) {

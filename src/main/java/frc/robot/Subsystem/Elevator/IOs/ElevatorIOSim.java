@@ -1,41 +1,67 @@
-
 package frc.robot.Subsystem.Elevator.IOs;
-
 
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.ma5951.utils.Utils.ConvUtil;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
-import frc.robot.RobotConstants;
 import frc.robot.Subsystem.Elevator.ElevatorConstants;
 
-public class ElevatorIOSim extends ElevatorIOReal{
+public class ElevatorIOSim extends ElevatorIOReal {
 
-    private TalonFXSimState simState;
-    private ElevatorSim elevatorSim;
+    private final TalonFXSimState simState;
+    private final ElevatorSim elevatorSim;
 
     public ElevatorIOSim() {
         super();
+
+        // Initialize the sim state for the motor
         simState = new TalonFXSimState(masterMotor);
-        elevatorSim = new ElevatorSim(DCMotor.getKrakenX60(2),   ElevatorConstants.GEAR, 
-        ElevatorConstants.WEIGHT_OF_MOVING_PARTS, ElevatorConstants.SPROKET_PITCH_DIAMETER / 2, ElevatorConstants.MIN_HIGHT, 
-        ElevatorConstants.MAX_HIGHT, false, ElevatorConstants.MIN_HIGHT, 0, 0);
-        
+
+        // Gear ratio is motor rotations per elevator rotation (same as real)
+        double gearing = ElevatorConstants.GEAR;
+
+        // ElevatorSim expects: motor, gear ratio, carriage mass (kg), radius (m), min height (m), max height (m), simulate gravity, noise
+        elevatorSim = new ElevatorSim(
+            DCMotor.getKrakenX60(1), // 1 motor
+            gearing,
+            4.0, // Approximate mass of elevator carriage
+            ElevatorConstants.SPROKET_PITCH_DIAMETER / 2.0,
+            ElevatorConstants.MIN_HIGHT,
+            ElevatorConstants.MAX_HIGHT,
+            false,
+            0
+        );
     }
 
     @Override
     public void updatePeriodic() {
-        
+        // Apply 12V supply voltage to sim state
+        simState.setSupplyVoltage(12.0);
 
-        simState.setSupplyVoltage(12);
+        // Simulate the input voltage from control system
+        double inputVolts = simState.getMotorVoltage();
+        elevatorSim.setInputVoltage(inputVolts);
 
+        // Step the simulation forward by 20 ms (typical loop time)
+        elevatorSim.update(0.02);
 
-        elevatorSim.setInputVoltage(simState.getMotorVoltage());
-        elevatorSim.update(RobotConstants.kDELTA_TIME);
-        simState.setRawRotorPosition(elevatorSim.getPositionMeters() / ElevatorConstants.SPROKET_CIRCUMFERENCE * ElevatorConstants.GEAR);
-        simState.setRotorVelocity(ConvUtil.RPMtoRPS((elevatorSim.getVelocityMetersPerSecond() / (Math.PI * ElevatorConstants.SPROKET_PITCH_DIAMETER)) * 60));
+        // Convert position from meters to motor rotor rotations
+        // Distance traveled / (sprocket circumference) = elevator rotations
+        // Elevator rotations * gear ratio = motor rotations
+        double elevatorPositionMeters = elevatorSim.getPositionMeters();
+        double elevatorRotations = elevatorPositionMeters / ElevatorConstants.SPROKET_CIRCUMFERENCE;
+        double motorRotations = elevatorRotations * ElevatorConstants.GEAR;
 
+        simState.setRawRotorPosition(motorRotations);
+
+        // Velocity in m/s → elevator RPS → motor RPS
+        double elevatorVelocityRPS = elevatorSim.getVelocityMetersPerSecond() / ElevatorConstants.SPROKET_CIRCUMFERENCE;
+        double motorVelocityRPS = elevatorVelocityRPS * ElevatorConstants.GEAR;
+
+        simState.setRotorVelocity(motorVelocityRPS);
+
+        // Now call super to log and read values
         super.updatePeriodic();
     }
 }

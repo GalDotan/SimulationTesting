@@ -51,7 +51,7 @@ public class IntakeRoller extends StateControlledSubsystem{
 
     @Override
     public boolean canMove() {
-        return IntakeCanMove();
+        return IntakeCanMove() || HandOffCanMove();
     }
 
     public static IntakeRoller getInstance() {

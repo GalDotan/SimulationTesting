@@ -44,9 +44,13 @@ public class Gripper extends StateControlledSubsystem{
         return RobotContainer.currentRobotState == RobotConstants.HANDOFF && RobotContainer.intakeArm.AtPoint() && RobotContainer.arm.AtPoint() && !hasCoral();
     }
 
+    public boolean ScoringCanMove() {
+        return RobotContainer.currentRobotState == RobotConstants.SCORING;
+    }
+
     @Override
     public boolean canMove() {
-        return HandOffCanMove();
+        return HandOffCanMove() || ScoringCanMove();
     }
 
     public static Gripper getInstance() {

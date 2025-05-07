@@ -3,8 +3,6 @@ package frc.robot.Subsystem.Elevator.IOs;
 
 public interface ElevatorIO {
 
-    boolean getLimitSwitch();
-
     double getCurrent();
 
     double getPosition();

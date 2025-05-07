@@ -13,7 +13,7 @@ public class IntakeRollerIOSim extends IntakeRollerIOReal {
     public IntakeRollerIOSim() {
         super();
 
-        motorSim = new TalonFXMotorSim(rollerMotor, rollerConfig, DCMotor.getKrakenX60(1), 0.01, false);
+        motorSim = new TalonFXMotorSim(rollerMotor, rollerConfig, DCMotor.getKrakenX60(1), 0.001, false);
         hasCoral = false;
 
     }

@@ -26,7 +26,7 @@ public class IntakeArmIOSim extends IntakeArmIOReal {
                 ConvUtil.DegreesToRadians(IntakeArmConstants.MIN_ANGLE),
                 ConvUtil.DegreesToRadians(IntakeArmConstants.MAX_ANGLE),
                 false,
-                ConvUtil.DegreesToRadians(IntakeArmConstants.MAX_ANGLE));
+                ConvUtil.DegreesToRadians(112));
 
 
 

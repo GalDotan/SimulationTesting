@@ -97,6 +97,10 @@ public class MALog {
         getEntry(key).setInteger(value);
     }
 
+    public static double get(String key) {
+        return getEntry(key).getDouble(0);
+    }
+
     public static void logSwerveModuleStates(String key, SwerveModuleState[] states) {
         if (states == null)
             return;

@@ -5,28 +5,24 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.StrictFollower;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ma5951.utils.Logger.MALog;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.PortMap;
-import frc.robot.RobotConstants;
 import frc.robot.Subsystem.Elevator.ElevatorConstants;
 
 public class ElevatorIOReal implements ElevatorIO {
 
     protected TalonFX masterMotor;
-    protected TalonFX slaveMotor;
 
-    private DigitalInput limitSwitch;
-
-    private MotionMagicVoltage MotionMagic; 
+    private PositionVoltage positionVoltage; 
     protected TalonFXConfiguration masterConfig;
 
     private StatusSignal<Current> masterMotorCurrent;
@@ -37,12 +33,9 @@ public class ElevatorIOReal implements ElevatorIO {
     private StatusSignal<Double> masterSetPoint;
 
     public ElevatorIOReal() {
-        masterMotor = new TalonFX(PortMap.Elevator.elevatorMasterMotor, PortMap.CanBus.CANivoreBus);
+        masterMotor = new TalonFX(PortMap.Elevator.ElevatorMotor, PortMap.CanBus.CANivoreBus);
         masterConfig = new TalonFXConfiguration();
-        MotionMagic = new MotionMagicVoltage(0);
-        masterFollower = new StrictFollower(PortMap.Elevator.elevatorMasterMotor); 
-
-        limitSwitch = new DigitalInput(PortMap.Elevator.elevatorLimitSwich);
+        positionVoltage = new PositionVoltage(0);
 
         masterMotorCurrent = masterMotor.getStatorCurrent();
         masterMotorPosition = masterMotor.getPosition();
@@ -51,12 +44,6 @@ public class ElevatorIOReal implements ElevatorIO {
         masterError = masterMotor.getClosedLoopError();
         masterSetPoint = masterMotor.getClosedLoopReference();
 
-        masterMotorCurrentLog = new LoggedDouble("/Subsystems/Elevator/IO/Master Motor Current");
-        masterMotorPositionLog = new LoggedDouble("/Subsystems/Elevator/IO/Master Motor Position");
-        masterMotorVelocityLog = new LoggedDouble("/Subsystems/Elevator/IO/Master Motor Velocity");
-        masterMotorAppliedVoltageLog = new LoggedDouble("/Subsystems/Elevator/IO/Master Motor Applied Voltage");
-        masterErrorLog = new LoggedDouble("/Subsystems/Elevator/IO/Master Error");
-        masterSetPointLog = new LoggedDouble("/Subsystems/Elevator/IO/Master Set Point");
 
         configMotors();
 
@@ -66,34 +53,20 @@ public class ElevatorIOReal implements ElevatorIO {
     public void configMotors() {
         masterConfig.Feedback.SensorToMechanismRatio = ElevatorConstants.GEAR * ElevatorConstants.SPROKET_CIRCUMFERENCE;
 
-        masterConfig.Voltage.PeakForwardVoltage = RobotConstants.NOMINAL_VOLTAGE;
-        masterConfig.Voltage.PeakReverseVoltage = -RobotConstants.NOMINAL_VOLTAGE;
-        
         masterConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         masterConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-
 
         masterConfig.Slot0.kP = ElevatorConstants.kP;
         masterConfig.Slot0.kI = ElevatorConstants.kI;
         masterConfig.Slot0.kD = ElevatorConstants.kD;
         masterConfig.Slot0.kS = ElevatorConstants.kS;
         
-        masterConfig.MotionMagic.MotionMagicAcceleration = ElevatorConstants.ACCELERATION;
-        masterConfig.MotionMagic.MotionMagicCruiseVelocity = ElevatorConstants.CRUSIE_VELOCITY;
-        masterConfig.MotionMagic.MotionMagicJerk = ElevatorConstants.JERK;
-
         masterConfig.CurrentLimits.SupplyCurrentLimitEnable = ElevatorConstants.ENABLE_CURRENT_LIMIT;
         masterConfig.CurrentLimits.SupplyCurrentLimit = ElevatorConstants.CURRENT_LIMIT;
         masterConfig.CurrentLimits.SupplyCurrentLowerLimit = ElevatorConstants.CONTINUOUS_LOWER_LIMIT;
         masterConfig.CurrentLimits.SupplyCurrentLowerTime = ElevatorConstants.CONTINUOUS_CURRENT_DURATION;
 
         masterMotor.getConfigurator().apply(masterConfig);
-        slaveMotor.getConfigurator().apply(masterConfig);
-    }
-
-
-    public boolean getLimitSwitch() {
-        return limitSwitch.get();
     }
 
     public double getCurrent() {
@@ -113,7 +86,7 @@ public class ElevatorIOReal implements ElevatorIO {
     }
 
     public double getError() {
-        return (MotionMagic.Position * 2 / 100) - getPosition(); 
+        return (positionVoltage.Position * 2 / 100) - getPosition(); 
     }
 
     
@@ -127,7 +100,6 @@ public class ElevatorIOReal implements ElevatorIO {
 
     public void setVoltage(double volt) {
         masterMotor.setVoltage(volt);
-        slaveMotor.setControl(masterFollower); 
     }
 
     public void updatePID(double Kp , double Ki , double Kd) {
@@ -146,15 +118,10 @@ public class ElevatorIOReal implements ElevatorIO {
         }
 
         masterMotor.getConfigurator().apply(masterConfig);
-        slaveMotor.getConfigurator().apply(masterConfig);
     }
 
     public void setHight(double hight) {
-        masterMotor.setControl(MotionMagic.withPosition((hight / 2 * 100 ) ).withSlot(ElevatorConstants.CONTROL_SLOT).withFeedForward(
-            ElevatorConstants.FEED_FORWARD
-        ).withEnableFOC(true).withLimitForwardMotion(getPosition() > ElevatorConstants.MAX_HIGHT || (Math.abs(getCurrent()) > ElevatorConstants.CAN_MOVE_CURRENT_LIMIT))
-        .withLimitReverseMotion(getPosition() < ElevatorConstants.MIN_HIGHT || (Math.abs(getCurrent()) > ElevatorConstants.CAN_MOVE_CURRENT_LIMIT)));
-        slaveMotor.setControl(masterFollower);
+        masterMotor.setControl(positionVoltage.withPosition((hight / 2 * 100 ) ).withSlot(ElevatorConstants.CONTROL_SLOT));
     }
 
     public void updatePeriodic() {
@@ -167,13 +134,13 @@ public class ElevatorIOReal implements ElevatorIO {
             masterSetPoint
         );
 
+        MALog.log("/Subsystems/Elevator/IO/Motor Current", getCurrent());
+        MALog.log("/Subsystems/Elevator/IO/Motor Position", getPosition());
+        MALog.log("/Subsystems/Elevator/IO/Motor Velocity", getVelocity());
+        MALog.log("/Subsystems/Elevator/IO/Motor Applied Voltage", getAppliedVolts());
+        MALog.log("/Subsystems/Elevator/IO/Motor Error", getError());
+        MALog.log("/Subsystems/Elevator/IO/Motor Set Point", getSetPoint());
 
-        masterMotorCurrentLog.update(getCurrent());
-        masterMotorPositionLog.update(getPosition());
-        masterMotorVelocityLog.update(getVelocity());
-        masterMotorAppliedVoltageLog.update(getAppliedVolts());
-        masterErrorLog.update(getError());
-        masterSetPointLog.update(getSetPoint());
 
     }
 }

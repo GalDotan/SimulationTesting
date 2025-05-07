@@ -1,25 +1,25 @@
 
-package frc.robot.commands.Arm;
+package frc.robot.commands.Elevator;
 
 import com.ma5951.utils.Logger.MALog;
 import com.ma5951.utils.RobotControl.Commands.RobotFunctionStatesCommand;
 
 import frc.robot.RobotContainer;
 import frc.robot.RobotControl.SuperStructure;
-import frc.robot.Subsystem.Arm.Arm;
+import frc.robot.Subsystem.Elevator.Elevator;
 
-public class ArmDeafultCommand extends RobotFunctionStatesCommand {
-    private static Arm arm = RobotContainer.arm;
+public class ElevatorDeafultCommand extends RobotFunctionStatesCommand {
+    private static Elevator elevator = RobotContainer.elevator;
 
-    public ArmDeafultCommand() {
-        super(arm);
+    public ElevatorDeafultCommand() {
+        super(elevator);
 
-        addRequirements(arm);
+        addRequirements(elevator);
     }
 
     @Override
     public void initialize() {
-        MALog.log("/Tuning/Arm Angle", 0);
+        MALog.log("/Tuning/Elevator Hight", 0);
     }
 
     @Override
@@ -29,7 +29,6 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
 
     @Override
     public void end(boolean interrupted) {
-        arm.setVoltage(0);
     }
 
     @Override
@@ -40,25 +39,26 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void AutomaticLoop() {
         super.AutomaticLoop();
-        switch (arm.getTargetState().getName()) {
+        switch (elevator.getTargetState().getName()) {
             case "IDLE":
-                arm.setAngle(0);
+                elevator.setHight(1.2);
                 break;
             case "HOLD":
-                arm.setAngle(0);
+                elevator.setHight(1.2);
                 break;
             case "INTAKE":
-                arm.setAngle(0);
-                break;
-            case "HANDOFF":
-                arm.setAngle(0);
+                elevator.setHight(1.2);
                 break;
             case "SCORING":
-                arm.setAngle(SuperStructure.getScoringLevel().scoringAngle);
+                elevator.setHight(SuperStructure.getScoringLevel().scoringHight);
                 break;
             case "PRE_SCORING":
-                arm.setAngle(SuperStructure.getScoringLevel().preAngle);
+                elevator.setHight(SuperStructure.getScoringLevel().preHight);
                 break;
+            case "HANDOFF":
+                elevator.setHight(1.05);
+                break;
+                
 
         }
     }
@@ -71,7 +71,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void CANT_MOVE() {
         super.CANT_MOVE();
-        arm.setVoltage(0);
+        elevator.setVoltage(0);
     }
 
     @Override

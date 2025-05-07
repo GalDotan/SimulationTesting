@@ -25,8 +25,9 @@ public class GripperConstants {
     public static final State HOLD = new State("HOLD");
     public static final State CORAL_INTAKE = new State("CORAL_INTAKE");
     public static final State ALGE_INTAKE = new State("CORAL_INTAKE");
+    public static final State SCORING = new State("SCORING");
 
-    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE, HANDOFF, CORAL_INTAKE, ALGE_INTAKE,HOLD};
+    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE, HANDOFF, CORAL_INTAKE, ALGE_INTAKE,HOLD,SCORING};
 
     public static GripperIO getGripperIO() {
         if (Robot.isReal()) {

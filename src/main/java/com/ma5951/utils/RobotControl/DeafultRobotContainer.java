@@ -6,7 +6,7 @@ import org.ironmaple.simulation.motorsims.SimulatedBattery;
 
 import com.ma5951.utils.DashBoard.AutoOption;
 import com.ma5951.utils.DashBoard.AutoSelector;
-
+import com.ma5951.utils.Logger.MALog;
 import com.ma5951.utils.RobotControl.StatesTypes.State;
 import com.ma5951.utils.Utils.DriverStationUtil;
 import com.pathplanner.lib.util.FlippingUtil;
@@ -133,6 +133,9 @@ public class DeafultRobotContainer {
     public void updatePeriodic() {
         // currentRobotStateLog.update(currentRobotState.getName());
         // lastRobotStateLog.update(lastRobotState.getName());
+
+        MALog.log("RobotControl/Current Robot State", currentRobotState.getName());
+        MALog.log("RobotControl/Last Robot State", lastRobotState.getName());
 
         // batteryVoltageLog.update(batteryVoltagSupplier.get());
         // matchTimeLog.update(DriverStation.getMatchTime());

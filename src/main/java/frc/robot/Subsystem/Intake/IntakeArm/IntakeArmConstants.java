@@ -14,14 +14,14 @@ import frc.robot.Subsystem.Intake.IntakeArm.IOs.IntakeArmIOSim;
 
 public class IntakeArmConstants {
 
-    public static final double MAX_ANGLE = 140; 
+    public static final double MAX_ANGLE = 127; 
     public static final double MIN_ANGLE = 0;  
 
     public static final double INTAKE_CORALS_ANGLE = 26;
     public static final double L1_SCORE_ANGLE = 26;
     public static final double HANDOFF_ANGLE = 26;
 
-    public static final double kP = 10;
+    public static final double kP = 15;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kS = 0;

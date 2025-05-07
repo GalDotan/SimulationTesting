@@ -54,6 +54,10 @@ public class GripperDeafultCommand extends RobotFunctionStatesCommand {
             case "HOLD":
                 gripper.setVoltage(0.5);
                 break;
+            case "SCORING":
+                gripper.setVoltage(-4);
+
+                break;
         }
     }
 

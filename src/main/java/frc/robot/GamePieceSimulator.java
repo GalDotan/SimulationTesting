@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Rotation;
 
 import org.ironmaple.simulation.IntakeSimulation;
 import org.ironmaple.simulation.IntakeSimulation.IntakeSide;
@@ -15,11 +16,13 @@ import com.ma5951.utils.Logger.MALog;
 import com.ma5951.utils.Utils.ConvUtil;
 
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.Subsystem.Arm.ArmConstants;
+import frc.robot.Subsystem.Elevator.ElevatorConstants;
 import frc.robot.Subsystem.Gripper.IOs.GripperIOSim;
 import frc.robot.Subsystem.Intake.IntakeArm.IntakeArmConstants;
 import frc.robot.Subsystem.Intake.IntakeRoller.IOs.IntakeRollerIOSim;
@@ -68,8 +71,9 @@ public class GamePieceSimulator {
         }
 
         if (RobotContainer.currentRobotState == RobotConstants.HANDOFF
-                && RobotContainer.intakeRoller.getVelocity() > 100 && RobotContainer.gripper.getVelocity() > 100
-                && RobotContainer.intakeRoller.hasCoral()) {
+                && RobotContainer.intakeRoller.getVelocity() < -100 && RobotContainer.gripper.getVelocity() > 100
+                && RobotContainer.intakeRoller.hasCoral()
+                && RobotContainer.elevator.getHight() < 1.065) {
             intakeSim.obtainGamePieceFromIntake();
             GripperIOSim.setHasCoral(true);
             coralPose = CoralPose.GRIPPER;
@@ -84,7 +88,7 @@ public class GamePieceSimulator {
             coralPose = CoralPose.NONE;
         }
 
-        MALog.log("Simulation/Coral Pose", coralPose.name());
+        MALog.log("Simulation/Coral Pose Enum", coralPose.name());
         coralPose3d = new Pose3d();
 
         if (coralPose == CoralPose.INTAKE) {
@@ -103,17 +107,17 @@ public class GamePieceSimulator {
                         // Obtain robot position from drive simulation
                         SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getTranslation(),
                         // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
-                        new Translation2d(0.35, 0),
+                        new Translation2d( 0.67 * Math.sin(ConvUtil.DegreesToRadians(RobotContainer.arm.getPosition())) , -0.125),
                         // Obtain robot speed from drive simulation
                         SwerveConstants.SWERVE_DRIVE_SIMULATION.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
                         // Obtain robot facing from drive simulation
-                        SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getRotation(),
+                        Rotation2d.fromDegrees(SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose().getRotation().getDegrees() + 90),
                         // The height at which the coral is ejected
-                        Meters.of(1.28),
+                        Meters.of((RobotContainer.elevator.getHight() + ElevatorConstants.SIM_ELEVATOR_OFFSET.getZ()) - (Math.cos(ConvUtil.DegreesToRadians(RobotContainer.arm.getPosition())) * 0.49) + 0.03 ),
                         // The initial speed of the coral
                         MetersPerSecond.of(2),
                         // The coral is ejected at a 35-degree slope
-                        Degrees.of(-35)));
+                        Degrees.of(-(180-RobotContainer.arm.getPosition()))));
     }
 
     public static void displayCoralInIntake() {
@@ -145,11 +149,12 @@ public class GamePieceSimulator {
     }
 
     public static void displayCoralInGripper() {
-        coralPose3d = new Pose3d(new Translation3d(0.125, 0, 0.62),
+        coralPose3d = new Pose3d(new Translation3d(0.125, 0, RobotContainer.elevator.getHight() - 0.49),
                 new Rotation3d(0, 0, ConvUtil.DegreesToRadians(90)));
 
         coralPose3d = coralPose3d.rotateAround(
-                ArmConstants.SIM_ARM_OFFSET.getTranslation(),
+                new Translation3d(ArmConstants.SIM_ARM_OFFSET.getTranslation().getX(), ArmConstants.SIM_ARM_OFFSET.getTranslation().getY(), 
+                RobotContainer.elevator.getHight() + ElevatorConstants.SIM_ELEVATOR_OFFSET.getTranslation().getZ()),
                 new Rotation3d(
                         (ConvUtil.DegreesToRadians(RobotContainer.arm.getPosition())),
                         0,

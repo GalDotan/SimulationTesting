@@ -7,8 +7,11 @@ import com.ma5951.utils.Utils.ConvUtil;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Arm.IOs.ArmIO;
+import frc.robot.Subsystem.Elevator.ElevatorConstants;
 
 public class Arm extends StateControlledSubsystem {
     private static Arm arm;
@@ -73,9 +76,18 @@ public class Arm extends StateControlledSubsystem {
         return Math.abs(armIO.getPosition() - armIO.getSetPoint()) < ArmConstants.TOLERANCE;
     }
 
+    public boolean HitIntakeCanMove() {
+        double intersectHight = getPosition() > 90 && getPosition() < 270 ? 
+        (RobotContainer.elevator.getHight() + ElevatorConstants.SIM_ELEVATOR_OFFSET.getZ()) - (Math.cos(ConvUtil.DegreesToRadians(getPosition())) * ArmConstants.INTAKE_COSTRAINT_RADIUS) : 
+        (RobotContainer.elevator.getHight() + ElevatorConstants.SIM_ELEVATOR_OFFSET.getZ()) - (Math.cos(ConvUtil.DegreesToRadians(getPosition())) * ArmConstants.ENDEFFECTOR_RADIUS) ;
+        
+        MALog.log("/Subsystems/Arm/Hit Intake Hight", intersectHight);
+        return intersectHight > 0.61 + 0.05;
+    }
+
     @Override
     public boolean canMove() {
-        return true;
+        return HitIntakeCanMove();
     }
 
     public static Arm getInstance() {
@@ -90,10 +102,14 @@ public class Arm extends StateControlledSubsystem {
         super.periodic();
         armIO.updatePeriodic();
 
+        MALog.log("/Subsystems/Arm/At Point", AtPoint());
 
         if (!Robot.isReal()) {
-            MALog.log("/Subsystems/Arm/Arm Position", new Pose3d(ArmConstants.SIM_ARM_OFFSET.getTranslation(),
+            MALog.log("/Subsystems/Arm/Arm Position", new Pose3d(
+                new Translation3d(ArmConstants.SIM_ARM_OFFSET.getTranslation().getX(), ArmConstants.SIM_ARM_OFFSET.getTranslation().getY(), 
+                RobotContainer.elevator.getHight() + ElevatorConstants.SIM_ELEVATOR_OFFSET.getTranslation().getZ()),
                 new Rotation3d(ConvUtil.DegreesToRadians(getPosition()), 0, 0)));
+            
         }
 
         

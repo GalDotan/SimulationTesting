@@ -104,14 +104,15 @@ public class Robot extends TimedRobot {
     new Pose2d(2, 2, Rotation2d.fromDegrees(90))));
     SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
     // We must specify a heading since the coral is a tube
-    new Pose2d(1, 1, Rotation2d.fromDegrees(90))));
-    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
-    // We must specify a heading since the coral is a tube
-    new Pose2d(3, 2, Rotation2d.fromDegrees(90))));
-    SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
-    // We must specify a heading since the coral is a tube
-    new Pose2d(5, 3, Rotation2d.fromDegrees(90))));
+     new Pose2d(1, 1, Rotation2d.fromDegrees(90))));
+    // SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // // We must specify a heading since the coral is a tube
+    // new Pose2d(3, 2, Rotation2d.fromDegrees(90))));
+    // SimulatedArena.getInstance().addGamePiece(new ReefscapeCoralOnField(
+    // // We must specify a heading since the coral is a tube
+    // new Pose2d(5, 3, Rotation2d.fromDegrees(90))));
 
+    timeSinceLastCoral.start();
  
 
  
@@ -128,26 +129,28 @@ public class Robot extends TimedRobot {
     // numOfCorals = 0;
     // for (GamePieceOnFieldSimulation gamePiece : SimulatedArena.getInstance().gamePiecesOnField()) numOfCorals++ ;
 
-    // if (numOfCorals < 4 && timeSinceLastCoral.get() > 3) {
-    //   timeSinceLastCoral.reset();
-    //   timeSinceLastCoral.start();
-    //   SimulatedArena.getInstance()
-    //                 .addGamePieceProjectile(new ReefscapeCoralOnFly(
-    //                         // Obtain robot position from drive simulation
-    //                         new Translation2d(0.9, 0.9),
-    //                         // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
-    //                         new Translation2d(0, 0),
-    //                         // Obtain robot speed from drive simulation
-    //                         new ChassisSpeeds(0, 0, 0),
-    //                         // Obtain robot facing from drive simulation
-    //                         Rotation2d.fromDegrees(random.nextInt(10 , 80)),
-    //                         // The height at which the coral is ejected
-    //                         Meters.of(1),
-    //                         // The initial speed of the coral
-    //                         MetersPerSecond.of(1.5),
-    //                         // The coral is ejected at a 35-degree slope
-    //                         Degrees.of(-35)));
-    // }
+    // numOfCorals < 4 &&
+
+    if ( timeSinceLastCoral.get() > 10) {
+      timeSinceLastCoral.reset();
+      timeSinceLastCoral.start();
+      SimulatedArena.getInstance()
+                    .addGamePieceProjectile(new ReefscapeCoralOnFly(
+                            // Obtain robot position from drive simulation
+                            new Translation2d(0.9, 0.9),
+                            // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
+                            new Translation2d(0, 0),
+                            // Obtain robot speed from drive simulation
+                            new ChassisSpeeds(0, 0, 0),
+                            // Obtain robot facing from drive simulation
+                            Rotation2d.fromDegrees(random.nextInt(0 , 90)),
+                            // The height at which the coral is ejected
+                            Meters.of(1),
+                            // The initial speed of the coral
+                            MetersPerSecond.of(random.nextDouble(1.5 , 4)),
+                            // The coral is ejected at a 35-degree slope
+                            Degrees.of(-55)));
+    }
 
   }
 

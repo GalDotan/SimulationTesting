@@ -1,29 +1,20 @@
 
 package frc.robot.Subsystem.Elevator;
 
-import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
-import edu.wpi.first.math.filter.Debouncer;
 import frc.robot.RobotConstants;
+import frc.robot.RobotContainer;
+import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIO;
 
 public class Elevator extends StateControlledSubsystem {
   private static Elevator elevator;
 
   private ElevatorIO elevatorIO = ElevatorConstants.getElevatorIO();
-  private Debouncer atPointDebouncer = new Debouncer(RobotConstants.kDELTA_TIME * 2);
 
   private Elevator() {
     super(ElevatorConstants.SUBSYSTEM_STATES, "Elevator");
-  }
-
-  public double getFeedForwardVoltage() {
-    return ElevatorConstants.FEED_FORWARD;
-  }
-
-  public boolean getLimitSwitch() {
-    return elevatorIO.getLimitSwitch();
   }
 
   public void resetPose(double hight) {
@@ -47,7 +38,7 @@ public class Elevator extends StateControlledSubsystem {
   }
 
   public boolean atPoint() {
-    return atPointDebouncer.calculate(Math.abs(elevatorIO.getError()) <= ElevatorConstants.TOLORANCE);
+    return Math.abs(elevatorIO.getError()) <= ElevatorConstants.TOLORANCE;
   }
 
   public double getSetPoint() {
@@ -66,16 +57,13 @@ public class Elevator extends StateControlledSubsystem {
     elevatorIO.setHight(hight);
   }
 
-  public boolean physicalCanMove() {
-    return ((getHight() <= ElevatorConstants.MAX_HIGHT && getHight() >= ElevatorConstants.MIN_HIGHT &&
-        Math.abs(getCurrent()) <= ElevatorConstants.CAN_MOVE_CURRENT_LIMIT) && getTargetState() != ElevatorConstants.HOME) || getTargetState() == ElevatorConstants.HOME;
+  public boolean HandOffCanMove() {
+    return RobotContainer.currentRobotState == RobotConstants.HANDOFF && RobotContainer.intakeArm.AtPoint();
   }
-
 
   @Override
   public boolean canMove() {
-    return getSystemFunctionState() == StatesConstants.MANUEL || getTargetState() == ElevatorConstants.HOME
-        || physicalCanMove();
+    return (HandOffCanMove() || RobotContainer.currentRobotState != RobotConstants.HANDOFF)  ;
   }
 
   public static Elevator getInstance() {
