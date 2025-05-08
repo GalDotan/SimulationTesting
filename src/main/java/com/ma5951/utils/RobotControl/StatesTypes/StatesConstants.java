@@ -4,6 +4,8 @@
 
 package com.ma5951.utils.RobotControl.StatesTypes;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 /** Add your docs here. */
 public class StatesConstants {
     public final static State NA = new State("NA");
@@ -18,5 +20,17 @@ public class StatesConstants {
     public final static State CANT_MOVE = new State("CANT_MOVE");
     public final static State IDLE = new State("IDLE");
 
+
+    public static State getRobotState() {
+        if (DriverStation.isAutonomousEnabled()){
+            return AUTO;
+        } else if (DriverStation.isTeleopEnabled()) {
+            return TELEOP;
+        } else if (DriverStation.isTestEnabled()) {
+            return TEST;
+        } else {
+            return NA;
+        }
+    }
     
 }

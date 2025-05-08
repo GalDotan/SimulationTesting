@@ -2,6 +2,8 @@
 package frc.robot;
 
 import com.ma5951.utils.RobotControl.DeafultRobotContainer;
+import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
+import com.ma5951.utils.RobotControlAdv.TriggerManeger;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -29,13 +31,15 @@ import frc.robot.commands.Intake.IntakeArmDeafultCommand;
 import frc.robot.commands.Intake.IntakeRollerDeafultCommand;
 import frc.robot.commands.Swerve.TeleopSwerveController;
 
-public class RobotContainer extends DeafultRobotContainer {
+
+public class RobotContainer extends DeafultRobotContainer implements GlobalConstants {
 
   public static Arm arm;
   public static IntakeArm intakeArm;
   public static IntakeRoller intakeRoller;
-  public static Gripper gripper;
+  //public static Gripper gripper;
   public static Elevator elevator;
+  
 
   public RobotContainer() {
     super(
@@ -49,10 +53,12 @@ public class RobotContainer extends DeafultRobotContainer {
     PoseEstimator.getInstance();
     SwerveAutoFollower.getInstance();
 
+
+
     arm = Arm.getInstance();
     intakeArm = IntakeArm.getInstance();
     intakeRoller = IntakeRoller.getInstance();
-    gripper = Gripper.getInstance();
+    //gripper = Gripper.getInstance();
     elevator = Elevator.getInstance();
     SuperStructure superStructure = new SuperStructure();
     GamePieceSimulator gamePieceSimulator = new GamePieceSimulator();
@@ -135,6 +141,8 @@ public class RobotContainer extends DeafultRobotContainer {
 
     new Trigger(() -> currentRobotState == RobotConstants.HANDOFF
         && gripper.hasCoral() && !intakeRoller.hasCoral()).onTrue(new InstantCommand(() -> setHOLD()));
+
+       
 
     new Trigger(() -> driverController.getStartButton()).onTrue(
         new InstantCommand(() -> setIDLE()));

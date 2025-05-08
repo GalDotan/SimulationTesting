@@ -17,7 +17,6 @@ public class RobotConstants {
     public static final double kDELTA_TIME = 0.02;
 
     //Robot Control
-    public static final SuperStructure SUPER_STRUCTURE = new SuperStructure();
 
     //States
     public static final State IDLE = new State("IDLE");
@@ -54,5 +53,8 @@ public class RobotConstants {
     public static final Pose2d Tag12Pose = new Pose2d(0.851154, 0.65532, Rotation2d.fromDegrees(-127));
     public static final Pose2d Tag13Pose = new Pose2d(0.851154, 7.3964799999999995, Rotation2d.fromDegrees(127));
 
+    
+
+    
 
 }

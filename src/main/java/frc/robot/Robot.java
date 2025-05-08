@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import java.util.Random;
+import java.util.ServiceLoader;
 
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.gamepieces.GamePieceOnFieldSimulation;
@@ -13,16 +14,19 @@ import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnFie
 import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnFly;
 import com.ma5951.utils.Logger.MALog;
 
+import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DSControlWord;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
+
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -38,7 +42,6 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     MALog.resetID();
 
-
   }
 
   @Override
@@ -46,6 +49,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     PoseEstimator.getInstance().update();
     m_robotContainer.updatePeriodic();
+
 
 
   }
