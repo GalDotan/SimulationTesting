@@ -1,52 +1,33 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
 
 package com.ma5951.utils.RobotControl.Subsystems;
 
-import java.util.Arrays;
-import java.util.List;
 
 import com.ma5951.utils.DashBoard.MAShuffleboard;
 import com.ma5951.utils.Logger.MALog;
-import com.ma5951.utils.RobotControl.StatesTypes.State;
+import com.ma5951.utils.RobotControl.StatesTypes.GeneralSubsystemState;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
+import com.ma5951.utils.RobotControl.StatesTypes.SubsystemState;
+import com.ma5951.utils.RobotControl.StatesTypes.SystemFunctionState;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/** Add your docs here. */
 public abstract class StateControlledSubsystem extends SubsystemBase {
 
-    private List<State> systemStatesList;
     private boolean systemCanMove = true;
-    private State systemFunctionState = StatesConstants.AUTOMATIC;
-    private State targetState;
-    private State lastState;
-    // private LoggedString currentStateLog;
-    // private LoggedString systemFunctionStateLog;
-    // private LoggedString targetStateLog;
-    // private LoggedBool systemCanMoveLog;
-    //UPDATE LOG
+    private SystemFunctionState systemFunctionState = StatesConstants.AUTOMATIC;
+    private SubsystemState targetState;
+    private SubsystemState lastState;
     private String systemName;
     protected MAShuffleboard board;
 
-    public StateControlledSubsystem(State[] states, String name) {
+    public StateControlledSubsystem(String name) {
         targetState = StatesConstants.IDLE;
-        systemStatesList = Arrays.asList(states);
-        // currentStateLog = new LoggedString("/RobotControl/" + name + "/Current State");
-        // systemFunctionStateLog = new LoggedString("/RobotControl/" + name + "/System Function State");
-        // targetStateLog = new LoggedString("/RobotControl/" + name + "/Target State");
-        // systemCanMoveLog = new LoggedBool("/RobotControl/" + name + "/Can Move");
-        //UPDATE LOG
         board = new MAShuffleboard(name);
         systemName = name;
-        System.out.println(systemName + " Manuel");
         board.addBoolean(systemName + " Manuel", false);
-
     }
 
-    public void setSystemFunctionState(State FunctioState) {
+    public void setSystemFunctionState(SystemFunctionState FunctioState) {
         if (FunctioState == StatesConstants.MANUEL) {
             board.addBoolean(systemName + " Manuel", true);
         } else {
@@ -56,26 +37,20 @@ public abstract class StateControlledSubsystem extends SubsystemBase {
         systemFunctionState = FunctioState;
     }
 
-    public State getSystemFunctionState() {
+    public SystemFunctionState getSystemFunctionState() {
         return systemFunctionState;
     }
 
-    // add get posiible states as arry
 
-    public State getTargetState() {
-        return targetState;
-    }
-
-    public State getLastState() {
+    public SubsystemState getLastState() {
         return lastState;
     }
 
-    public void setTargetState(State state) {
-        if (systemStatesList.contains(state)) {
+    public void setTargetState(SubsystemState state) {
+        if (state instanceof GeneralSubsystemState || state.getSubsystem().getName().equals(systemName)) {
             lastState = targetState;
             targetState = state;
         } else {
-            DriverStation.reportError("Cant set target state for " + getSubsystem(), true);
             targetState = StatesConstants.IDLE;
         }
     }
@@ -84,15 +59,14 @@ public abstract class StateControlledSubsystem extends SubsystemBase {
         return systemCanMove;
     }
 
-    public State getCurrenState() {
+    public SubsystemState getCurrenState() {
         return targetState;
     }
 
     @Override
     public void periodic() {
-        MALog.log("/RobotControl/" + systemName + "/Current State", getCurrenState().getName());
-        MALog.log("/RobotControl/" + systemName + "/System Function State", getSystemFunctionState().getName());
-        MALog.log("/RobotControl/" + systemName + "/Target State", getTargetState().getName());
+        MALog.log("/RobotControl/" + systemName + "/Current State", getCurrenState().getStateName());
+        MALog.log("/RobotControl/" + systemName + "/System Function State", getSystemFunctionState().getStateName());
         MALog.log("/RobotControl/" + systemName + "/Can Move", canMove());
 
 

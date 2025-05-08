@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -26,13 +25,13 @@ public class MALog {
     private static final Map<String, NetworkTableEntry> entries = new HashMap<>();
     private static final Map<String, StructPublisher<Pose2d>> pose2dPublishers = new HashMap<>();
     private static final Map<String, StructPublisher<Pose3d>> pose3dPublishers = new HashMap<>();
-    private static final Map<String, StructPublisher<Translation2d>> translation2dPublishers = new HashMap<>();
     private static final Map<String, StructArrayPublisher<SwerveModuleState>> swerveModuleStatePublishers = new HashMap<>();
     private static final Map<String, StructArrayPublisher<Pose3d>> pose3dPublishersArry = new HashMap<>();
     private static final String ID_FILE_PATH = "/home/lvuser/malog/lastLogID.txt";
     private static String sessionID = "0000";
     private static boolean started = false;
-    private static final NetworkTableEntry flagEntry = malogTable.getEntry("Flag");
+    private static final NetworkTableEntry flagEntry = malogTable.getEntry("/System/Flag");
+    private static final NetworkTableEntry statusEntry = malogTable.getEntry("/System/Status");
 
     public enum MALogMode {
         AUTO,
@@ -152,6 +151,10 @@ public class MALog {
 
     public static void flag(String label) {
         flagEntry.setString(label);
+    }
+
+    public static void addStatus(String status) {
+        statusEntry.setString(status);
     }
 
     public static void resetID() {

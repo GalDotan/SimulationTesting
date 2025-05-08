@@ -134,8 +134,8 @@ public class DeafultRobotContainer {
         // currentRobotStateLog.update(currentRobotState.getName());
         // lastRobotStateLog.update(lastRobotState.getName());
 
-        MALog.log("RobotControl/Current Robot State", currentRobotState.getName());
-        MALog.log("RobotControl/Last Robot State", lastRobotState.getName());
+        MALog.log("RobotControl/Current Robot State", currentRobotState.getStateName());
+        MALog.log("RobotControl/Last Robot State", lastRobotState.getStateName());
 
         // batteryVoltageLog.update(batteryVoltagSupplier.get());
         // matchTimeLog.update(DriverStation.getMatchTime());

@@ -4,14 +4,13 @@ package frc.robot.RobotControl;
 
 import com.ma5951.utils.RobotControl.GenericSuperStracture;
 
-import frc.robot.GlobalConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Gripper.Gripper;
 import frc.robot.Subsystem.Intake.IntakeRoller.IntakeRoller;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveSubsystem;
 
-public class SuperStructure extends GenericSuperStracture implements GlobalConstants{
+public class SuperStructure extends GenericSuperStracture{
 
     public static IntakeRoller intakeRoller;
     public static Gripper gripper;

@@ -48,7 +48,7 @@ public class RobotFunctionStatesCommand extends CanMoveCommand {
     super.CAN_MOVE();
     switch (getRobotFunctionStateAsInt()) {
                             case 0:
-                              switch (subsystem.getSystemFunctionState().getName()) {
+                              switch (subsystem.getSystemFunctionState().getStateName()) {
                                 case "AUTOMATIC":
                                     AutomaticLoop();
                                     break;

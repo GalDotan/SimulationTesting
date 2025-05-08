@@ -3,6 +3,7 @@ package frc.robot;
 
 
 
+import com.ma5951.utils.RobotControl.StatesTypes.RobotState;
 import com.ma5951.utils.RobotControl.StatesTypes.State;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -25,6 +26,9 @@ public class RobotConstants {
     public static final State HOLD = new State("HOLD");
     public static final State PRE_SCORING = new State("PRE_SCORING");
     public static final State SCORING = new State("SCORING");
+
+
+    //public static final RobotState NET = new RobotState(, null)
 
     //FieldConstants
     public static final Translation2d FieldZeroCorner = new Translation2d(0 , 0);

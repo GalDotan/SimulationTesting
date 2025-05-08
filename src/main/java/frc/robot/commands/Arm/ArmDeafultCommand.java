@@ -40,7 +40,7 @@ public class ArmDeafultCommand extends RobotFunctionStatesCommand {
     @Override
     public void AutomaticLoop() {
         super.AutomaticLoop();
-        switch (arm.getTargetState().getName()) {
+        switch (arm.getCurrenState().getStateName()) {
             case "IDLE":
                 arm.setAngle(0);
                 break;

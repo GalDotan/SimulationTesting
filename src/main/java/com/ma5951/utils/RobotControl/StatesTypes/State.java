@@ -1,18 +1,25 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
 
 package com.ma5951.utils.RobotControl.StatesTypes;
 
-/** Add your docs here. */
 public class State {
-    private String name;
 
-    public State(String Name) {
-        name = Name;
+    protected String stateName;
+
+    public State(String stateName) {
+        this.stateName = stateName;
     }
 
-    public String getName() {
-        return name;
+    public State() {
+
     }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+
 }
