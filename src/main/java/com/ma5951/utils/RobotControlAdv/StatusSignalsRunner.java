@@ -1,0 +1,26 @@
+
+package com.ma5951.utils.RobotControlAdv;
+
+import java.util.List;
+
+import com.ctre.phoenix6.StatusSignal;
+
+@SuppressWarnings("rawtypes")
+public class StatusSignalsRunner {
+
+    private static List<StatusSignal> statusSignals;
+
+    public static void registerSignals(StatusSignal... signals) {
+        for (StatusSignal signal : signals) {
+            statusSignals.add(signal);
+        }
+
+    }
+
+    public static void updateSignals() {
+        for (StatusSignal signal : statusSignals) {
+            signal.refresh();
+        }
+    }
+
+}

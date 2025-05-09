@@ -1,15 +1,13 @@
 
 package com.ma5951.utils.RobotControl.StatesTypes;
 
-public class RobotState extends State{
+public class RobotStateMA extends State{
 
     private SubsystemState[] subsystemStatesArr;
     private Runnable runable;
 
-    public RobotState(SubsystemState... subsystemStates) {
-        super();
-        String className = this.getClass().getName();
-        setStateName(className);
+    public RobotStateMA(String stateName , SubsystemState... subsystemStates) {
+        super(stateName);
         int i = 0;
         for (@SuppressWarnings("unused") SubsystemState subsystemState : subsystemStates) {
             i++;
@@ -21,9 +19,11 @@ public class RobotState extends State{
             i++;
         }
 
+        runable = () -> {};
+
     }
 
-    public RobotState(String stateName , Runnable toRun ,SubsystemState... subsystemStates) {
+    public RobotStateMA(String stateName , Runnable toRun ,SubsystemState... subsystemStates) {
         super(stateName);
         runable = toRun;
     }

@@ -3,7 +3,7 @@ package frc.robot;
 
 
 
-import com.ma5951.utils.RobotControl.StatesTypes.RobotState;
+import com.ma5951.utils.RobotControl.StatesTypes.RobotStateMA;
 import com.ma5951.utils.RobotControl.StatesTypes.State;
 
 import edu.wpi.first.math.geometry.Pose2d;
