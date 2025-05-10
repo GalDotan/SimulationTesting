@@ -136,9 +136,12 @@ public class RollerIOReal extends RollerIO {
         MALog.log(systemConstants.LOG_PATH + "/Current", getCurrent());
 
         for (BaseSensor sensor : systemConstants.SENSORS) {
-            MALog.log(systemConstants.LOG_PATH + "/" +sensor.getName(), sensor.get());
+            if (sensor.getType().equals("BooleanSensor")) {
+                MALog.log(systemConstants.LOG_PATH + "/" +sensor.getName(), (sensor.get() == 1 ? true : false));
+            } else {
+                MALog.log(systemConstants.LOG_PATH + "/" +sensor.getName(), sensor.get());
+            }
         }
 
-        Object.
     }
 }

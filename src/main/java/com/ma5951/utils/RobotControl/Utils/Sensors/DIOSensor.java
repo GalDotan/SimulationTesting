@@ -1,12 +1,10 @@
 
 package com.ma5951.utils.RobotControl.Utils.Sensors;
 
-import javax.lang.model.type.PrimitiveType;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Robot;
 
-public class DIOSensor extends BaseSensor {
+public class DIOSensor extends BaseSensor<Boolean> {
 
     private DigitalInput dioSensor;
     private boolean value;
@@ -21,20 +19,20 @@ public class DIOSensor extends BaseSensor {
     }
 
     @Override
-    public PrimitiveType get() {
+    public double get() {
         if (Robot.isSimulation()) {
-            return value;
+            return value ? 1 : 0;
         }
-        return invert ? !dioSensor.get() : dioSensor.get();
+        return (invert ? !dioSensor.get() : dioSensor.get()) ? 1 : 0;
     }
 
     @Override
-    public void set(java.io.Serializable value) {
+    public void set(Boolean value) {
         this.value = (Boolean)value;
     }
 
     public String getType() {
-        return "DIOSensor";
+        return "BooleanSensor";
     }
 
     @Override

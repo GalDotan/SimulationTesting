@@ -2,14 +2,14 @@
 package com.ma5951.utils.RobotControl.Utils.Sensors;
 
 
-public abstract class BaseSensor {
+public abstract class BaseSensor<T> {
 
-    public abstract java.io.Serializable get();
+    public abstract double get();
 
-    public abstract void set(java.io.Serializable value);
+    public abstract void set(T value);
 
     public abstract String getType();
 
     public abstract String getName();
-    
+
 }

@@ -10,7 +10,7 @@ import com.ma5951.utils.RobotControl.Utils.StatusSignalsRunner;
 
 import frc.robot.Robot;
 
-public class TalonLimitSensor extends BaseSensor {
+public class TalonLimitSensor extends BaseSensor<Boolean> {
 
     public enum LimitSwitchSource {
         FORWARD,
@@ -42,21 +42,21 @@ public class TalonLimitSensor extends BaseSensor {
     }
 
     @Override
-    public java.io.Serializable get() {
+    public double get() {
         if (Robot.isSimulation()) {
-            return value;
+            return value ? 1 : 0;
         }
-        return signal.getValue().equals(equals);
+        return signal.getValueAsDouble();
     }
 
     @Override
-    public void set(java.io.Serializable value) {
-        this.value = (Boolean)value;
+    public void set(Boolean value) {
+        this.value = value;
     }
 
     @Override
     public String getType() {
-        return "TalonLimitSensor";
+        return "BooleanSensor";
     }
 
     @Override
