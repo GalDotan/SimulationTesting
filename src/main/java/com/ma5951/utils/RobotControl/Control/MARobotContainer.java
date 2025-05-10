@@ -1,5 +1,5 @@
 
-package com.ma5951.utils.RobotControlAdv;
+package com.ma5951.utils.RobotControl.Control;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;
@@ -8,10 +8,14 @@ import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 
 import com.ma5951.utils.Logger.MALog;
+import com.ma5951.utils.RobotControl.Commands.DeafultCommandBuilder;
+import com.ma5951.utils.RobotControl.Commands.SystemDeafultCommand;
+import com.ma5951.utils.RobotControl.Controllers.MAController;
+import com.ma5951.utils.RobotControl.Simulation.GamePieceSimulator;
 import com.ma5951.utils.RobotControl.StatesTypes.RobotOporationState;
 import com.ma5951.utils.RobotControl.StatesTypes.RobotStateMA;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
-import com.ma5951.utils.RobotControlAdv.Controllers.MAController;
+import com.ma5951.utils.RobotControl.Utils.StatusSignalsRunner;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -80,12 +84,12 @@ public class MARobotContainer {
 
     // Deafult Command
     public MARobotContainer wihtAddDeafultCommand(SystemDeafultCommand command) {
-        CommandScheduler.getInstance().setDefaultCommand(command.subsystem, new DeafultCommandBuilder(command));
+        CommandScheduler.getInstance().setDefaultCommand(command.getSubsystem(), new DeafultCommandBuilder(command));
         return this;
     }
 
     public MARobotContainer stopDeafultCommand(SystemDeafultCommand command) {
-        CommandScheduler.getInstance().removeDefaultCommand(command.subsystem);
+        CommandScheduler.getInstance().removeDefaultCommand(command.getSubsystem());
         return this;
     }
 

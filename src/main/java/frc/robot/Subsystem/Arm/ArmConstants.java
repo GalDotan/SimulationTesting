@@ -2,11 +2,13 @@ package frc.robot.Subsystem.Arm;
 
 import com.ma5951.utils.RobotControl.StatesTypes.State;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
+import com.ma5951.utils.RobotControl.StatesTypes.SubsystemState;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Arm.IOs.ArmIO;
 import frc.robot.Subsystem.Arm.IOs.ArmIOReal;
 import frc.robot.Subsystem.Arm.IOs.ArmIOSim;
@@ -64,7 +66,7 @@ public class ArmConstants {
     public static final double kMANUEL_VOLTAGE_LIMIT = 7;
 
     public static final State IDLE = StatesConstants.IDLE;
-    public static final State HOLD = new State("HOLD");
+    public static final SubsystemState HOLD = new SubsystemState("HOLD" , RobotContainer.arm);
     public static final State INTAKE = new State("INTAKE");
     public static final State HANDOFF = new State("HANDOFF");
     public static final State PRE_SCORING = new State("PRE_SCORING");

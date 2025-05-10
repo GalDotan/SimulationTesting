@@ -1,7 +1,8 @@
 
-package com.ma5951.utils.RobotControlAdv;
+package com.ma5951.utils.RobotControl.Commands;
 
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
+
 
 public class SystemDeafultCommand {
 
@@ -11,6 +12,9 @@ public class SystemDeafultCommand {
         this.subsystem = subsystem;
     }
 
+    public StateControlledSubsystem getSubsystem() {
+        return subsystem;
+    }
 
     public void Automatic() {
         System.out.println("Automatic loop");

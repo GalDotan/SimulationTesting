@@ -3,6 +3,7 @@ package frc.robot;
 
 import com.ma5951.utils.RobotControl.DeafultRobotContainer;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
+import com.ma5951.utils.RobotControlAdv.MARobotContainer;
 import com.ma5951.utils.RobotControlAdv.TriggerManeger;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -32,34 +33,33 @@ import frc.robot.commands.Intake.IntakeRollerDeafultCommand;
 import frc.robot.commands.Swerve.TeleopSwerveController;
 
 
-public class RobotContainer extends DeafultRobotContainer implements GlobalConstants {
+public class RobotContainer extends MARobotContainer {
 
   public static Arm arm;
   public static IntakeArm intakeArm;
   public static IntakeRoller intakeRoller;
-  //public static Gripper gripper;
+  public static Gripper gripper;
   public static Elevator elevator;
-  
+  public static SwerveSubsystem swerveSubsystem;
+  public static Vision vision;
+  public static PoseEstimator poseEstimator;
+  public static SwerveAutoFollower swerveAutoFollower;
 
   public RobotContainer() {
-    super(
-        PortMap.Controllers.driveID,
-        PortMap.Controllers.operatorID,
-        PortMap.Controllers.driveRumbleID,
-        PortMap.Controllers.operatorRumbleID);
-
-    SwerveSubsystem.getInstance();
-    Vision.getInstance();
-    PoseEstimator.getInstance();
-    SwerveAutoFollower.getInstance();
+    super();
 
 
 
+    swerveSubsystem = SwerveSubsystem.getInstance();
+    vision = Vision.getInstance();
+    poseEstimator = PoseEstimator.getInstance();
+    swerveAutoFollower = SwerveAutoFollower.getInstance();
     arm = Arm.getInstance();
     intakeArm = IntakeArm.getInstance();
     intakeRoller = IntakeRoller.getInstance();
-    //gripper = Gripper.getInstance();
+    gripper = Gripper.getInstance();
     elevator = Elevator.getInstance();
+    
     SuperStructure superStructure = new SuperStructure();
     GamePieceSimulator gamePieceSimulator = new GamePieceSimulator();
 

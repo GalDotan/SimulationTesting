@@ -1,5 +1,5 @@
 
-package com.ma5951.utils.RobotControl;
+package com.ma5951.utils.RobotControl.Control;
 
 import java.util.function.Supplier;
 

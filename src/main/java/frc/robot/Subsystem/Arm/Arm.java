@@ -19,9 +19,8 @@ public class Arm extends StateControlledSubsystem {
     private ArmIO armIO = ArmConstants.getArmIO();
 
     private Arm() {
-        super(ArmConstants.SUBSYSTEM_STATES, "Arm");
+        super("Arm");
 
-        setTargetState(ArmConstants.IDLE);
     }
 
     public void resetMotorPose(double pose) {
