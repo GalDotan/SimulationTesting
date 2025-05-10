@@ -1,6 +1,8 @@
 
 package com.ma5951.utils.RobotControl.Utils.Sensors;
 
+import javax.lang.model.type.PrimitiveType;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Robot;
 
@@ -19,7 +21,7 @@ public class DIOSensor extends BaseSensor {
     }
 
     @Override
-    public java.io.Serializable get() {
+    public PrimitiveType get() {
         if (Robot.isSimulation()) {
             return value;
         }
@@ -34,7 +36,7 @@ public class DIOSensor extends BaseSensor {
     public String getType() {
         return "DIOSensor";
     }
-    
+
     @Override
     public String getName() {
         return name;
