@@ -1,44 +1,26 @@
 
 package com.ma5951.utils.RobotControl.Utils;
 
-import edu.wpi.first.math.system.plant.DCMotor;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+
 import edu.wpi.first.math.util.Units;
 
-public class DCmotors {
+public class Motor {
 
-    public DCMotor motor;
-    public int numOfMotors;
+    public Motors motorType;
+    public TalonFX talonFX;
+    public InvertedValue direction;
+    public String name;
 
-    private DCmotors(DCMotor motor, int numOfMotors) {
-        this.motor = motor;
-        this.numOfMotors = numOfMotors;
+    private Motor(Motors motorType, TalonFX talonFX, InvertedValue direction, String name) {
+        this.motorType = motorType;
+        this.talonFX = talonFX;
+        this.direction = direction;
+        this.name = name;
     }
 
-    public static DCmotors getKrakenX60(int numOfMotors) {
-        return new DCmotors(DCMotor.getKrakenX60(numOfMotors), numOfMotors);
-    }
-
-    public static DCmotors getFalcon500(int numOfMotors) {
-        return new DCmotors(DCMotor.getFalcon500(numOfMotors), numOfMotors);
-    }
-
-    public static DCmotors getNEO(int numOfMotors) {
-        return new DCmotors(DCMotor.getNEO(numOfMotors), numOfMotors);
-    }
-
-    public static DCmotors getNEO550(int numOfMotors) {
-        return new DCmotors(DCMotor.getNeo550(numOfMotors), numOfMotors);
-    }
-
-    public static DCmotors getKrakenX60FOC(int numOfMotors) {
-        return new DCmotors(DCMotor.getKrakenX60Foc(1), numOfMotors);
-    }
-
-    public static DCmotors getFalcon500FOC(int numOfMotors) {
-        return new DCmotors(DCMotor.getFalcon500Foc(1), numOfMotors);
-    }
-
-    public enum Motor {
+    public enum Motors {
         KrakenX60(
             12, 7.09, 366, 2, Units.rotationsPerMinuteToRadiansPerSecond(6000)),
         Falcon500(
@@ -61,7 +43,7 @@ public class DCmotors {
         public final double KvRadPerSecPerVolt;
         public final double KtNMPerAmp;
 
-        private Motor(
+        private Motors(
                 double nominalVoltageVolts,
                 double stallTorqueNewtonMeters,
                 double stallCurrentAmps,

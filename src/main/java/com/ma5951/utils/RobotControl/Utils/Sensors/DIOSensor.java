@@ -9,14 +9,17 @@ public class DIOSensor extends BaseSensor {
     private DigitalInput dioSensor;
     private boolean value;
     private boolean invert;
+    private String name;
 
-    public DIOSensor(int id , boolean invert) {
+    public DIOSensor(String name,int id , boolean invert) {
         dioSensor = new DigitalInput(id);
         this.invert = invert;
+        this.name = name;
+
     }
 
     @Override
-    public boolean get() {
+    public java.io.Serializable get() {
         if (Robot.isSimulation()) {
             return value;
         }
@@ -24,8 +27,17 @@ public class DIOSensor extends BaseSensor {
     }
 
     @Override
-    public void set(boolean value) {
-        this.value = value;
+    public void set(java.io.Serializable value) {
+        this.value = (Boolean)value;
+    }
+
+    public String getType() {
+        return "DIOSensor";
+    }
+    
+    @Override
+    public String getName() {
+        return name;
     }
 
 }
