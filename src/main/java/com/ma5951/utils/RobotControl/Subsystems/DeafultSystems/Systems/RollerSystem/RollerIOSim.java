@@ -12,6 +12,7 @@ public class RollerIOSim  extends RollerIOReal{
 
     public RollerIOSim(RollerSystemConstants systemConstants) {
         super(systemConstants);
+        motorConfig.MotorOutput.Inverted = systemConstants.MOTORS[0].direction;
         motorSim = new TalonFXMotorSim(systemConstants.MOTORS[0].talonFX , motorConfig , DCMotor.getKrakenX60(1) , systemConstants.INERTIA , false);
     }
 

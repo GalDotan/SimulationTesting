@@ -17,7 +17,7 @@ public class RollerSystemConstants {
     public double PEAK_FORWARD_VOLTAGE = 12;
     public double PEAK_REVERSE_VOLTAGE = -12;
     public boolean FOC = false;
-    public double INERTIA = 0.001;
+    public double INERTIA = 0.0004;
     public BaseSensor[] SENSORS;
 
     public RollerSystemConstants(
@@ -53,6 +53,7 @@ public class RollerSystemConstants {
             double motorLimitCurrent,
             String logPath,
             boolean isBrake,
+            double inertia,
             BaseSensor[] sensors) {
         MOTORS = motors;
         GEAR = gear;
@@ -61,6 +62,7 @@ public class RollerSystemConstants {
         MOTOR_LIMIT_CURRENT = motorLimitCurrent;
         LOG_PATH = logPath;
         IS_BRAKE = isBrake;
+        INERTIA = inertia;
         SENSORS = sensors;
     }
 

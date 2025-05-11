@@ -58,14 +58,9 @@ public class RollerIOReal extends RollerIO {
             motor.talonFX.getConfigurator().apply(motorConfig);
             StatusSignalsRunner.registerSignals(motorVelocity[i] , motorCurrent[i] ,
             motorVoltage[i]);
-            //TalonFX.optimizeBusUtilizationForAll(motor.talonFX);
             if (i > 0) {
                 followers[i - 1] = new StrictFollower(systemConstants.MOTORS[0].talonFX.getDeviceID());
             }
-            
-            motorVelocity[i] = motor.talonFX.getVelocity();
-            motorCurrent[i] = motor.talonFX.getStatorCurrent();
-            motorVoltage[i] = motor.talonFX.getMotorVoltage();
             i++;
         }
 

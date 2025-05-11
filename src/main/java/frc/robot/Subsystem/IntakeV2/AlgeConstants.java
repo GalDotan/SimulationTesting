@@ -20,9 +20,7 @@ public class AlgeConstants {
             60,
             "Subsystems/IntakeAlge/",
             true,
-            12,
-            -12,
-            false,
+            0.004,
             new BaseSensor[] {});
 
 

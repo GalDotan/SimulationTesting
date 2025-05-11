@@ -21,6 +21,6 @@ public class IntakeAlge extends RollerSubsystem {
     @Override
     public void periodic() {
         super.periodic();
-        setVoltage(7);
+        setVoltage(-12);
     }
 }
