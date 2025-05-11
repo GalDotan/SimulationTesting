@@ -17,7 +17,7 @@ public class SubsystemState extends State{
     }
 
     public void setState() {
-        subsystem.setTargetState(this); 
+        subsystem.setTargetState(stateName); 
     }
 
 

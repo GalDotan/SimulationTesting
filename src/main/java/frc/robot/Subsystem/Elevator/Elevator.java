@@ -5,7 +5,6 @@ import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
-import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIO;
 
 public class Elevator extends StateControlledSubsystem {
@@ -14,7 +13,7 @@ public class Elevator extends StateControlledSubsystem {
   private ElevatorIO elevatorIO = ElevatorConstants.getElevatorIO();
 
   private Elevator() {
-    super(ElevatorConstants.SUBSYSTEM_STATES, "Elevator");
+    super("Elevator");
   }
 
   public void resetPose(double hight) {

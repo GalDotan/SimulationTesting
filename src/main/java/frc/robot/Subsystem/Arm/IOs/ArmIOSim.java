@@ -1,6 +1,5 @@
 package frc.robot.Subsystem.Arm.IOs;
 
-import org.ironmaple.simulation.IntakeSimulation;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.ma5951.utils.Utils.ConvUtil;
 

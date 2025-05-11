@@ -20,7 +20,6 @@ public class Arm extends StateControlledSubsystem {
 
     private Arm() {
         super("Arm");
-
     }
 
     public void resetMotorPose(double pose) {

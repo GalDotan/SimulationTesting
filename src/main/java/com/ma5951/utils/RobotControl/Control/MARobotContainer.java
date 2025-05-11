@@ -1,7 +1,6 @@
 
 package com.ma5951.utils.RobotControl.Control;
 
-import java.util.List;
 import java.util.function.BooleanSupplier;
 
 import org.ironmaple.simulation.SimulatedArena;
@@ -17,7 +16,9 @@ import com.ma5951.utils.RobotControl.StatesTypes.RobotStateMA;
 import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.Utils.StatusSignalsRunner;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class MARobotContainer {
 
@@ -34,7 +35,7 @@ public class MARobotContainer {
     private static GamePieceSimulator gamePieceSimulator = null;
     private static SwerveDriveSimulation swerveDriveSimulation = null;
 
-    private static List<String> gamePiecesList = null;
+    private static String[] gamePiecesList ;
 
     public MARobotContainer() {
         triggerManeger = new TriggerManeger(
@@ -44,47 +45,45 @@ public class MARobotContainer {
     }
 
     // Config
-    @SuppressWarnings("static-access")
-    public MARobotContainer withDriverController(MAController controller) {
-        this.driverController = controller;
-        return this;
+    public static void withDriverController(MAController controller) {
+        driverController = controller;
     }
 
-    @SuppressWarnings("static-access")
-    public MARobotContainer withOporatorController(MAController controller) {
-        this.oporatorController = controller;
-        return this;
+    public static void withOporatorController(MAController controller) {
+        oporatorController = controller;
     }
 
-    @SuppressWarnings("static-access")
-    public MARobotContainer withDriverController(MAController controller, MAController oporatorController) {
-        this.driverController = controller;
-        this.oporatorController = oporatorController;
-        return this;
+    
+    public static void withDriverController(MAController controller, MAController newOporatorController) {
+        driverController = controller;
+        oporatorController = newOporatorController;
     }
 
-    public MARobotContainer withSimulation(boolean simulation, SwerveDriveSimulation swerveDriveSimulation , String... gamePieceType) {
-        useSimulation = simulation;
-        SimulatedArena.getInstance().addDriveTrainSimulation(swerveDriveSimulation);
-        for (String type : gamePieceType) {
-            gamePiecesList.add(type);
-        }
-        return this;
-    }
-
-    @SuppressWarnings("static-access")
     public MARobotContainer withSimulation(boolean simulation, SwerveDriveSimulation swerveDriveSimulation,
-            GamePieceSimulator gamePieceSimulator) {
+    String[] gamePieceType) {
         useSimulation = simulation;
         SimulatedArena.getInstance().addDriveTrainSimulation(swerveDriveSimulation);
-        this.gamePieceSimulator = gamePieceSimulator;
-        this.swerveDriveSimulation = swerveDriveSimulation;
+        gamePiecesList = gamePieceType;
         return this;
+    }
+
+    public static void withSimulation(boolean simulation, SwerveDriveSimulation newSwerveDriveSimulation,
+            GamePieceSimulator newGamePieceSimulator, String[] gamePieceType) {
+        useSimulation = simulation;
+        SimulatedArena.getInstance().addDriveTrainSimulation(newSwerveDriveSimulation);
+        gamePieceSimulator = newGamePieceSimulator;
+        swerveDriveSimulation = newSwerveDriveSimulation;
+        gamePiecesList = gamePieceType;
     }
 
     // Deafult Command
     public MARobotContainer wihtAddDeafultCommand(SystemDeafultCommand command) {
         CommandScheduler.getInstance().setDefaultCommand(command.getSubsystem(), new DeafultCommandBuilder(command));
+        return this;
+    }
+
+    public MARobotContainer wihtAddDeafultCommand(SubsystemBase system, Command command) {
+        CommandScheduler.getInstance().setDefaultCommand(system, command);
         return this;
     }
 
@@ -111,6 +110,24 @@ public class MARobotContainer {
         triggerManeger.add(condition, action);
     }
 
+    // State Triggers
+    public void T(RobotOporationState workInMode, RobotStateMA workInState, BooleanSupplier condition,
+            RobotStateMA robotState) {
+        triggerManeger.add(workInMode, workInState, condition, () -> setRobotState(robotState));
+    }
+
+    public void T(RobotStateMA workInState, BooleanSupplier condition, RobotStateMA robotState) {
+        triggerManeger.add(workInState, condition, () -> setRobotState(robotState));
+    }
+
+    public void T(RobotOporationState workInMode, BooleanSupplier condition, RobotStateMA robotState) {
+        triggerManeger.add(workInMode, condition, () -> setRobotState(robotState));
+    }
+
+    public void T(BooleanSupplier condition, RobotStateMA robotState) {
+        triggerManeger.add(condition, () -> setRobotState(robotState));
+    }
+
     // Robot States
     public void setRobotState(RobotStateMA robotState) {
         lastRobotState = currentRobotState;
@@ -126,13 +143,18 @@ public class MARobotContainer {
         return lastRobotState;
     }
 
+    // Chooser
+    public Command getAutonomousCommand() {
+        return null;
+    }
+
     // Periodics
     public void robotPeriodic() {
         StatusSignalsRunner.updateSignals();
         CommandScheduler.getInstance().run();
-    } 
+    }
 
-    public void simulationPeriodic() {
+    public static void simulationPeriodic() {
         if (useSimulation) {
             SimulatedArena.getInstance().simulationPeriodic();
             MALog.log("/Simulation/Simulation Pose", swerveDriveSimulation.getSimulatedDriveTrainPose());
@@ -145,7 +167,7 @@ public class MARobotContainer {
         }
     }
 
-    public void simulationInit(boolean autoGamePices) {
+    public static void simulationInit(boolean autoGamePices) {
         if (useSimulation) {
             SimulatedArena.getInstance().clearGamePieces();
             if (autoGamePices) {

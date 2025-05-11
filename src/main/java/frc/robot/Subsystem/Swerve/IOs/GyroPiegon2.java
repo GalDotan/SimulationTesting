@@ -27,7 +27,7 @@ import frc.robot.Subsystem.Swerve.Util.GyroData;
 
 public class GyroPiegon2 implements Gyro{
 
-    private String name;
+    //private String name;
 
     private Pigeon2 gyro;
 
@@ -56,7 +56,7 @@ public class GyroPiegon2 implements Gyro{
 
     
     public GyroPiegon2(String type, CANBus canBus ,int id) {
-        name = type;
+        //name = type;
 
         gyro = new Pigeon2(id, canBus);
 
@@ -150,6 +150,7 @@ public class GyroPiegon2 implements Gyro{
     }
 
     public GyroData update(ChassisSpeeds robotSpeeds) {
+        
         gyroData.updateData(
             getPitch(), 
             getYaw(), 

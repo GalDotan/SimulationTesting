@@ -4,7 +4,7 @@ package com.ma5951.utils.RobotControl.Commands;
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
 
-public class SystemDeafultCommand {
+public abstract class SystemDeafultCommand {
 
     protected StateControlledSubsystem subsystem;
 
@@ -16,17 +16,11 @@ public class SystemDeafultCommand {
         return subsystem;
     }
 
-    public void Automatic() {
-        System.out.println("Automatic loop");
-    }
+    public abstract void Automatic();
 
-    public void Manual() {
+    public abstract void Manual();
 
-    }
-
-    public void CantMove() {
-
-    }
+    public abstract void CantMove();
 
     public void CanMove() {
         Automatic();

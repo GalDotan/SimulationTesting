@@ -14,10 +14,9 @@ public class Gripper extends StateControlledSubsystem{
     private GripperIO gripperIO = GripperConstants.getGripperIO();
 
     private Gripper() {
-        super(GripperConstants.SUBSYSTEM_STATES, "Gripper");
+        super("Gripper");
 
         gripperIO.setNeutralMode(true);
-        setTargetState(GripperConstants.IDLE);
     }
 
     public boolean hasCoral() {

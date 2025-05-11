@@ -1,7 +1,6 @@
 package frc.robot.Subsystem.Elevator.IOs;
 
 import com.ctre.phoenix6.sim.TalonFXSimState;
-import com.ma5951.utils.Utils.ConvUtil;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;

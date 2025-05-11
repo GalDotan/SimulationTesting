@@ -6,7 +6,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ma5951.utils.Logger.MALog;
@@ -27,7 +26,6 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
 
     private DigitalInput coralSensor;
 
-    private VoltageOut voltageOut;
 
 
     private StatusSignal<AngularVelocity> rollerMotorVelocity;
@@ -40,7 +38,6 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
         rollerMotor = new TalonFX(PortMap.Intake.RollerMotor, PortMap.CanBus.RioBus);
         rollerConfig = new TalonFXConfiguration();
 
-        voltageOut = new VoltageOut(0);
         coralSensor = new DigitalInput(PortMap.Intake.CoralSensor);
 
         rollerMotorVelocity = rollerMotor.getVelocity();

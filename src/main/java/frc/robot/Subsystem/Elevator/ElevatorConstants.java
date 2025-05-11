@@ -1,13 +1,13 @@
 
 package frc.robot.Subsystem.Elevator;
 
-import com.ma5951.utils.RobotControl.StatesTypes.State;
-import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
+import com.ma5951.utils.RobotControl.StatesTypes.SubsystemState;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIO;
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIOReal;
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIOSim;
@@ -55,21 +55,18 @@ public class ElevatorConstants {
     public static final double CONTINUOUS_CURRENT_DURATION = 0.1;
     public static final boolean ENABLE_CURRENT_LIMIT = false;
 
-    public static final State IDLE = StatesConstants.IDLE;
-    public static final State HOLD = new State("HOLD");
-    public static final State INTAKE = new State("INTAKE");
-    public static final State HANDOFF = new State("HANDOFF");
-    public static final State PRE_SCORING = new State("PRE_SCORING");
-    public static final State SCORING = new State("SCORING");
-    public static final State ALGE_GROUND = new State("ALGE_GROUND");
-    public static final State ALGE_REEF = new State("ALGE_REEF");
-    public static final State ALGE_NET = new State("ALGE_REEF");
-    public static final State ALGE_PROCESSOR = new State("ALGE_PROCESSOR");
-    
+    public static final SubsystemState IDLE = new SubsystemState("IDLE", Elevator.getInstance());
+    public static final SubsystemState HOLD = new SubsystemState("HOLD", Elevator.getInstance());
+    public static final SubsystemState INTAKE = new SubsystemState("INTAKE", Elevator.getInstance());
+    public static final SubsystemState HANDOFF = new SubsystemState("HANDOFF", Elevator.getInstance());
+    public static final SubsystemState PRE_SCORING = new SubsystemState("PRE_SCORING", Elevator.getInstance());
+    public static final SubsystemState SCORING = new SubsystemState("SCORING", Elevator.getInstance());
+    public static final SubsystemState ALGE_GROUND = new SubsystemState("ALGE_GROUND", Elevator.getInstance());
+    public static final SubsystemState ALGE_REEF = new SubsystemState("ALGE_REEF", Elevator.getInstance());
+    public static final SubsystemState ALGE_NET = new SubsystemState("ALGE_NET", Elevator.getInstance());
+    public static final SubsystemState ALGE_PROCESSOR = new SubsystemState("ALGE_PROCESSOR", Elevator.getInstance());
 
     public static final Pose3d SIM_ELEVATOR_OFFSET = new Pose3d(new Translation3d(0,0,0.15), new Rotation3d(0,0,0));
-
-    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE, HOLD, INTAKE, HANDOFF, PRE_SCORING , SCORING , ALGE_GROUND , ALGE_REEF, ALGE_NET, ALGE_PROCESSOR};
 
 
     public static final ElevatorIO getElevatorIO() {

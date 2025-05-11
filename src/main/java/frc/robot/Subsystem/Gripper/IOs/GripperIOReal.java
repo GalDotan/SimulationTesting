@@ -6,7 +6,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ma5951.utils.Logger.MALog;
@@ -18,7 +17,6 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.PortMap;
 import frc.robot.Subsystem.Gripper.GripperConstants;
-import frc.robot.Subsystem.Intake.IntakeRoller.IntakeRollerConstants;
 
 public class GripperIOReal implements GripperIO {
 
@@ -28,7 +26,6 @@ public class GripperIOReal implements GripperIO {
 
     private DigitalInput coralSensor;
 
-    private VoltageOut voltageRequest;
 
     private StatusSignal<AngularVelocity> rollerMotorVelocity;
     private StatusSignal<Current> rollerMotorCurrent;
@@ -40,7 +37,6 @@ public class GripperIOReal implements GripperIO {
         rollerMotor = new TalonFX(PortMap.Gripper.GripperMotor, PortMap.CanBus.RioBus);
         rollerConfig = new TalonFXConfiguration();
 
-        voltageRequest = new VoltageOut(0);
 
         coralSensor = new DigitalInput(PortMap.Gripper.CoralSensor);
 

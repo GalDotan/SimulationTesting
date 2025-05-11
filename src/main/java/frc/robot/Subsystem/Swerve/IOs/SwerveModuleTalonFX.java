@@ -53,7 +53,7 @@ public class SwerveModuleTalonFX implements SwerveModule {
     private StatusSignal<Voltage> steerVolts;
     private StatusSignal<Angle> absAngle;
     private StatusSignal<AngularVelocity> steerVelocitt;
-    private String moduleName;
+    //private String moduleName;
 
     // protected LoggedDouble DrivePosition;
     // protected LoggedDouble DriveVelocity;
@@ -79,7 +79,7 @@ public class SwerveModuleTalonFX implements SwerveModule {
 
         this.isDriveMotorReversed = isDriveMotorReversed;
         this.isTurningMotorReversed = isTurningMotorReversed;
-        this.moduleName = moduleNameN;
+        //this.moduleName = moduleNameN;
 
         // DrivePosition = new LoggedDouble("/Subsystems/Swerve/Modules/" + moduleName + "/Drive Position");
         // DriveVelocity = new LoggedDouble("/Subsystems/Swerve/Modules/" + moduleName + "/Drive Velocity");

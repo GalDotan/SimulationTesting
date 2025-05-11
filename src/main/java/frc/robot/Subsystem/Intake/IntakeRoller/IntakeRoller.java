@@ -15,10 +15,9 @@ public class IntakeRoller extends StateControlledSubsystem{
     private IntakeRollerIO intakeIO = IntakeRollerConstants.getRollerIntakeIO();
 
     private IntakeRoller() {
-        super(IntakeRollerConstants.SUBSYSTEM_STATES, "Intake Roller");
+        super("Intake Roller");
 
         intakeIO.setNeutralMode(true);
-        setTargetState(IntakeRollerConstants.IDLE);
     }
 
     public boolean hasCoral() {

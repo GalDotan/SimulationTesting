@@ -17,10 +17,9 @@ public class IntakeArm extends StateControlledSubsystem{
     private IntakeArmIO intakeIO = IntakeArmConstants.getIntakeIO();
 
     private IntakeArm() {
-        super(IntakeArmConstants.SUBSYSTEM_STATES, "Intake Arm");
+        super("Intake Arm");
 
         intakeIO.setNeutralMode(true);
-        setTargetState(IntakeArmConstants.IDLE);
     }
 
     public double getCurrent() {

@@ -16,7 +16,7 @@ public class PoseEstimator {
 
     private SwerveDrivePoseEstimator robotPoseEstimator;
     private SwerveSubsystem swerve = SwerveSubsystem.getInstance();
-    private Pose2d robotPose;
+    //private Pose2d robotPose;
 
     // private LoggedPose2d estimatedRobotPose;
     // private LoggedDouble lastVisionUpdateLog;

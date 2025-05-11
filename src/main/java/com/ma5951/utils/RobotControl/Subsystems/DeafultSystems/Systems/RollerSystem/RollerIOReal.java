@@ -1,5 +1,6 @@
 package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.RollerSystem;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.StrictFollower;
@@ -21,19 +22,17 @@ public class RollerIOReal extends RollerIO {
 
     private final int numOfMotors;
     private final VoltageOut voltageRequest = new VoltageOut(0);
-    private final TalonFXConfiguration motorConfig = new TalonFXConfiguration();
+    protected final TalonFXConfiguration motorConfig = new TalonFXConfiguration();
     private final StrictFollower[] followers;
-    
 
     private final StatusSignal<AngularVelocity>[] motorVelocity;
     private final StatusSignal<Current>[] motorCurrent;
     private final StatusSignal<Voltage>[] motorVoltage;
-    
 
     private double velocitySum;
     private double currentSum;
     private double voltageSum;
-    
+
     private int i = 0;
 
     @SuppressWarnings("unchecked")
@@ -57,11 +56,16 @@ public class RollerIOReal extends RollerIO {
             TalonFX.resetSignalFrequenciesForAll(motor.talonFX);
             motorConfig.MotorOutput.Inverted = motor.direction;
             motor.talonFX.getConfigurator().apply(motorConfig);
-            StatusSignalsRunner.registerSignals(motorVelocity[i] , motorCurrent[i] , motorVoltage[i]);
-            TalonFX.optimizeBusUtilizationForAll(motor.talonFX);
+            StatusSignalsRunner.registerSignals(motorVelocity[i] , motorCurrent[i] ,
+            motorVoltage[i]);
+            //TalonFX.optimizeBusUtilizationForAll(motor.talonFX);
             if (i > 0) {
                 followers[i - 1] = new StrictFollower(systemConstants.MOTORS[0].talonFX.getDeviceID());
             }
+            
+            motorVelocity[i] = motor.talonFX.getVelocity();
+            motorCurrent[i] = motor.talonFX.getStatorCurrent();
+            motorVoltage[i] = motor.talonFX.getMotorVoltage();
             i++;
         }
 
@@ -80,6 +84,11 @@ public class RollerIOReal extends RollerIO {
 
         motorConfig.CurrentLimits.StatorCurrentLimit = systemConstants.STATOR_CURRENT_LIMIT;
         motorConfig.CurrentLimits.StatorCurrentLimitEnable = systemConstants.CURRENT_LIMIT_ENABLED;
+    }
+
+    @Override
+    public double getSensor(BaseSensor sensor) {
+        return sensor.get();
     }
 
     @Override
@@ -137,11 +146,12 @@ public class RollerIOReal extends RollerIO {
 
         for (BaseSensor sensor : systemConstants.SENSORS) {
             if (sensor.getType().equals("BooleanSensor")) {
-                MALog.log(systemConstants.LOG_PATH + "/" +sensor.getName(), (sensor.get() == 1 ? true : false));
+                MALog.log(systemConstants.LOG_PATH + "/" + sensor.getName(), (sensor.get() == 1 ? true : false));
             } else {
-                MALog.log(systemConstants.LOG_PATH + "/" +sensor.getName(), sensor.get());
+                MALog.log(systemConstants.LOG_PATH + "/" + sensor.getName(), sensor.get());
             }
         }
 
     }
+
 }

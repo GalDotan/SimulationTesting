@@ -1,10 +1,15 @@
 
 package com.ma5951.utils.RobotControl.Utils;
 
+import java.io.ObjectInputFilter.Status;
+
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
 
 public class Motor {
 
@@ -12,12 +17,14 @@ public class Motor {
     public TalonFX talonFX;
     public InvertedValue direction;
     public String name;
+    public StatusSignal<AngularVelocity> statusSignal;
 
-    private Motor(Motors motorType, TalonFX talonFX, InvertedValue direction, String name) {
+    public Motor(Motors motorType, TalonFX talonFX, InvertedValue direction, String name) {
         this.motorType = motorType;
         this.talonFX = talonFX;
         this.direction = direction;
         this.name = name;
+        statusSignal = talonFX.getVelocity();
     }
 
     public enum Motors {

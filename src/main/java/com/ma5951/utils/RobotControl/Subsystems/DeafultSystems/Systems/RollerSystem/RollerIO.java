@@ -2,6 +2,7 @@
 package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.RollerSystem;
 
 import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.RollerSystemConstants;
+import com.ma5951.utils.RobotControl.Utils.Sensors.BaseSensor;
 
 public abstract class RollerIO {
 
@@ -24,5 +25,7 @@ public abstract class RollerIO {
     public abstract void setVoltage(double volt);
 
     public abstract void updatePeriodic();
+
+    public abstract double getSensor(BaseSensor sensor);
 
 }

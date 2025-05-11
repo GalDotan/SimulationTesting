@@ -1,7 +1,5 @@
 package frc.robot.Subsystem.Arm;
 
-import com.ma5951.utils.RobotControl.StatesTypes.State;
-import com.ma5951.utils.RobotControl.StatesTypes.StatesConstants;
 import com.ma5951.utils.RobotControl.StatesTypes.SubsystemState;
 
 import edu.wpi.first.math.geometry.Pose3d;
@@ -65,21 +63,18 @@ public class ArmConstants {
     public static final double kCAN_MOVE_CURRENT_LIMIT = 20000;
     public static final double kMANUEL_VOLTAGE_LIMIT = 7;
 
-    public static final State IDLE = StatesConstants.IDLE;
-    public static final SubsystemState HOLD = new SubsystemState("HOLD" , RobotContainer.arm);
-    public static final State INTAKE = new State("INTAKE");
-    public static final State HANDOFF = new State("HANDOFF");
-    public static final State PRE_SCORING = new State("PRE_SCORING");
-    public static final State SCORING = new State("SCORING");
-    public static final State ALGE_GROUND = new State("ALGE_GROUND");
-    public static final State ALGE_REEF = new State("ALGE_REEF");
-    public static final State ALGE_NET = new State("ALGE_REEF");
-    public static final State ALGE_PROCESSOR = new State("ALGE_PROCESSOR");
-    
+    public static final SubsystemState IDLE = new SubsystemState("IDLE", Arm.getInstance());
+    public static final SubsystemState HOLD = new SubsystemState("HOLD", Arm.getInstance());
+    public static final SubsystemState INTAKE = new SubsystemState("INTAKE", Arm.getInstance());
+    public static final SubsystemState HANDOFF = new SubsystemState("HANDOFF", Arm.getInstance());
+    public static final SubsystemState PRE_SCORING = new SubsystemState("PRE_SCORING", Arm.getInstance());
+    public static final SubsystemState SCORING = new SubsystemState("SCORING", Arm.getInstance());
+    public static final SubsystemState ALGE_GROUND = new SubsystemState("ALGE_GROUND", Arm.getInstance());
+    public static final SubsystemState ALGE_REEF = new SubsystemState("ALGE_REEF", Arm.getInstance());
+    public static final SubsystemState ALGE_NET = new SubsystemState("ALGE_REEF", Arm.getInstance());
+    public static final SubsystemState ALGE_PROCESSOR = new SubsystemState("ALGE_PROCESSOR", Arm.getInstance());
 
     public static final Pose3d SIM_ARM_OFFSET = new Pose3d(new Translation3d(-0.124,0,1.262), new Rotation3d(0,0,0));
-
-    public static final State[] SUBSYSTEM_STATES = new State[] {IDLE, HOLD, INTAKE, HANDOFF, PRE_SCORING , SCORING , ALGE_GROUND , ALGE_REEF, ALGE_NET, ALGE_PROCESSOR};
 
     public static ArmIO getArmIO() {
         if (Robot.isReal()) {

@@ -13,7 +13,6 @@ public class RollerSystemConstants {
     public boolean CURRENT_LIMIT_ENABLED = true;
     public double MOTOR_LIMIT_CURRENT = 40;
     public String LOG_PATH = "/Subsystem/Did Not Specifiyed Log Path!";
-    public boolean IS_REVERD = false;
     public boolean IS_BRAKE = true;
     public double PEAK_FORWARD_VOLTAGE = 12;
     public double PEAK_REVERSE_VOLTAGE = -12;
@@ -28,7 +27,6 @@ public class RollerSystemConstants {
             boolean currentLimitEnabled,
             double motorLimitCurrent,
             String logPath,
-            boolean isReverd,
             boolean isBrake,
             double peakForwardVoltage,
             double peakReverseVoltage,
@@ -40,7 +38,6 @@ public class RollerSystemConstants {
         CURRENT_LIMIT_ENABLED = currentLimitEnabled;
         MOTOR_LIMIT_CURRENT = motorLimitCurrent;
         LOG_PATH = logPath;
-        IS_REVERD = isReverd;
         IS_BRAKE = isBrake;
         PEAK_FORWARD_VOLTAGE = peakForwardVoltage;
         PEAK_REVERSE_VOLTAGE = peakReverseVoltage;
@@ -55,7 +52,6 @@ public class RollerSystemConstants {
             boolean currentLimitEnabled,
             double motorLimitCurrent,
             String logPath,
-            boolean isReverd,
             boolean isBrake,
             BaseSensor[] sensors) {
         MOTORS = motors;
@@ -64,7 +60,6 @@ public class RollerSystemConstants {
         CURRENT_LIMIT_ENABLED = currentLimitEnabled;
         MOTOR_LIMIT_CURRENT = motorLimitCurrent;
         LOG_PATH = logPath;
-        IS_REVERD = isReverd;
         IS_BRAKE = isBrake;
         SENSORS = sensors;
     }

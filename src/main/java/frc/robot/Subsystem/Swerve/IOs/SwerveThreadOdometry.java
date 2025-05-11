@@ -40,7 +40,7 @@ public class SwerveThreadOdometry implements SwerveOdometry{
     private boolean stuckDetected;
     private double lastSkid;
     private double lastCollid;
-    private double lastStuck;
+    //private double lastStuck;
 
     private SwerveModulePosition[] wheelPositions = new  SwerveModulePosition[4];
     private SwerveModulePosition[] lastPositions = null;

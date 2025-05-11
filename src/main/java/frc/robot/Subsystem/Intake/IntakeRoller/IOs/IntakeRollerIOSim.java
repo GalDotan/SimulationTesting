@@ -1,6 +1,5 @@
 package frc.robot.Subsystem.Intake.IntakeRoller.IOs;
 
-import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.ma5951.utils.ControlledMotors.Sim.TalonFXMotorSim;
 
 import edu.wpi.first.math.system.plant.DCMotor;
