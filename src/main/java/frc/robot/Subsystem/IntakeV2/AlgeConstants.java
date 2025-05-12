@@ -7,6 +7,7 @@ import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.
 import com.ma5951.utils.RobotControl.Utils.Motor;
 import com.ma5951.utils.RobotControl.Utils.Motor.Motors;
 import com.ma5951.utils.RobotControl.Utils.Sensors.BaseSensor;
+import com.ma5951.utils.RobotControl.Utils.Sensors.DIOSensor;
 
 public class AlgeConstants {
 
@@ -21,7 +22,9 @@ public class AlgeConstants {
             "Subsystems/IntakeAlge/",
             true,
             0.004,
-            new BaseSensor[] {});
+            new BaseSensor[] {
+                new DIOSensor("ALGE_LIMIT_SWITCH", 8, false)
+            });
 
 
 

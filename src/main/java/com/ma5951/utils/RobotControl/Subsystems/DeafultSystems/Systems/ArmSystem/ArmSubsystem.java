@@ -1,5 +1,5 @@
 
-package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.RollerSystem;
+package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.ArmSystem;
 
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.RollerSystemConstants;
@@ -7,15 +7,15 @@ import com.ma5951.utils.RobotControl.Utils.Sensors.BaseSensor;
 
 import frc.robot.Robot;
 
-public class RollerSubsystem extends StateControlledSubsystem{
+public class ArmSubsystem extends StateControlledSubsystem{
 
     protected RollerSystemConstants systemConstants;
-    protected RollerIO rollerIO;
+    protected ArmIO rollerIO;
 
-    public RollerSubsystem(String name,RollerSystemConstants systemConstants) {
+    public ArmSubsystem(String name,RollerSystemConstants systemConstants) {
         super(name);
         this.systemConstants = systemConstants;
-        rollerIO = Robot.isSimulation() ? new RollerIOSim(systemConstants) : new RollerIOReal(systemConstants);
+        rollerIO = Robot.isSimulation() ? new ArmIOSim(systemConstants) : new ArmIOReal(systemConstants);
     }
 
     public double getCurrent() {
@@ -39,7 +39,7 @@ public class RollerSubsystem extends StateControlledSubsystem{
     public double getSensor(@SuppressWarnings("rawtypes") BaseSensor sensor) {
         return rollerIO.getSensor(sensor);
     }
-    public RollerIO getRollerIO() {
+    public ArmIO getRollerIO() {
         return rollerIO;
     }
 

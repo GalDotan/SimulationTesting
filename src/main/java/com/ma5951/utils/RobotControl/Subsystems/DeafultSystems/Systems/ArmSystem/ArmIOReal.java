@@ -1,4 +1,4 @@
-package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.RollerSystem;
+package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.ArmSystem;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -17,7 +17,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 
-public class RollerIOReal extends RollerIO {
+public class ArmIOReal extends ArmIO {
 
     private final int numOfMotors;
     private final VoltageOut voltageRequest = new VoltageOut(0);
@@ -35,7 +35,7 @@ public class RollerIOReal extends RollerIO {
     private int i = 0;
 
     @SuppressWarnings("unchecked")
-    public RollerIOReal(RollerSystemConstants systemConstants) {
+    public ArmIOReal(RollerSystemConstants systemConstants) {
         super(systemConstants);
         numOfMotors = systemConstants.MOTORS.length;
 
@@ -138,13 +138,13 @@ public class RollerIOReal extends RollerIO {
     public void updatePeriodic() {
         MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + "/Velocity", getVelocity());
         MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + "/Voltage", getAppliedVolts());
-        MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" +"/Current", getCurrent());
+        MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + "/Current", getCurrent());
 
         for (@SuppressWarnings("rawtypes") BaseSensor sensor : systemConstants.SENSORS) {
             if (sensor.getType().equals("BooleanSensor")) {
-                MALog.log( "/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + sensor.getName(), (sensor.get() == 1 ? true : false));
+                MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + sensor.getName(), (sensor.get() == 1 ? true : false));
             } else {
-                MALog.log( "/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + sensor.getName(), sensor.get());
+                MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + sensor.getName(), sensor.get());
             }
         }
 

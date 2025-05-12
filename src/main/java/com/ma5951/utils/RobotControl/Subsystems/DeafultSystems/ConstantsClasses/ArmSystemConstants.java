@@ -5,14 +5,14 @@ package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses
 import com.ma5951.utils.RobotControl.Utils.Motor;
 import com.ma5951.utils.RobotControl.Utils.Sensors.BaseSensor;
 
-public class RollerSystemConstants {
+public class ArmSystemConstants {
 
     public Motor[] MOTORS;
     public double GEAR = 1;
     public double STATOR_CURRENT_LIMIT = 40;
     public boolean CURRENT_LIMIT_ENABLED = true;
     public double MOTOR_LIMIT_CURRENT = 40;
-    public String LOG_PATH = "/Subsystem/Did Not Specifiyed Log Path!";
+    public String LOG_PATH = "/Did Not Specifiyed Log Path!";
     public boolean IS_BRAKE = true;
     public double PEAK_FORWARD_VOLTAGE = 12;
     public double PEAK_REVERSE_VOLTAGE = -12;
@@ -21,7 +21,7 @@ public class RollerSystemConstants {
     @SuppressWarnings("rawtypes")
     public BaseSensor[] SENSORS;
 
-    public RollerSystemConstants(
+    public ArmSystemConstants(
             Motor[] motors,
             double gear,
             double statorCurrentLimit,
@@ -46,7 +46,7 @@ public class RollerSystemConstants {
         SENSORS = sensors;
     }
 
-    public RollerSystemConstants(
+    public ArmSystemConstants(
             Motor[] motors,
             double gear,
             double statorCurrentLimit,

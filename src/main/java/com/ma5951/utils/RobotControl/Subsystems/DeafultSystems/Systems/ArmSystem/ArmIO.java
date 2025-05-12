@@ -1,14 +1,14 @@
 
-package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.RollerSystem;
+package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.ArmSystem;
 
 import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.RollerSystemConstants;
 import com.ma5951.utils.RobotControl.Utils.Sensors.BaseSensor;
 
-public abstract class RollerIO {
+public abstract class ArmIO {
 
     protected RollerSystemConstants systemConstants;
     
-    public RollerIO(RollerSystemConstants systemConstants) {
+    public ArmIO(RollerSystemConstants systemConstants) {
         this.systemConstants = systemConstants;
     }
 
