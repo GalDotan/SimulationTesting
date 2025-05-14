@@ -14,7 +14,9 @@ public class AlgeConstants {
     public static final RollerSystemConstants ALGE_INTAKE = new RollerSystemConstants(
             new Motor[] {
                     new Motor(Motors.KrakenX60, new TalonFX(33), InvertedValue.Clockwise_Positive,
-                            "ALGE_INTAKE_ROLLER") },
+                            "ALGE_INTAKE_ROLLER"),
+                    new Motor(Motors.KrakenX60, new TalonFX(34), InvertedValue.Clockwise_Positive,
+                            "ALGE_INTAKE_ROLLER2") },
             3,
             40,
             true,
@@ -23,9 +25,7 @@ public class AlgeConstants {
             true,
             0.004,
             new BaseSensor[] {
-                new DIOSensor("ALGE_LIMIT_SWITCH", 8, false)
+                    new DIOSensor("ALGE_LIMIT_SWITCH", 8, false)
             });
-
-
 
 }

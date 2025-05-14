@@ -1,7 +1,6 @@
 
 package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses;
 
-
 import com.ma5951.utils.RobotControl.Utils.Motor;
 import com.ma5951.utils.RobotControl.Utils.Sensors.BaseSensor;
 
@@ -9,9 +8,13 @@ public class ArmSystemConstants {
 
     public Motor[] MOTORS;
     public double GEAR = 1;
+    public boolean IS_MOTION_MAGIC = false;
     public double KP = 0;
     public double KI = 0;
     public double KD = 0;
+    public double CRUISE_VELOCITY = 0;
+    public double ACCELERATION = 0;
+    public double JERK = 0;
     public double FEED_FORWARD_VOLTAGE = 0;
     public double MIN_ANGLE = 0;
     public double MAX_ANGLE = 0;
@@ -25,13 +28,15 @@ public class ArmSystemConstants {
     public double PEAK_FORWARD_VOLTAGE = 12;
     public double PEAK_REVERSE_VOLTAGE = -12;
     public boolean FOC = false;
-    public double INERTIA = 0.0004;
+    public double INERTIA = 0.02;
+    public double ARM_LENGTH = 0.3;
     @SuppressWarnings("rawtypes")
     public BaseSensor[] SENSORS;
 
     public ArmSystemConstants(
             Motor[] motors,
             double gear,
+            boolean isMotionMagic,
             double kP,
             double kI,
             double kD,
@@ -51,6 +56,7 @@ public class ArmSystemConstants {
             @SuppressWarnings("rawtypes") BaseSensor[] sensors) {
         MOTORS = motors;
         GEAR = gear;
+        IS_MOTION_MAGIC = isMotionMagic;
         KP = kP;
         KI = kI;
         KD = kD;
@@ -76,6 +82,9 @@ public class ArmSystemConstants {
             double kP,
             double kI,
             double kD,
+            double cruiseVelocity,
+            double acceleration,
+            double jerk,
             double feedForwardVoltage,
             double minAngle,
             double maxAngle,
@@ -87,12 +96,17 @@ public class ArmSystemConstants {
             String logPath,
             boolean isBrake,
             double inertia,
+            double armLength,
             @SuppressWarnings("rawtypes") BaseSensor[] sensors) {
         MOTORS = motors;
         GEAR = gear;
+        IS_MOTION_MAGIC = true;
         KP = kP;
         KI = kI;
         KD = kD;
+        CRUISE_VELOCITY = cruiseVelocity;
+        ACCELERATION = acceleration;
+        JERK = jerk;
         FEED_FORWARD_VOLTAGE = feedForwardVoltage;
         MIN_ANGLE = minAngle;
         MAX_ANGLE = maxAngle;
@@ -105,6 +119,7 @@ public class ArmSystemConstants {
         IS_BRAKE = isBrake;
         INERTIA = inertia;
         SENSORS = sensors;
+        ARM_LENGTH = armLength;
     }
 
 }

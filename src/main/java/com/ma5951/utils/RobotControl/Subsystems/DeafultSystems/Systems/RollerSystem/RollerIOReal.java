@@ -90,12 +90,12 @@ public class RollerIOReal extends RollerIO {
 
     @Override
     public double getVelocity() {
-        return motorVelocity.getValueAsDouble();
+        return motorVelocity.getValueAsDouble() * 60;
     }
 
     @Override
     public double getPosition() {
-        return motorPosition.getValueAsDouble();
+        return motorPosition.getValueAsDouble() * 360; 
     }
 
     @Override

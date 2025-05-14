@@ -2,7 +2,7 @@ package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.ArmSyste
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -10,7 +10,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ma5951.utils.Logger.MALog;
 import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.ArmSystemConstants;
-import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.RollerSystemConstants;
 import com.ma5951.utils.RobotControl.Utils.Motor;
 import com.ma5951.utils.RobotControl.Utils.StatusSignalsRunner;
 import com.ma5951.utils.RobotControl.Utils.Sensors.BaseSensor;
@@ -27,7 +26,8 @@ public class ArmIOReal extends ArmIO {
     protected TalonFXConfiguration motorConfig = new TalonFXConfiguration();
     private StrictFollower[] followers;
 
-    private ControlRequest controlRequest;
+    private MotionMagicVoltage motionMagicRequest = new MotionMagicVoltage(0);
+    private PositionVoltage positionRequest = new PositionVoltage(0);
 
     private StatusSignal<AngularVelocity> motorVelocity;
     private StatusSignal<Angle> motorPosition;
@@ -43,7 +43,6 @@ public class ArmIOReal extends ArmIO {
 
         configMotors();
 
-
         followers = new StrictFollower[numOfMotors - 1];
 
         for (Motor motor : systemConstants.MOTORS) {
@@ -56,7 +55,7 @@ public class ArmIOReal extends ArmIO {
                 motorPosition = motor.talonFX.getPosition(false);
                 motorSetPoint = motor.talonFX.getClosedLoopReference(false);
                 StatusSignalsRunner.registerSignals(motorVelocity, motorCurrent,
-                        motorVoltage , motorSetPoint);
+                        motorVoltage, motorSetPoint);
             }
             TalonFX.resetSignalFrequenciesForAll(motor.talonFX);
             motorConfig.MotorOutput.Inverted = motor.direction;
@@ -79,6 +78,12 @@ public class ArmIOReal extends ArmIO {
 
         motorConfig.CurrentLimits.StatorCurrentLimit = systemConstants.STATOR_CURRENT_LIMIT;
         motorConfig.CurrentLimits.StatorCurrentLimitEnable = systemConstants.CURRENT_LIMIT_ENABLED;
+
+        if (systemConstants.IS_MOTION_MAGIC) {
+            motorConfig.MotionMagic.MotionMagicCruiseVelocity = systemConstants.CRUISE_VELOCITY;
+            motorConfig.MotionMagic.MotionMagicAcceleration = systemConstants.ACCELERATION;
+            motorConfig.MotionMagic.MotionMagicJerk = systemConstants.JERK;
+        }
     }
 
     @Override
@@ -98,17 +103,17 @@ public class ArmIOReal extends ArmIO {
 
     @Override
     public double getVelocity() {
-        return motorVelocity.getValueAsDouble();
+        return motorVelocity.getValueAsDouble() * 60;
     }
 
     @Override
     public double getPosition() {
-        return motorPosition.getValueAsDouble();
+        return motorPosition.getValueAsDouble() * 360; 
     }
 
     @Override
     public double getSetPoint() {
-        return motorSetPoint.getValueAsDouble();
+        return motorSetPoint.getValueAsDouble() * 360;
     }
 
     @Override
@@ -128,11 +133,61 @@ public class ArmIOReal extends ArmIO {
     }
 
     @Override
+    public void setAngle(double angle) {
+        if (systemConstants.IS_MOTION_MAGIC) {
+            systemConstants.MOTORS[0].talonFX.setControl(motionMagicRequest.withPosition(angle / 360)
+                    .withFeedForward(systemConstants.FEED_FORWARD_VOLTAGE)
+                    .withLimitForwardMotion((getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT)
+                            || getPosition() > systemConstants.MAX_ANGLE)
+                    .withLimitReverseMotion((getCurrent() < -systemConstants.MOTOR_LIMIT_CURRENT)
+                            || getPosition() < systemConstants.MIN_ANGLE));
+        } else {
+            systemConstants.MOTORS[0].talonFX.setControl(positionRequest.withPosition(angle / 360)
+                    .withFeedForward(systemConstants.FEED_FORWARD_VOLTAGE)
+                    .withLimitForwardMotion((getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT)
+                            || getPosition() > systemConstants.MAX_ANGLE)
+                    .withLimitReverseMotion((getCurrent() < -systemConstants.MOTOR_LIMIT_CURRENT)
+                            || getPosition() < systemConstants.MIN_ANGLE));
+        }
+
+        i = 1;
+        while (i < numOfMotors) {
+            systemConstants.MOTORS[i].talonFX.setControl(followers[i - 1]);
+        }
+    }
+
+    @Override
+    public void setAngle(double angle, double feedForward) {
+        if (systemConstants.IS_MOTION_MAGIC) {
+            systemConstants.MOTORS[0].talonFX.setControl(motionMagicRequest.withPosition(angle / 360)
+                    .withFeedForward(feedForward)
+                    .withLimitForwardMotion((getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT)
+                            || getPosition() > systemConstants.MAX_ANGLE)
+                    .withLimitReverseMotion((getCurrent() < -systemConstants.MOTOR_LIMIT_CURRENT)
+                            || getPosition() < systemConstants.MIN_ANGLE));
+        } else {
+            systemConstants.MOTORS[0].talonFX.setControl(positionRequest.withPosition(angle / 360)
+                    .withFeedForward(feedForward)
+                    .withLimitForwardMotion((getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT)
+                            || getPosition() > systemConstants.MAX_ANGLE)
+                    .withLimitReverseMotion((getCurrent() < -systemConstants.MOTOR_LIMIT_CURRENT)
+                            || getPosition() < systemConstants.MIN_ANGLE));
+        }
+
+        i = 1;
+        while (i < numOfMotors) {
+            systemConstants.MOTORS[i].talonFX.setControl(followers[i - 1]);
+        }
+    }
+
+    @Override
     public void setVoltage(double volt) {
         systemConstants.MOTORS[0].talonFX.setControl(voltageRequest.withOutput(volt)
-                .withLimitForwardMotion((getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT) || getPosition() > systemConstants.MAX_ANGLE)
-                .withLimitReverseMotion((getCurrent() < -systemConstants.MOTOR_LIMIT_CURRENT) || getPosition() < systemConstants.MIN_ANGLE));
-                
+                .withLimitForwardMotion((getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT)
+                        || getPosition() > systemConstants.MAX_ANGLE)
+                .withLimitReverseMotion((getCurrent() < -systemConstants.MOTOR_LIMIT_CURRENT)
+                        || getPosition() < systemConstants.MIN_ANGLE));
+
         i = 1;
         while (i < numOfMotors) {
             systemConstants.MOTORS[i].talonFX.setControl(followers[i - 1]);

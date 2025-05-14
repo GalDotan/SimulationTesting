@@ -2,17 +2,17 @@
 package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.ArmSystem;
 
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
-import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.RollerSystemConstants;
+import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.ArmSystemConstants;
 import com.ma5951.utils.RobotControl.Utils.Sensors.BaseSensor;
 
 import frc.robot.Robot;
 
 public class ArmSubsystem extends StateControlledSubsystem{
 
-    protected RollerSystemConstants systemConstants;
+    protected ArmSystemConstants systemConstants;
     protected ArmIO rollerIO;
 
-    public ArmSubsystem(String name,RollerSystemConstants systemConstants) {
+    public ArmSubsystem(String name,ArmSystemConstants systemConstants) {
         super(name);
         this.systemConstants = systemConstants;
         rollerIO = Robot.isSimulation() ? new ArmIOSim(systemConstants) : new ArmIOReal(systemConstants);
