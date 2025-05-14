@@ -2,17 +2,20 @@ package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.ArmSyste
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ma5951.utils.Logger.MALog;
+import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.ArmSystemConstants;
 import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.RollerSystemConstants;
 import com.ma5951.utils.RobotControl.Utils.Motor;
 import com.ma5951.utils.RobotControl.Utils.StatusSignalsRunner;
 import com.ma5951.utils.RobotControl.Utils.Sensors.BaseSensor;
-import com.ma5951.utils.Utils.ConvUtil;
 
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
@@ -21,45 +24,43 @@ public class ArmIOReal extends ArmIO {
 
     private final int numOfMotors;
     private final VoltageOut voltageRequest = new VoltageOut(0);
-    protected final TalonFXConfiguration motorConfig = new TalonFXConfiguration();
-    private final StrictFollower[] followers;
+    protected TalonFXConfiguration motorConfig = new TalonFXConfiguration();
+    private StrictFollower[] followers;
 
-    private final StatusSignal<AngularVelocity>[] motorVelocity;
-    private final StatusSignal<Current>[] motorCurrent;
-    private final StatusSignal<Voltage>[] motorVoltage;
+    private ControlRequest controlRequest;
 
-    private double velocitySum;
-    private double currentSum;
-    private double voltageSum;
+    private StatusSignal<AngularVelocity> motorVelocity;
+    private StatusSignal<Angle> motorPosition;
+    private StatusSignal<Double> motorSetPoint;
+    private StatusSignal<Current> motorCurrent;
+    private StatusSignal<Voltage> motorVoltage;
 
     private int i = 0;
 
-    @SuppressWarnings("unchecked")
-    public ArmIOReal(RollerSystemConstants systemConstants) {
+    public ArmIOReal(ArmSystemConstants systemConstants) {
         super(systemConstants);
         numOfMotors = systemConstants.MOTORS.length;
 
         configMotors();
 
-        
-        followers = new StrictFollower[numOfMotors - 1];
-        motorVelocity = new StatusSignal[numOfMotors];
-        motorCurrent = new StatusSignal[numOfMotors];
-        motorVoltage = new StatusSignal[numOfMotors];
 
+        followers = new StrictFollower[numOfMotors - 1];
 
         for (Motor motor : systemConstants.MOTORS) {
-            motorVelocity[i] = motor.talonFX.getVelocity(false);
-            motorCurrent[i] = motor.talonFX.getStatorCurrent(false);
-            motorVoltage[i] = motor.talonFX.getMotorVoltage(false);
+            if (i > 0) {
+                followers[i - 1] = new StrictFollower(systemConstants.MOTORS[0].talonFX.getDeviceID());
+            } else {
+                motorVelocity = motor.talonFX.getVelocity(false);
+                motorCurrent = motor.talonFX.getStatorCurrent(false);
+                motorVoltage = motor.talonFX.getMotorVoltage(false);
+                motorPosition = motor.talonFX.getPosition(false);
+                motorSetPoint = motor.talonFX.getClosedLoopReference(false);
+                StatusSignalsRunner.registerSignals(motorVelocity, motorCurrent,
+                        motorVoltage , motorSetPoint);
+            }
             TalonFX.resetSignalFrequenciesForAll(motor.talonFX);
             motorConfig.MotorOutput.Inverted = motor.direction;
             motor.talonFX.getConfigurator().apply(motorConfig);
-            StatusSignalsRunner.registerSignals(motorVelocity[i] , motorCurrent[i] ,
-            motorVoltage[i]);
-            if (i > 0) {
-                followers[i - 1] = new StrictFollower(systemConstants.MOTORS[0].talonFX.getDeviceID());
-            }
             i++;
         }
 
@@ -87,29 +88,32 @@ public class ArmIOReal extends ArmIO {
 
     @Override
     public double getCurrent() {
-        currentSum = 0;
-        for (StatusSignal<Current> motorCurrent : motorCurrent) {
-            currentSum += motorCurrent.getValueAsDouble();
-        }
-        return currentSum / numOfMotors;
+        return motorCurrent.getValueAsDouble();
     }
 
     @Override
     public double getAppliedVolts() {
-        voltageSum = 0;
-        for (StatusSignal<Voltage> motorVoltag : motorVoltage) {
-            voltageSum += motorVoltag.getValueAsDouble();
-        }
-        return voltageSum / numOfMotors;
+        return motorVoltage.getValueAsDouble();
     }
 
     @Override
     public double getVelocity() {
-        velocitySum = 0;
-        for (StatusSignal<AngularVelocity> motorVelo : motorVelocity) {
-            velocitySum += motorVelo.getValueAsDouble();
-        }
-        return ConvUtil.RPStoRPM(velocitySum / numOfMotors);
+        return motorVelocity.getValueAsDouble();
+    }
+
+    @Override
+    public double getPosition() {
+        return motorPosition.getValueAsDouble();
+    }
+
+    @Override
+    public double getSetPoint() {
+        return motorSetPoint.getValueAsDouble();
+    }
+
+    @Override
+    public void setPosition(double angle) {
+        systemConstants.MOTORS[0].talonFX.setPosition(angle / 360);
     }
 
     @Override
@@ -126,8 +130,9 @@ public class ArmIOReal extends ArmIO {
     @Override
     public void setVoltage(double volt) {
         systemConstants.MOTORS[0].talonFX.setControl(voltageRequest.withOutput(volt)
-        .withLimitForwardMotion(getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT)
-        .withLimitReverseMotion(getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT));
+                .withLimitForwardMotion((getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT) || getPosition() > systemConstants.MAX_ANGLE)
+                .withLimitReverseMotion((getCurrent() < -systemConstants.MOTOR_LIMIT_CURRENT) || getPosition() < systemConstants.MIN_ANGLE));
+                
         i = 1;
         while (i < numOfMotors) {
             systemConstants.MOTORS[i].talonFX.setControl(followers[i - 1]);
@@ -139,10 +144,13 @@ public class ArmIOReal extends ArmIO {
         MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + "/Velocity", getVelocity());
         MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + "/Voltage", getAppliedVolts());
         MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + "/Current", getCurrent());
+        MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + "/Position", getPosition());
 
-        for (@SuppressWarnings("rawtypes") BaseSensor sensor : systemConstants.SENSORS) {
+        for (@SuppressWarnings("rawtypes")
+        BaseSensor sensor : systemConstants.SENSORS) {
             if (sensor.getType().equals("BooleanSensor")) {
-                MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + sensor.getName(), (sensor.get() == 1 ? true : false));
+                MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + sensor.getName(),
+                        (sensor.get() == 1 ? true : false));
             } else {
                 MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + sensor.getName(), sensor.get());
             }

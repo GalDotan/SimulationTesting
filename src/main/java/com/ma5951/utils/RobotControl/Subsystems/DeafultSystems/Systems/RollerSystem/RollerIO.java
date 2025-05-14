@@ -20,6 +20,8 @@ public abstract class RollerIO {
 
     public abstract double getVelocity();
 
+    public abstract double getPosition();
+
     public abstract void setNeutralMode(boolean isBrake);
 
     public abstract void setVoltage(double volt);
