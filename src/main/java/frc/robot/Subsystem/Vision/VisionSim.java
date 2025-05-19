@@ -1,5 +1,6 @@
 package frc.robot.Subsystem.Vision;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,8 +43,8 @@ public class VisionSim implements VisionIO {
     public VisionSim() {
         visionSim = new VisionSystemSim("main");
         try {
-            tagLayout = AprilTagFieldLayout
-                    .loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
+            tagLayout = new AprilTagFieldLayout(
+                    Path.of("src\\main\\java\\com\\ma5951\\utils\\Vision\\AprilTags\\2025-reefscape.json"));
 
         } catch (Exception e) {
         }
@@ -52,9 +53,9 @@ public class VisionSim implements VisionIO {
 
         cameraProp = new SimCameraProperties();
         cameraProp.setCalibration(1280, 800, Rotation2d.fromDegrees(86));
-        cameraProp.setFPS(38);
+        cameraProp.setFPS(60);
         cameraProp.setCalibError(0.125, 0.04);// 0.6 0.2
-        cameraProp.setAvgLatencyMs(30);
+        cameraProp.setAvgLatencyMs(12);
         cameraProp.setLatencyStdDevMs(5);
 
         camera = new PhotonCamera("SimCam");

@@ -1,14 +1,13 @@
 
-package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.ArmSystem;
+package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.PositionControlled;
 
-import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.ArmSystemConstants;
-import com.ma5951.utils.RobotControl.Utils.Sensors.BaseSensor;
+import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.PositionSystemConstants;
 
-public abstract class ArmIO {
+public abstract class PositionControlledIO {
 
-    protected ArmSystemConstants systemConstants;
+    protected PositionSystemConstants systemConstants;
     
-    public ArmIO(ArmSystemConstants systemConstants) {
+    public PositionControlledIO(PositionSystemConstants systemConstants) {
         this.systemConstants = systemConstants;
     }
 
@@ -36,6 +35,6 @@ public abstract class ArmIO {
 
     public abstract void updatePeriodic();
 
-    public abstract double getSensor(@SuppressWarnings("rawtypes") BaseSensor sensor);
+    public abstract double getSensor(int sensorIndex);
 
 }

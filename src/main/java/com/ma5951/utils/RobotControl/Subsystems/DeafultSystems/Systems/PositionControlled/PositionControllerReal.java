@@ -1,4 +1,4 @@
-package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.ArmSystem;
+package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.PositionControlled;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -9,7 +9,7 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ma5951.utils.Logger.MALog;
-import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.ArmSystemConstants;
+import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.PositionSystemConstants;
 import com.ma5951.utils.RobotControl.Utils.Motor;
 import com.ma5951.utils.RobotControl.Utils.StatusSignalsRunner;
 import com.ma5951.utils.RobotControl.Utils.Sensors.BaseSensor;
@@ -19,7 +19,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 
-public class ArmIOReal extends ArmIO {
+public class PositionControllerReal extends PositionControlledIO {
 
     private final int numOfMotors;
     private final VoltageOut voltageRequest = new VoltageOut(0);
@@ -37,7 +37,7 @@ public class ArmIOReal extends ArmIO {
 
     private int i = 0;
 
-    public ArmIOReal(ArmSystemConstants systemConstants) {
+    public PositionControllerReal(PositionSystemConstants systemConstants) {
         super(systemConstants);
         numOfMotors = systemConstants.MOTORS.length;
 
@@ -87,8 +87,8 @@ public class ArmIOReal extends ArmIO {
     }
 
     @Override
-    public double getSensor(@SuppressWarnings("rawtypes") BaseSensor sensor) {
-        return sensor.get();
+    public double getSensor(int sensorInfdex) {
+        return systemConstants.SENSORS[sensorInfdex].get();
     }
 
     @Override
@@ -103,22 +103,22 @@ public class ArmIOReal extends ArmIO {
 
     @Override
     public double getVelocity() {
-        return motorVelocity.getValueAsDouble() * 60;
+        return motorVelocity.getValueAsDouble() * systemConstants.VELOCITY_CONVERSION_FACTOR;
     }
 
     @Override
     public double getPosition() {
-        return motorPosition.getValueAsDouble() * 360; 
+        return motorPosition.getValueAsDouble() * systemConstants.POSITION_CONVERSION_FACTOR; 
     }
 
     @Override
     public double getSetPoint() {
-        return motorSetPoint.getValueAsDouble() * 360;
+        return motorSetPoint.getValueAsDouble() * systemConstants.POSITION_CONVERSION_FACTOR;
     }
 
     @Override
-    public void setPosition(double angle) {
-        systemConstants.MOTORS[0].talonFX.setPosition(angle / 360);
+    public void setPosition(double position) {
+        systemConstants.MOTORS[0].talonFX.setPosition(position / systemConstants.POSITION_CONVERSION_FACTOR);
     }
 
     @Override
@@ -138,16 +138,16 @@ public class ArmIOReal extends ArmIO {
             systemConstants.MOTORS[0].talonFX.setControl(motionMagicRequest.withPosition(angle / 360)
                     .withFeedForward(systemConstants.FEED_FORWARD_VOLTAGE)
                     .withLimitForwardMotion((getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT)
-                            || getPosition() > systemConstants.MAX_ANGLE)
+                            || getPosition() > systemConstants.MAX_POSE)
                     .withLimitReverseMotion((getCurrent() < -systemConstants.MOTOR_LIMIT_CURRENT)
-                            || getPosition() < systemConstants.MIN_ANGLE));
+                            || getPosition() < systemConstants.MIN_POSE));
         } else {
             systemConstants.MOTORS[0].talonFX.setControl(positionRequest.withPosition(angle / 360)
                     .withFeedForward(systemConstants.FEED_FORWARD_VOLTAGE)
                     .withLimitForwardMotion((getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT)
-                            || getPosition() > systemConstants.MAX_ANGLE)
+                            || getPosition() > systemConstants.MAX_POSE)
                     .withLimitReverseMotion((getCurrent() < -systemConstants.MOTOR_LIMIT_CURRENT)
-                            || getPosition() < systemConstants.MIN_ANGLE));
+                            || getPosition() < systemConstants.MIN_POSE));
         }
 
         i = 1;
@@ -162,16 +162,16 @@ public class ArmIOReal extends ArmIO {
             systemConstants.MOTORS[0].talonFX.setControl(motionMagicRequest.withPosition(angle / 360)
                     .withFeedForward(feedForward)
                     .withLimitForwardMotion((getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT)
-                            || getPosition() > systemConstants.MAX_ANGLE)
+                            || getPosition() > systemConstants.MAX_POSE)
                     .withLimitReverseMotion((getCurrent() < -systemConstants.MOTOR_LIMIT_CURRENT)
-                            || getPosition() < systemConstants.MIN_ANGLE));
+                            || getPosition() < systemConstants.MIN_POSE));
         } else {
             systemConstants.MOTORS[0].talonFX.setControl(positionRequest.withPosition(angle / 360)
                     .withFeedForward(feedForward)
                     .withLimitForwardMotion((getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT)
-                            || getPosition() > systemConstants.MAX_ANGLE)
+                            || getPosition() > systemConstants.MAX_POSE)
                     .withLimitReverseMotion((getCurrent() < -systemConstants.MOTOR_LIMIT_CURRENT)
-                            || getPosition() < systemConstants.MIN_ANGLE));
+                            || getPosition() < systemConstants.MIN_POSE));
         }
 
         i = 1;
@@ -184,9 +184,9 @@ public class ArmIOReal extends ArmIO {
     public void setVoltage(double volt) {
         systemConstants.MOTORS[0].talonFX.setControl(voltageRequest.withOutput(volt)
                 .withLimitForwardMotion((getCurrent() > systemConstants.MOTOR_LIMIT_CURRENT)
-                        || getPosition() > systemConstants.MAX_ANGLE)
+                        || getPosition() > systemConstants.MAX_POSE)
                 .withLimitReverseMotion((getCurrent() < -systemConstants.MOTOR_LIMIT_CURRENT)
-                        || getPosition() < systemConstants.MIN_ANGLE));
+                        || getPosition() < systemConstants.MIN_POSE));
 
         i = 1;
         while (i < numOfMotors) {
@@ -196,18 +196,18 @@ public class ArmIOReal extends ArmIO {
 
     @Override
     public void updatePeriodic() {
-        MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + "/Velocity", getVelocity());
-        MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + "/Voltage", getAppliedVolts());
-        MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + "/Current", getCurrent());
-        MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + "/Position", getPosition());
+        MALog.log("/Subsystems/" + systemConstants.LOG_PATH + "/IO/" + "/Velocity", getVelocity());
+        MALog.log("/Subsystems/" + systemConstants.LOG_PATH + "/IO/" + "/Voltage", getAppliedVolts());
+        MALog.log("/Subsystems/" + systemConstants.LOG_PATH + "/IO/" + "/Current", getCurrent());
+        MALog.log("/Subsystems/" + systemConstants.LOG_PATH + "/IO/" + "/Position", getPosition());
 
         for (@SuppressWarnings("rawtypes")
         BaseSensor sensor : systemConstants.SENSORS) {
             if (sensor.getType().equals("BooleanSensor")) {
-                MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + sensor.getName(),
+                MALog.log("/Subsystems/" + systemConstants.LOG_PATH + "/IO/" + sensor.getName(),
                         (sensor.get() == 1 ? true : false));
             } else {
-                MALog.log("/Subsystem/" + systemConstants.LOG_PATH + "/IO/" + sensor.getName(), sensor.get());
+                MALog.log("/Subsystems/" + systemConstants.LOG_PATH + "/IO/" + sensor.getName(), sensor.get());
             }
         }
 

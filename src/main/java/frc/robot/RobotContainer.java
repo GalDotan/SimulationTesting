@@ -10,7 +10,6 @@ import frc.robot.Subsystem.Elevator.Elevator;
 import frc.robot.Subsystem.Gripper.Gripper;
 import frc.robot.Subsystem.Intake.IntakeArm.IntakeArm;
 import frc.robot.Subsystem.Intake.IntakeRoller.IntakeRoller;
-import frc.robot.Subsystem.IntakeV2.IntakeAlge;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 import frc.robot.Subsystem.Swerve.SwerveAutoFollower;
 import frc.robot.Subsystem.Swerve.SwerveConstants;
@@ -50,7 +49,6 @@ public class RobotContainer extends MARobotContainer {
     intakeRoller = IntakeRoller.getInstance();
     gripper = Gripper.getInstance();
     elevator = Elevator.getInstance();
-    IntakeAlge.getInstance();
     
     withDriverController(new MAXboxController(0));
     wihtAddDeafultCommand(new ArmCommand());
@@ -69,7 +67,7 @@ public class RobotContainer extends MARobotContainer {
       new GamePieceSimulator2025(),
       new String[] {"Coral"}
     );
-
+ 
     configureBindings();
 
     @SuppressWarnings("unused")

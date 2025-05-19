@@ -7,8 +7,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.RobotControl.SuperStructure;
-import frc.robot.Subsystem.IntakeV2.AlgeConstants;
-import frc.robot.Subsystem.IntakeV2.IntakeAlge;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
 
 
@@ -68,7 +66,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    AlgeConstants.ALGE_INTAKE.SENSORS[0].set(true);
 
   }
 

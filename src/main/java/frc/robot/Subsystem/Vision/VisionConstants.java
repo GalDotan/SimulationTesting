@@ -1,6 +1,7 @@
 
 package frc.robot.Subsystem.Vision;
 
+
 import com.ma5951.utils.Utils.ConvUtil;
 
 import edu.wpi.first.math.geometry.Rectangle2d;
@@ -14,8 +15,8 @@ import frc.robot.Subsystem.Vision.Filters.VisionFiltersConfig;
 
 public class VisionConstants {
 
-    public final static Translation3d ROBOT_TO_CAMERA_XYZ = new Translation3d(0.1, 0, 0.5);
-    public final static Rotation3d ROBOT_TO_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-15), 0);
+    public final static Translation3d ROBOT_TO_CAMERA_XYZ = new Translation3d(0.15, 0, 0.15);
+    public final static Rotation3d ROBOT_TO_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-15), ConvUtil.DegreesToRadians(90));
     public final static Transform3d ROBOT_TO_CAMERA = new Transform3d(ROBOT_TO_CAMERA_XYZ, ROBOT_TO_CAMERA_ROTATION);
 
     public final static double[] TAG_HIGHTS = {
