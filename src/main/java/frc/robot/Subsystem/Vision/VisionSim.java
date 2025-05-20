@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonTargetSortMode;
+import org.photonvision.PhotonUtils;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.estimation.TargetModel;
 import org.photonvision.simulation.PhotonCameraSim;
@@ -64,7 +65,7 @@ public class VisionSim implements VisionIO {
         cameraSim.setTargetSortMode(PhotonTargetSortMode.Largest);
         cameraSim.setMaxSightRange(5);
 
-        visionSim.addCamera(cameraSim, VisionConstants.ROBOT_TO_CAMERA);
+
         visionSim.update(new Pose2d(2, 2, new Rotation2d()));
 
         poseEstimator = new PhotonPoseEstimator(tagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
@@ -86,6 +87,8 @@ public class VisionSim implements VisionIO {
             toReturn = new PoseEstimate(estimator.estimatedPose.toPose2d(), Timer.getFPGATimestamp(), 0d, 0, 0d, 0d, 0d,
                     new RawFiducial[] {},true);
         });
+
+
         return toReturn;
     }
 

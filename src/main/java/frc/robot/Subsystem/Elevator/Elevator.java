@@ -3,18 +3,30 @@ package frc.robot.Subsystem.Elevator;
 
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
+import frc.robot.Robot;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Elevator.IOs.ElevatorIO;
+import frc.robot.Subsystem.Elevator.IOs.ElevatorIOReal;
+import frc.robot.Subsystem.Elevator.IOs.ElevatorIOSim;
 
 public class Elevator extends StateControlledSubsystem {
   private static Elevator elevator;
 
-  private ElevatorIO elevatorIO = ElevatorConstants.getElevatorIO();
+  private ElevatorIO elevatorIO;
 
   private Elevator() {
     super("Elevator");
+    elevatorIO = getElevatorIO();
   }
+
+  public static ElevatorIO getElevatorIO() {
+        if (Robot.isReal()) {
+            return new ElevatorIOReal();
+        }
+
+        return new ElevatorIOSim();
+    }
 
   public void resetPose(double hight) {
     elevatorIO.resetPosition(hight);

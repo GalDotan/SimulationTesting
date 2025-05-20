@@ -3,21 +3,33 @@ package frc.robot.Subsystem.Intake.IntakeRoller;
 
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
+import frc.robot.Robot;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.Intake.IntakeRoller.IOs.IntakeRollerIO;
+import frc.robot.Subsystem.Intake.IntakeRoller.IOs.IntakeRollerIOReal;
+import frc.robot.Subsystem.Intake.IntakeRoller.IOs.IntakeRollerIOSim;
 
 
 public class IntakeRoller extends StateControlledSubsystem{
     private static IntakeRoller intake;
 
-    private IntakeRollerIO intakeIO = IntakeRollerConstants.getRollerIntakeIO();
+    private IntakeRollerIO intakeIO ;
 
     private IntakeRoller() {
         super("Intake Roller");
+        intakeIO = getRollerIntakeIO();
 
         intakeIO.setNeutralMode(true);
+    }
+
+    public static IntakeRollerIO getRollerIntakeIO() {
+        if (Robot.isReal()) {
+            return new IntakeRollerIOReal();
+        } else {
+            return new IntakeRollerIOSim();
+        }
     }
 
     public boolean hasCoral() {

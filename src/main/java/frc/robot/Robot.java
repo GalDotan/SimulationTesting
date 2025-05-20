@@ -2,12 +2,19 @@
 package frc.robot;
 
 import com.ma5951.utils.Logger.MALog;
+import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.CameraConstants;
+import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.VisionSystem.CameraIO;
+import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.VisionSystem.PhotonSimIO;
+import com.ma5951.utils.RobotControl.Utils.Camera.Cameras;
 
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.RobotControl.SuperStructure;
 import frc.robot.Subsystem.PoseEstimation.PoseEstimator;
+import frc.robot.Subsystem.Swerve.SwerveConstants;
+import frc.robot.Subsystem.Vision.VisionConstants;
 
 
 public class Robot extends TimedRobot {
@@ -17,6 +24,7 @@ public class Robot extends TimedRobot {
   public static boolean isStartingPose = false;
 
   private SuperStructure m_superStructure;
+  private CameraIO cameraIO;
   
 
   @Override
@@ -25,6 +33,11 @@ public class Robot extends TimedRobot {
     MALog.resetID();
 
     m_superStructure = new SuperStructure();
+
+    cameraIO = new PhotonSimIO(
+      new CameraConstants(
+        "Test", Cameras.LL4, VisionConstants.ROBOT_TO_CAMERA, false)
+    );
 
     
   }
@@ -36,7 +49,8 @@ public class Robot extends TimedRobot {
     m_robotContainer.robotPeriodic();
 
 
-
+    cameraIO.updatePeriodic(SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose());
+    System.out.println(cameraIO.getFiducialData()[0].id);
   }
 
   @Override

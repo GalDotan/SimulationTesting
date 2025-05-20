@@ -27,13 +27,7 @@ public class GripperConstants {
     public static final SubsystemState HOLD = new SubsystemState("HOLD", Gripper.getInstance());
 
 
-    public static GripperIO getGripperIO() {
-        if (Robot.isReal()) {
-            return new GripperIOReal();
-        } else {
-            return new GripperIOSim();
-        }
-    }
+    
 
 
 

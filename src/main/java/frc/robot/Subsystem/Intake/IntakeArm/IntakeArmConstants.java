@@ -45,13 +45,7 @@ public class IntakeArmConstants {
     public static final SubsystemState ALGE_INTAKE = new SubsystemState("ALGE_INTAKE", IntakeArm.getInstance());
     public static final SubsystemState L1_SCORING = new SubsystemState("L1_SCORING", IntakeArm.getInstance());
 
-    public static IntakeArmIO getIntakeIO() {
-        if (Robot.isReal()) {
-            return new IntakeArmIOReal();
-        } else {
-            return new IntakeArmIOSim();
-        }
-    }
+    
 
 
 

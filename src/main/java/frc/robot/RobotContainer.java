@@ -41,7 +41,6 @@ public class RobotContainer extends MARobotContainer {
 
 
     swerveSubsystem = SwerveSubsystem.getInstance();
-    vision = Vision.getInstance();
     poseEstimator = PoseEstimator.getInstance();
     swerveAutoFollower = SwerveAutoFollower.getInstance();
     arm = Arm.getInstance();

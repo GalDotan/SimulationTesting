@@ -11,15 +11,27 @@ import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Arm.IOs.ArmIO;
+import frc.robot.Subsystem.Arm.IOs.ArmIOReal;
+import frc.robot.Subsystem.Arm.IOs.ArmIOSim;
 import frc.robot.Subsystem.Elevator.ElevatorConstants;
 
 public class Arm extends StateControlledSubsystem {
     private static Arm arm;
 
-    private ArmIO armIO = ArmConstants.getArmIO();
+    private ArmIO armIO;
 
     private Arm() {
         super("Arm");
+        armIO = getArmIO();
+        System.out.println("11111111111111111111");
+    }
+
+    public static ArmIO getArmIO() {
+        if (Robot.isReal()) {
+            return new ArmIOReal();
+        } else {
+            return new ArmIOSim();
+        }
     }
 
     public void resetMotorPose(double pose) {

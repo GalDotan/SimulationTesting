@@ -63,6 +63,7 @@ public class ArmConstants {
     public static final double kCAN_MOVE_CURRENT_LIMIT = 20000;
     public static final double kMANUEL_VOLTAGE_LIMIT = 7;
 
+
     public static final SubsystemState IDLE = new SubsystemState("IDLE", Arm.getInstance());
     public static final SubsystemState HOLD = new SubsystemState("HOLD", Arm.getInstance());
     public static final SubsystemState INTAKE = new SubsystemState("INTAKE", Arm.getInstance());
@@ -76,11 +77,5 @@ public class ArmConstants {
 
     public static final Pose3d SIM_ARM_OFFSET = new Pose3d(new Translation3d(-0.124,0,1.262), new Rotation3d(0,0,0));
 
-    public static ArmIO getArmIO() {
-        if (Robot.isReal()) {
-            return new ArmIOReal();
-        } else {
-            return new ArmIOSim();
-        }
-    }
+    
 }

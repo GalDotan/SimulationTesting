@@ -69,12 +69,6 @@ public class ElevatorConstants {
     public static final Pose3d SIM_ELEVATOR_OFFSET = new Pose3d(new Translation3d(0,0,0.15), new Rotation3d(0,0,0));
 
 
-    public static final ElevatorIO getElevatorIO() {
-        if (Robot.isReal()) {
-            return new ElevatorIOReal();
-        }
-
-        return new ElevatorIOSim();
-    }
+    
  
 }

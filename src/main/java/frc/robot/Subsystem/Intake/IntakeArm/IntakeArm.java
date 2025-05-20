@@ -9,17 +9,28 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import frc.robot.Robot;
 import frc.robot.Subsystem.Intake.IntakeArm.IOs.IntakeArmIO;
+import frc.robot.Subsystem.Intake.IntakeArm.IOs.IntakeArmIOReal;
+import frc.robot.Subsystem.Intake.IntakeArm.IOs.IntakeArmIOSim;
 
 
 public class IntakeArm extends StateControlledSubsystem{
     private static IntakeArm intake;
 
-    private IntakeArmIO intakeIO = IntakeArmConstants.getIntakeIO();
+    private IntakeArmIO intakeIO ;
 
     private IntakeArm() {
         super("Intake Arm");
+        intakeIO = getIntakeIO();
 
         intakeIO.setNeutralMode(true);
+    }
+
+    public static IntakeArmIO getIntakeIO() {
+        if (Robot.isReal()) {
+            return new IntakeArmIOReal();
+        } else {
+            return new IntakeArmIOSim();
+        }
     }
 
     public double getCurrent() {

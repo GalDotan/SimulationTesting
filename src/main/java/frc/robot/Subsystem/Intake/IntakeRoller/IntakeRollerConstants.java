@@ -25,13 +25,7 @@ public class IntakeRollerConstants {
     public static final SubsystemState ALGE_INTAKE = new SubsystemState("ALGE_INTAKE", IntakeRoller.getInstance());
     public static final SubsystemState L1_SCORING = new SubsystemState("L1_SCORING", IntakeRoller.getInstance());
 
-    public static IntakeRollerIO getRollerIntakeIO() {
-        if (Robot.isReal()) {
-            return new IntakeRollerIOReal();
-        } else {
-            return new IntakeRollerIOSim();
-        }
-    }
+    
 
 
 

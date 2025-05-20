@@ -3,20 +3,32 @@ package frc.robot.Subsystem.Gripper;
 
 import com.ma5951.utils.RobotControl.Subsystems.StateControlledSubsystem;
 
+import frc.robot.Robot;
 import frc.robot.RobotConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Subsystem.Gripper.IOs.GripperIO;
+import frc.robot.Subsystem.Gripper.IOs.GripperIOReal;
+import frc.robot.Subsystem.Gripper.IOs.GripperIOSim;
 
 
 public class Gripper extends StateControlledSubsystem{
     private static Gripper gripper;
 
-    private GripperIO gripperIO = GripperConstants.getGripperIO();
+    private GripperIO gripperIO;
 
     private Gripper() {
         super("Gripper");
+        gripperIO = getGripperIO();
 
         gripperIO.setNeutralMode(true);
+    }
+
+    public static GripperIO getGripperIO() {
+        if (Robot.isReal()) {
+            return new GripperIOReal();
+        } else {
+            return new GripperIOSim();
+        }
     }
 
     public boolean hasCoral() {
