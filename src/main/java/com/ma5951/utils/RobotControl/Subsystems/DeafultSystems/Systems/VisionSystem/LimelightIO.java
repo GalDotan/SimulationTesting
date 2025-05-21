@@ -8,7 +8,6 @@ import com.ma5951.utils.Vision.Limelights.LimelightHelpers;
 import com.ma5951.utils.Vision.Limelights.LimelightHelpers.PoseEstimate;
 import com.ma5951.utils.Vision.Limelights.LimelightHelpers.RawFiducial;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 
 public class LimelightIO extends CameraIO {
@@ -64,16 +63,11 @@ public class LimelightIO extends CameraIO {
             return fiducialData;
         }
 
-        return new RawFiducial[] {
-            new RawFiducial(
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0, 
-                0)
-        };
+        return blankFiducialArry;
+    }
+
+    public boolean isTag() {
+        return LimelightHelpers.getTV(cameraIOConstants.cameraName);
     }
 
     public PoseEstimate getPoseEstimation() {
@@ -91,9 +85,7 @@ public class LimelightIO extends CameraIO {
     }
 
     @Override
-    public void updatePeriodic(Pose2d robotPose) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updatePeriodic'");
+    public void updatePeriodic() {
     }
 
 }

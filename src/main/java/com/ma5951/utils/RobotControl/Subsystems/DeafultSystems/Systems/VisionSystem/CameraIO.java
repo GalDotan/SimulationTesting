@@ -5,18 +5,38 @@ import com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.ConstantsClasses.
 import com.ma5951.utils.Vision.Limelights.LimelightHelpers.PoseEstimate;
 import com.ma5951.utils.Vision.Limelights.LimelightHelpers.RawFiducial;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 
 public abstract class CameraIO {
 
     protected CameraConstants cameraIOConstants;
 
+    protected RawFiducial[] blankFiducialArry = new RawFiducial[] {
+            new RawFiducial(
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0)
+    };
+
+    protected RawFiducial blankFiducial = new RawFiducial(
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0);
+
     public CameraIO(CameraConstants cameraIOConstants) {
         this.cameraIOConstants = cameraIOConstants;
     }
 
-    public abstract void setRobotOriantation(double yaw, double yawRate, double pitch, double pitchRate, double roll, double rollRate);
+    public abstract void setRobotOriantation(double yaw, double yawRate, double pitch, double pitchRate, double roll,
+            double rollRate);
 
     public abstract void setRobotOriantation(double yaw);
 
@@ -32,10 +52,12 @@ public abstract class CameraIO {
 
     public abstract double getPipline();
 
+    public abstract boolean isTag();
+
     public abstract RawFiducial[] getFiducialData();
 
     public abstract PoseEstimate getPoseEstimation();
 
-    public abstract void updatePeriodic(Pose2d robotPose);
+    public abstract void updatePeriodic();
 
 }

@@ -3,11 +3,6 @@ package frc.robot.Subsystem.Intake.IntakeRoller;
 
 import com.ma5951.utils.RobotControl.StatesTypes.SubsystemState;
 
-import frc.robot.Robot;
-import frc.robot.Subsystem.Intake.IntakeRoller.IOs.IntakeRollerIO;
-import frc.robot.Subsystem.Intake.IntakeRoller.IOs.IntakeRollerIOReal;
-import frc.robot.Subsystem.Intake.IntakeRoller.IOs.IntakeRollerIOSim;
-
 public class IntakeRollerConstants {
 
     public static final double GEAR_RATIO = 3;

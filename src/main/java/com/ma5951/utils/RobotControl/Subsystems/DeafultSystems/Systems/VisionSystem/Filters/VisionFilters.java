@@ -7,7 +7,7 @@
 
 //Is Flickering detection 
 
-package frc.robot.Subsystem.Vision.Filters;
+package com.ma5951.utils.RobotControl.Subsystems.DeafultSystems.Systems.VisionSystem.Filters;
 
 import java.util.function.Supplier;
 
@@ -27,17 +27,15 @@ public class VisionFilters {
     private Translation2d robotPose;
     private ChassisSpeeds robotSpeeds;
     private Pose2d deafultPose = new Pose2d();
-    private Supplier<Double> robotVelocityVectorSupplier;
     private Pose2d visionPose;
     private double robotVelocity;
 
     public VisionFilters(VisionIO VisionIO, VisionFiltersConfig configuration, Supplier<Pose2d> robotPose,
-            Supplier<ChassisSpeeds> robotSpeeds, Supplier<Double> robotVelocityVector) {
+            Supplier<ChassisSpeeds> robotSpeeds) {
         visionIO = VisionIO;
         config = configuration;
         robotPoSupplier = robotPose;
         robotSpeedsSupplier = robotSpeeds;
-        robotVelocityVectorSupplier = robotVelocityVector;
     }
 
     public void updateFilterConfig(VisionFiltersConfig configuration) {
@@ -95,7 +93,9 @@ public class VisionFilters {
     }
 
     private boolean isVisionMatchingVelocity() {
-        robotVelocity = robotVelocityVectorSupplier.get();
+        robotSpeeds = robotSpeedsSupplier.get();
+        robotVelocity = (Math.sqrt(Math.pow(robotSpeeds.vxMetersPerSecond, 2) +
+        Math.pow(robotSpeeds.vyMetersPerSecond, 2)));
         if (robotVelocity < config.maxVelocityForVisionVelocityFilter) {
             return (robotPoSupplier.get().getTranslation().getDistance(
                     visionPose.getTranslation()) <= robotVelocity * 0.02 + config.VISION_VELOCITY_TOLERANCE);

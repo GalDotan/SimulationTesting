@@ -8,7 +8,6 @@ import com.ma5951.utils.Vision.Limelights.LimelightHelpers.RawFiducial;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.Timer;
@@ -18,6 +17,7 @@ import frc.robot.Subsystem.Vision.VisionConstants;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.PhotonTargetSortMode;
 import org.photonvision.estimation.TargetModel;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
@@ -44,6 +44,9 @@ public class PhotonSimIO extends CameraIO {
     private Transform3d cameraTransform;
     private int[] allowedIDs = new int[0];
     private PhotonPipelineResult latestResult;
+    private List<RawFiducial> fiducials = new ArrayList<>();
+    private RawFiducial[] fiducialsArry = new RawFiducial[0];
+    private int id;
 
     public PhotonSimIO(CameraConstants cameraIOConstants) {
         super(cameraIOConstants);
@@ -57,14 +60,17 @@ public class PhotonSimIO extends CameraIO {
                 cameraIOConstants.camerasType.height,
                 Rotation2d.fromDegrees(cameraIOConstants.camerasType.fov));
         this.cameraProperties.setFPS(cameraIOConstants.camerasType.simFps);
-        this.cameraProperties.setAvgLatencyMs(30);
+        this.cameraProperties.setAvgLatencyMs(28);
+        this.cameraProperties.setLatencyStdDevMs(5);
         this.cameraProperties.setCalibError(0.25, 0.08);
 
         // Simulated camera and vision system
         this.cameraSim = new PhotonCameraSim(camera, cameraProperties);
         this.cameraSim.enableProcessedStream(true);
-        this.cameraSim.enableRawStream(false);
+        this.cameraSim.enableRawStream(true);
         this.cameraSim.enableDrawWireframe(true);
+        this.cameraSim.setTargetSortMode(PhotonTargetSortMode.Largest);
+        this.cameraSim.setMaxSightRange(5);
         this.visionSim = new VisionSystemSim("photonSim");
         this.cameraTransform = cameraIOConstants.cameraPosition;
         visionSim.addCamera(cameraSim, cameraTransform);
@@ -76,10 +82,10 @@ public class PhotonSimIO extends CameraIO {
         // PhotonPoseEstimator setup
         this.poseEstimator = new PhotonPoseEstimator(
                 tagLayout,
-                PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
+                PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
                 cameraTransform);
 
-        updatePeriodic(new Pose2d());
+        updatePeriodic();
     }
 
     @Override
@@ -122,12 +128,12 @@ public class PhotonSimIO extends CameraIO {
 
     @Override
     public RawFiducial[] getFiducialData() {
-        if (!latestResult.hasTargets())
-            return new RawFiducial[0];
+        if (!latestResult.hasTargets()) {
+            return blankFiducialArry;
+        }
 
-        List<RawFiducial> fiducials = new ArrayList<>();
-        for (var target : latestResult.getTargets()) {
-            int id = target.getFiducialId();
+        for (PhotonTrackedTarget target : latestResult.getTargets()) {
+            id = target.getFiducialId();
             if (allowedIDs.length == 0 || Arrays.stream(allowedIDs).anyMatch(a -> a == id)) {
                 fiducials.add(new RawFiducial(
                         id,
@@ -140,7 +146,12 @@ public class PhotonSimIO extends CameraIO {
             }
         }
 
-        return fiducials.toArray(new RawFiducial[0]);
+        return fiducials.toArray(fiducialsArry);
+    }
+
+    @Override
+    public boolean isTag() {
+        return latestResult.hasTargets();
     }
 
     @Override
@@ -195,10 +206,11 @@ public class PhotonSimIO extends CameraIO {
                 false);
     }
 
-    public void updatePeriodic(Pose2d robotPose) {
-        PhotonPipelineResult latestResult = cameraSim.process(
-                30,
-                GeomUtil.toPose3d((robotPose))
+    public void updatePeriodic() {
+        visionSim.update(SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose());
+        latestResult = cameraSim.process(
+                0,
+                GeomUtil.toPose3d((SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose()))
                         .plus(VisionConstants.ROBOT_TO_CAMERA),
                 tagLayout.getTags().stream()
                         .map(
@@ -206,7 +218,6 @@ public class PhotonSimIO extends CameraIO {
                                         a.pose, TargetModel.kAprilTag36h11, a.ID))
                         .collect(Collectors.toList()));
         cameraSim.submitProcessedFrame(latestResult);
-        visionSim.update(SwerveConstants.SWERVE_DRIVE_SIMULATION.getSimulatedDriveTrainPose());
         List<PhotonPipelineResult> latest = camera.getAllUnreadResults();
         latestResult = latest.get(0);
     }
