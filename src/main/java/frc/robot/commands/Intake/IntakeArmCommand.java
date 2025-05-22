@@ -39,6 +39,6 @@ public class IntakeArmCommand extends SystemDeafultCommand {
 
     @Override
     public void CantMove() {
-        intakeArm.setVoltage(0);;
+        intakeArm.setVoltage(0);
     }
 }

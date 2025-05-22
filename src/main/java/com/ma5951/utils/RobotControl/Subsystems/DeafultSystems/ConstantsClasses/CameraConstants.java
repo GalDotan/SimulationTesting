@@ -22,7 +22,7 @@ public class CameraConstants {
         this.camerasType = camerasType;
         this.cameraPosition = cameraPosition;
         this.useMT2 = useMT2;
-        this.filters = new VisionFilters(filtersConfig);
+        //this.filters = new VisionFilters(filtersConfig);
     }
 
 }

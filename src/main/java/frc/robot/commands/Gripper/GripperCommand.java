@@ -34,7 +34,6 @@ public class GripperCommand extends SystemDeafultCommand {
                 break;
             case "SCORING":
                 gripper.setVoltage(-4);
-
                 break;
         }
     }
