@@ -38,6 +38,45 @@ public class VisionFilters {
         robotSpeedsSupplier = robotSpeeds;
     }
 
+//     private boolean immediateGate(
+//     Pose2d visionPose,
+//     Pose2d odometryPose,
+//     ChassisSpeeds measuredSpeeds,
+//     double dt) {
+
+//   // 1) “Position within 10 cm?”
+//   double deltaPos = visionPose.getTranslation()
+//                       .getDistance(odometryPose.getTranslation());
+//   if (deltaPos > 0.10) {
+//     return false; // too big a jump, reject outright
+//   }
+
+//   // 2) “Heading within 5°?”
+//   double deltaYaw = Math.abs(
+//       visionPose.getRotation().minus(odometryPose.getRotation())
+//   .getDegrees());
+//   if (deltaYaw > 5.0) {
+//     return false;
+//   }
+
+//   // 3) “Motion inside 1.1× expected?”
+//   Translation2d expected = new Translation2d(
+//       measuredSpeeds.vxMetersPerSecond * dt,
+//       measuredSpeeds.vyMetersPerSecond * dt
+//   );
+//   double maxAllowed = expected.getNorm() * 1.1;
+//   double actualMotion = visionPose.getTranslation()
+//                          .minus(lastVisionPose.getTranslation())
+//                          .getNorm();
+//   if (actualMotion > maxAllowed) {
+//     return false;
+//   }
+
+//   // If we make it this far, everything lines up *very* well — accept immediately.
+//   return true;
+// }
+
+
     public void updateFilterConfig(VisionFiltersConfig configuration) {
         config = configuration;
     }
