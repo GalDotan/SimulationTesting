@@ -8,7 +8,7 @@ import com.ma5951.utils.RobotControl.StatesTypes.SystemFunctionState;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public abstract class StateControlledSubsystem extends SubsystemBase {
+public abstract class StateControlledSubsystem extends RobotSubsystem {
 
     private boolean systemCanMove = true;
     private SystemFunctionState systemFunctionState = StatesConstants.AUTOMATIC;
@@ -55,6 +55,7 @@ public abstract class StateControlledSubsystem extends SubsystemBase {
     public String getCurrenState() {
         return targetState;
     }
+
 
     @Override
     public void periodic() {

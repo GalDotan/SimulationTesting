@@ -7,7 +7,6 @@ import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 
 import com.ma5951.utils.Logger.MALog;
-import com.ma5951.utils.RobotControl.Commands.DeafultCommandBuilder;
 import com.ma5951.utils.RobotControl.Commands.SystemDeafultCommand;
 import com.ma5951.utils.RobotControl.Controllers.MAController;
 import com.ma5951.utils.RobotControl.Simulation.GamePieceSimulator;
@@ -25,7 +24,7 @@ public class MARobotContainer {
     public static MAController driverController;
     public static MAController oporatorController;
 
-    private static TriggerManeger triggerManeger;
+    private static TriggerBuilder triggerBuilder;
 
     public static RobotStateMA currentRobotState;
     public static RobotStateMA lastRobotState;
@@ -38,7 +37,7 @@ public class MARobotContainer {
     private static String[] gamePiecesList ;
 
     public MARobotContainer() {
-        triggerManeger = new TriggerManeger(
+        triggerBuilder = new TriggerBuilder(
                 () -> currentRobotState,
                 () -> StatesConstants.getRobotState());
 
@@ -78,7 +77,7 @@ public class MARobotContainer {
 
     // Deafult Command
     public MARobotContainer wihtAddDeafultCommand(SystemDeafultCommand command) {
-        CommandScheduler.getInstance().setDefaultCommand(command.getSubsystem(), new DeafultCommandBuilder(command));
+        CommandScheduler.getInstance().setDefaultCommand(command.getCommandSubsystem(), command);
         return this;
     }
 
@@ -88,44 +87,44 @@ public class MARobotContainer {
     }
 
     public MARobotContainer stopDeafultCommand(SystemDeafultCommand command) {
-        CommandScheduler.getInstance().removeDefaultCommand(command.getSubsystem());
+        CommandScheduler.getInstance().removeDefaultCommand(command.getCommandSubsystem());
         return this;
     }
 
     // Triggers
     public void T(RobotOporationState workInMode, RobotStateMA workInState, BooleanSupplier condition,
             Runnable action) {
-        triggerManeger.add(workInMode, workInState, condition, action);
+        triggerBuilder.add(workInMode, workInState, condition, action);
     }
 
     public void T(RobotStateMA workInState, BooleanSupplier condition, Runnable action) {
-        triggerManeger.add(workInState, condition, action);
+        triggerBuilder.add(workInState, condition, action);
     }
 
     public void T(RobotOporationState workInMode, BooleanSupplier condition, Runnable action) {
-        triggerManeger.add(workInMode, condition, action);
+        triggerBuilder.add(workInMode, condition, action);
     }
 
     public void T(BooleanSupplier condition, Runnable action) {
-        triggerManeger.add(condition, action);
+        triggerBuilder.add(condition, action);
     }
 
     // State Triggers
     public void T(RobotOporationState workInMode, RobotStateMA workInState, BooleanSupplier condition,
             RobotStateMA robotState) {
-        triggerManeger.add(workInMode, workInState, condition, () -> setRobotState(robotState));
+        triggerBuilder.add(workInMode, workInState, condition, () -> setRobotState(robotState));
     }
 
     public void T(RobotStateMA workInState, BooleanSupplier condition, RobotStateMA robotState) {
-        triggerManeger.add(workInState, condition, () -> setRobotState(robotState));
+        triggerBuilder.add(workInState, condition, () -> setRobotState(robotState));
     }
 
     public void T(RobotOporationState workInMode, BooleanSupplier condition, RobotStateMA robotState) {
-        triggerManeger.add(workInMode, condition, () -> setRobotState(robotState));
+        triggerBuilder.add(workInMode, condition, () -> setRobotState(robotState));
     }
 
     public void T(BooleanSupplier condition, RobotStateMA robotState) {
-        triggerManeger.add(condition, () -> setRobotState(robotState));
+        triggerBuilder.add(condition, () -> setRobotState(robotState));
     }
 
     // Robot States
